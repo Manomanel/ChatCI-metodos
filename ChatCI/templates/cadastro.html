@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+   <meta charset="UTF-8">
+   <title>Cadastro - ChatCI</title>
+</head>
+<body>
+   <h1><strong>Chat-CI</strong></h1>
+   <form action="/finalizar_cadastro" method="post">
+      <label for="nome">Nome de Usuário:</label><br>
+      <input type="text" id="nome" name="nome"><br><br>
+      <label for="email">Email:</label><br>
+      <input type="email" id="email" name="email"><br><br>
+      <label for="senha">Senha:</label><br>
+      <input type="password" id="senha" name="senha"><br><br>
+      <label for="tipo">Tipo de Cadastro:</label><br>
+      <select name="tipo" id="tipo">
+         <option value="aluno">Aluno</option>
+         <option value="professor">Professor</option>
+         <option value="administrador">Administrador</option>
+      </select><br><br>
+      <input type="submit" value="Finalizar">
+   </form>
+</body>
+</html>
