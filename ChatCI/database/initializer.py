@@ -62,6 +62,19 @@ class DatabaseInitializer:
                     )
                     """
                 ]
+            },
+            {
+                "name": "002_create_profile_table",
+                "queries": [
+                    """
+                    CREATE TABLE IF NOT EXISTS profile (
+                        id SERIAL PRIMARY KEY,
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        bio TEXT NOT NULL DEFAULT '',
+                        profile_picture VARCHAR(100) NULL
+                    )
+                    """
+                ]
             }
         ]
         
