@@ -201,10 +201,9 @@ class DatabaseInitializer:
             True se o script foi executado com sucesso, False caso contrário
         """
         # Dividir o script em queries individuais
-        # Este é um método simples que assume que cada query termina com ponto e vírgula
         queries = [q.strip() for q in script_content.split(';') if q.strip()]
         
-        # Usar o nome do script como nome da migração
+        # Usar o nome do script como nome da migracao
         migration_name = f"update_{script_name}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
         
         return self.apply_migration(migration_name, queries)
@@ -252,13 +251,13 @@ class DatabaseInitializer:
         Returns:
             True se a operação foi bem-sucedida, False caso contrário
         """
-        # Gerar nome do índice se não fornecido
+        # Gerar nome do indice se não fornecido
         if not index_name:
             index_name = f"idx_{table}_{'_'.join(columns)}"
         
         migration_name = f"create_index_{index_name}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
         
-        # Query para criar o índice se não existir
+        # Query para criar o indice se não existir
         create_index_query = f"""
         DO $$
         BEGIN
@@ -292,7 +291,7 @@ class DatabaseInitializer:
                 "SELECT migration_name, applied_at, status FROM schema_migrations ORDER BY applied_at DESC"
             )
             
-            # Converter para lista de dicionários
+            # Converter para lista de dicionarios
             columns = [col[0] for col in cursor.description]
             return [dict(zip(columns, row)) for row in cursor.fetchall()]
             

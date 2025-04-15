@@ -115,4 +115,15 @@ def logout():
 init_db()
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    try:
+        db_manager = DatabaseManager()
+        app.run(debug=True, host='0.0.0.0', port=5001)
+    except Exception as e:
+        logger.error(f"Erro ao iniciar o aplicativo: {e}")
+    finally:
+        # Garantir que todas as conexões sejam fechadas quando o aplicativo for encerrado
+        try:
+            db_manager = DatabaseManager()
+            db_manager.close_all_connections()
+        except:
+            pass
