@@ -1,8 +1,9 @@
 from typing import List, Dict, Any
-from ChatCI.database.manager import DatabaseManager
+from database.manager import DatabaseManager
 import logging
 
 logger = logging.getLogger('base_dao')
+
 class BaseDAO:
     """Classe base para todos os DAOs com métodos comuns"""
     def __init__(self):
