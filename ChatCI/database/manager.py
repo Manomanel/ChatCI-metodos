@@ -1,3 +1,4 @@
+# manager.py
 import psycopg2
 from psycopg2 import pool
 from config.settings import DB_CONFIG, MAX_CONNECTIONS

@@ -41,6 +41,10 @@ def init_db():
 def login():
     return render_template("login.html")
 
+@app.route("/inicial")
+def inicial():
+    return render_template("inicial.html")
+
 @app.route("/logar", methods=["POST"])
 def logar():
     email = request.form.get("usuario")
@@ -54,10 +58,14 @@ def logar():
         session['is_student'] = usuario['student']
         session['is_professor'] = usuario['professor']
         
-        return redirect("/logado")
+        return redirect("/inicial")
     return render_template("login.html", erro="Usuário ou senha incorretos")
 
-@app.route("/cadastro", methods=["POST"])
+@app.route("/cadastro")
+def cadastro():
+    return render_template("cadastro.html")
+
+@app.route("/finalizar_cadastro", methods=["POST"])
 def finalizar_cadastro():
     nome = request.form.get("nome")
     email = request.form.get("email")
