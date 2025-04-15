@@ -75,7 +75,23 @@ class DatabaseInitializer:
                     )
                     """
                 ]
-            }
+            },
+            {
+                "name": "003_create_event_table",
+                "queries": [
+                    """
+                    CREATE TABLE IF NOT EXISTS event (
+                        id SERIAL PRIMARY KEY,
+                        title VARCHAR(255) NOT NULL,
+                        description TEXT NOT NULL,
+                        link VARCHAR(255) NOT NULL DEFAULT '',
+                        event_date DATE NOT NULL,
+                        created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    )
+                    """
+                ]
+            },
+            
         ]
         
         success = True
