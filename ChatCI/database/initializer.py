@@ -2,7 +2,8 @@ from database.manager import DatabaseManager
 import logging
 import hashlib
 import json
-from typing import List
+from typing import List, Dict, Any
+from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('db_initializer')
@@ -187,3 +188,119 @@ class DatabaseInitializer:
         except Exception as e:
             logger.error(f"Erro ao registrar migração {name}: {e}")
             return False
+        
+    def run_update_script(self, script_name: str, script_content: str) -> bool:
+        """
+        Executa um script de atualização no banco
+        
+        Args:
+            script_name: Nome do script para identificação
+            script_content: Conteúdo SQL do script
+            
+        Returns:
+            True se o script foi executado com sucesso, False caso contrário
+        """
+        # Dividir o script em queries individuais
+        # Este é um método simples que assume que cada query termina com ponto e vírgula
+        queries = [q.strip() for q in script_content.split(';') if q.strip()]
+        
+        # Usar o nome do script como nome da migração
+        migration_name = f"update_{script_name}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        
+        return self.apply_migration(migration_name, queries)
+
+    def add_column_if_not_exists(self, table: str, column: str, definition: str) -> bool:
+        """
+        Adiciona uma coluna a uma tabela se ela não existir
+        
+        Args:
+            table: Nome da tabela
+            column: Nome da coluna
+            definition: Definição da coluna (tipo, constraints, etc)
+            
+        Returns:
+            True se a operação foi bem-sucedida, False caso contrário
+        """
+        migration_name = f"add_column_{table}_{column}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        
+        # Query para verificar se a coluna existe
+        check_query = f"""
+        DO $$
+        BEGIN
+            IF NOT EXISTS (
+                SELECT 1 
+                FROM information_schema.columns 
+                WHERE table_name = '{table}' AND column_name = '{column}'
+            ) THEN
+                ALTER TABLE {table} ADD COLUMN {column} {definition};
+            END IF;
+        END
+        $$;
+        """
+        
+        return self.apply_migration(migration_name, [check_query])
+
+    def create_index_if_not_exists(self, table: str, columns: List[str], index_name: str = None) -> bool:
+        """
+        Cria um índice se ele não existir
+        
+        Args:
+            table: Nome da tabela
+            columns: Lista de colunas para o índice
+            index_name: Nome do índice (opcional)
+            
+        Returns:
+            True se a operação foi bem-sucedida, False caso contrário
+        """
+        # Gerar nome do índice se não fornecido
+        if not index_name:
+            index_name = f"idx_{table}_{'_'.join(columns)}"
+        
+        migration_name = f"create_index_{index_name}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        
+        # Query para criar o índice se não existir
+        create_index_query = f"""
+        DO $$
+        BEGIN
+            IF NOT EXISTS (
+                SELECT 1
+                FROM pg_indexes
+                WHERE indexname = '{index_name}'
+            ) THEN
+                CREATE INDEX {index_name} ON {table} ({', '.join(columns)});
+            END IF;
+        END
+        $$;
+        """
+        
+        return self.apply_migration(migration_name, [create_index_query])
+
+    def get_migration_history(self) -> List[Dict[str, Any]]:
+        """
+        Retorna o histórico de migrações aplicadas
+        
+        Returns:
+            Lista de migrações aplicadas
+        """
+        connection = None
+        cursor = None
+        
+        try:
+            connection = self.db_manager.get_connection()
+            cursor = connection.cursor()
+            cursor.execute(
+                "SELECT migration_name, applied_at, status FROM schema_migrations ORDER BY applied_at DESC"
+            )
+            
+            # Converter para lista de dicionários
+            columns = [col[0] for col in cursor.description]
+            return [dict(zip(columns, row)) for row in cursor.fetchall()]
+            
+        except Exception as e:
+            logger.error(f"Erro ao obter histórico de migrações: {e}")
+            return []
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                self.db_manager.release_connection(connection)
