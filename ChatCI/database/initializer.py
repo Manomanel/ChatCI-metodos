@@ -1,5 +1,8 @@
 from database.manager import DatabaseManager
 import logging
+import hashlib
+import json
+from typing import List
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('db_initializer')
@@ -101,25 +104,33 @@ class DatabaseInitializer:
         
         return success
     
-    def apply_migration(self, name: str, queries: list) -> bool:
+    def apply_migration(self, name: str, queries: List[str], force: bool = False) -> bool:
+        """
+        Aplica uma migração ao banco de dados
+        
+        Args:
+            name: Nome da migração
+            queries: Lista de queries SQL a serem executadas
+            force: Se True, aplica a migração mesmo que já tenha sido aplicada antes
+            
+        Returns:
+            True se a migração foi aplicada com sucesso, False caso contrário
+        """
+        # Verificar se a migração já foi aplicada
+        if not force and self._migration_exists(name):
+            logger.info(f"Migração {name} já foi aplicada anteriormente")
+            return True
+
+        content = json.dumps(queries)
+        content_hash = self._calculate_hash(content)
+
         connection = None
         cursor = None
         
         try:
             connection = self.db_manager.get_connection()
             cursor = connection.cursor()
-            
-            # Verificar se a migração já foi aplicada
-            cursor.execute(
-                "SELECT COUNT(*) FROM schema_migrations WHERE migration_name = %s AND status = 'success'",
-                (name,)
-            )
-            count = cursor.fetchone()[0]
-            if count > 0:
-                logger.info(f"Migração {name} já foi aplicada anteriormente")
-                return True
-            
-            # Executar queries
+
             for query in queries:
                 logger.info(f"Executando query: {query[:100]}...")
                 cursor.execute(query)
@@ -129,8 +140,10 @@ class DatabaseInitializer:
                 """
                 INSERT INTO schema_migrations (migration_name, migration_hash, status)
                 VALUES (%s, %s, %s)
+                ON CONFLICT (migration_name) 
+                DO UPDATE SET migration_hash = %s, applied_at = CURRENT_TIMESTAMP, status = %s
                 """,
-                (name, "initial_hash", "success")
+                (name, content_hash, 'success', content_hash, 'success')
             )
             
             # Commit da transação
@@ -141,6 +154,12 @@ class DatabaseInitializer:
         except Exception as e:
             if connection:
                 connection.rollback()
+
+            try:
+                self._register_migration(name, content_hash, 'failed')
+            except:
+                pass
+                
             logger.error(f"Erro ao aplicar migração {name}: {e}")
             return False
             
@@ -149,3 +168,22 @@ class DatabaseInitializer:
                 cursor.close()
             if connection:
                 self.db_manager.release_connection(connection)
+    
+    def _calculate_hash(self, content: str) -> str:
+        """Calcula o hash SHA-256 do conteúdo da migração"""
+        return hashlib.sha256(content.encode('utf-8')).hexdigest()
+
+    def _register_migration(self, name: str, content_hash: str, status: str = 'success') -> bool:
+        """Registra uma migração na tabela de controle"""
+        query = """
+        INSERT INTO schema_migrations (migration_name, migration_hash, status)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (migration_name) 
+        DO UPDATE SET migration_hash = %s, applied_at = CURRENT_TIMESTAMP, status = %s
+        """
+        try:
+            self._execute_query(query, (name, content_hash, status, content_hash, status))
+            return True
+        except Exception as e:
+            logger.error(f"Erro ao registrar migração {name}: {e}")
+            return False
