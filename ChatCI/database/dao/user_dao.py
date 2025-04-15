@@ -152,3 +152,31 @@ class UserDAO(BaseDAO):
         
         rows_affected = self._execute_update(update_query, (user_id,))
         return rows_affected > 0
+    
+    def create_superuser(self, username: str, email: str, password: str, 
+                    first_name: str, last_name: str) -> int:
+        """
+        Cria um superusuário (admin)
+        
+        Args:
+            username: Nome de usuário
+            email: Email
+            password: Senha
+            first_name: Primeiro nome
+            last_name: Sobrenome
+            
+        Returns:
+            ID do superusuário criado
+        """
+        return self.create_user(
+            username=username,
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            student=False,
+            professor=True,
+            email_verified=True,
+            is_staff=True,
+            is_superuser=True
+        )
