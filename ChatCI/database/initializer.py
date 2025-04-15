@@ -1,4 +1,3 @@
-# initializer.py
 from database.manager import DatabaseManager
 import logging
 import hashlib

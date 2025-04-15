@@ -1,4 +1,3 @@
-# user_manager.py
 from database.dao.user_dao import UserDAO
 from database.dao.profile_dao import ProfileDAO
 import logging

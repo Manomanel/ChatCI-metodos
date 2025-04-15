@@ -1,4 +1,3 @@
-# base_dao.py
 from typing import List, Dict, Any
 from database.manager import DatabaseManager
 import logging

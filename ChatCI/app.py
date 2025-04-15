@@ -120,6 +120,23 @@ def logout():
     session.clear()
     return redirect("/")
 
+@app.route("/perfil")
+def profile():
+    if 'user_id' not in session:
+        return redirect("/")
+    
+    user_id = session.get('user_id')
+    profile = UserManagement.profile_dao.get_by_user_id(user_id)
+    
+    if not profile:
+        return redirect("/logado")
+    
+    return render_template("perfil.html", 
+                          nome=session.get('nome'),
+                          email=session.get('email'),
+                          bio=profile['bio'],
+                          profile_picture=profile['profile_picture'])
+
 init_db()
 
 if __name__ == "__main__":
