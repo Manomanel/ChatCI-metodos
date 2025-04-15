@@ -1,10 +1,11 @@
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, flash
 from controllers.user_management import UserManagement
 from database.initializer import DatabaseInitializer
 from database.manager import DatabaseManager
 import logging
 import os
 from dotenv import load_dotenv
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 load_dotenv()
 
@@ -19,6 +20,7 @@ logging.basicConfig(
 logger = logging.getLogger('app')
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 app.secret_key = os.getenv('APP_SECRET', 'chave_secreta_padrao')
 
 UserManagement = UserManagement()
@@ -86,6 +88,7 @@ def finalizar_cadastro():
     user_id = UserManagement.adicionar_usuario(nome, email, tipo_mapeado, senha)
     
     if user_id:
+        flash("Cadastro realizado com sucesso! Você pode fazer login agora.", "success")
         return redirect("/")
     else:
         return render_template("cadastro.html", 
