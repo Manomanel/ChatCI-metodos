@@ -1,5 +1,4 @@
-import re
-from user_exception import UserException
+from user_validators import IValidator
 
 # first_name: 20 caracteres
 # last_name: 30 caracteres
@@ -7,54 +6,10 @@ from user_exception import UserException
 # username: 15 caracteres max, 5 caracteres min; verificar se já existe na database; não pode ter número
 
 class UserValidation:
-    def __init__(self, userDAO):
+    def __init__(self, validators: list[IValidator], userDAO):
+        self.validators = validators #Criar os validadores em User Control
         self.userDAO = userDAO
 
     def validate(self, user):
-        self.validateFirstAndLastName(user.firstName, user.lastName)
-        self.validateUsername(user.username)
-        self.validateEmail(user.email)
-
-    def validateEmail(email):
-        regex = r"^[\w\.-]+@(ci|academico|di)\.ufpb\.br$"
-
-        if re.match(regex, email) == None:
-            raise UserException.invalidEmail()
-        
-        if not (userDAO.get_user_by_email(email)):
-            raise UserException.invalidEmail()
-    
-    def validateUsername(username):
-        if username == None:
-            raise UserException.void()
-        
-        if any(username.isdigit() for char in username):
-            raise UserException.usernameHasNumbers()
-        
-        if len (username) < 5:
-            raise UserException.charsbelowMinimum()
-        
-        if len (username) > 15:
-            raise UserException.exceededCharLimit()
-        
-        if userDAO.get_user_by_username(username) != None:
-            raise UserException.usernameAlreadyExists(username)
-        
-    def validateFirstAndLastName(firstName, lastName):
-        if firstName == None:
-            raise UserException.void()
-        
-        if len(firstName) < 3:
-            raise UserException.charsbelowMinimum()
-        
-        if len(firstName) > 20:
-            raise UserException.exceededCharLimit()
-        
-        if lastName == None:
-            raise UserException.void()
-        
-        if len(lastName) < 15:
-            raise UserException.charsbelowMinimum()
-        
-        if len(lastName) > 30:
-            raise UserException.exceededCharLimit()
+        for validator in self.validators:
+            validator.validate(user)

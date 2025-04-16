@@ -26,3 +26,7 @@ class UserException (Exception):
     @staticmethod
     def usernameHasNumbers(username) -> 'UserException':
         return UserException('Não pode ter números!')
+    
+    @staticmethod
+    def invalidFirstName(firstname) -> 'UserException':
+        return UserException('Primeiro nome inválido!')
