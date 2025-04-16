@@ -17,8 +17,11 @@ class UserValidation:
 
     def validateEmail(email):
         regex = r"^[\w\.-]+@(ci|academico|di)\.ufpb\.br$"
-        
+
         if re.match(regex, email) == None:
+            raise UserException.invalidEmail()
+        
+        if not (userDAO.get_user_by_email(email)):
             raise UserException.invalidEmail()
     
     def validateUsername(username):
