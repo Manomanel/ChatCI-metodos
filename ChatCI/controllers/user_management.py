@@ -1,4 +1,4 @@
-from database.dao.user_dao import UserDAO
+from database.dao.user_dao import UserPersistence
 from database.dao.profile_dao import ProfileDAO
 import logging
 import hashlib
@@ -10,7 +10,7 @@ class UserManagement:
     Classe responsável pela gestão de usuários.
     """
     def __init__(self):
-        self.user_dao = UserDAO()
+        self.user_dao = UserPersistence()
         self.profile_dao = ProfileDAO()
     
     def validar_login(self, email_ou_username, senha):

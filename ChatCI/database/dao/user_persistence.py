@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger('user_dao')
 
-class UserDAO(BaseDAO):
+class UserPersistence(BaseDAO):
     def get_user_by_username(self, username: str) -> Optional[Dict[str, Any]]:
         query = "SELECT * FROM users WHERE username = %s"
         results = self._execute_query(query, (username,))
@@ -27,12 +27,18 @@ class UserDAO(BaseDAO):
         query = "SELECT * FROM users ORDER BY id"
         return self._execute_query(query)
     
+    # first_name: 20 caracteres
+    # last_name: 30 caracteres
+    # email: @ci.ufpb.br ou @academico.ufpb.br ou @di.ufpb.br
+    # username: 15 caracteres max, 5 caracteres min; verificar se já existe na database; não pode ter número
+    # password: 64 caracteres max, 10 caracteres min
+    
     # Adicionar atributos na criação de usuários
     def create_user(self, username: str, email: str, password: str, first_name: str, 
                 last_name: str, student: bool = True, professor: bool = False, 
                 email_verified: bool = False, is_staff: bool = False, 
                 is_superuser: bool = False) -> int:
-        # Verificar se o usuário ou email já existem
+        # Verifica se o usuário ou email já existem
         if self.get_user_by_username(username):
             raise ValueError(f"Usuário com username '{username}' já existe")
         
