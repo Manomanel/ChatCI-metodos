@@ -10,16 +10,20 @@ class UserValidation:
     def __init__(self, userDAO):
         self.userDAO = userDAO
 
-    def validate(user):
+    def validate(self, user):
+        self.validateUsername(user.username)
+        self.validateEmail(user.email)
 
-        return
-    
     def validateEmail(email):
         regex = r"^[\w\.-]+@(ci|academico|di)\.ufpb\.br$"
         if re.match(regex, email) == None:
             raise UserException.invalidEmail()
     
     def validateUsername(username):
+        if username == None:
+            raise UserException.void()
+        if any(username.isdigit() for char in username):
+            raise UserException.usernameHasNumbers()
         if len (username) < 5:
             raise UserException.usernameBelowMinimum()
         if len (username) > 15:

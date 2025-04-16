@@ -19,4 +19,10 @@ class UserException (Exception):
     def invalidEmail() -> 'UserException':
         return UserException('E-mail inválido!')
     
+    @staticmethod
+    def usernameAlreadyExists(username) -> 'UserException':
+        return UserException(f'username {username} já existe!')
     
+    @staticmethod
+    def usernameHasNumbers(username) -> 'UserException':
+        return UserException('Não pode ter números!')
