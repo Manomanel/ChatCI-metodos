@@ -11,22 +11,47 @@ class UserValidation:
         self.userDAO = userDAO
 
     def validate(self, user):
+        self.validateFirstAndLastName(user.firstName, user.lastName)
         self.validateUsername(user.username)
         self.validateEmail(user.email)
 
     def validateEmail(email):
         regex = r"^[\w\.-]+@(ci|academico|di)\.ufpb\.br$"
+        
         if re.match(regex, email) == None:
             raise UserException.invalidEmail()
     
     def validateUsername(username):
         if username == None:
             raise UserException.void()
+        
         if any(username.isdigit() for char in username):
             raise UserException.usernameHasNumbers()
+        
         if len (username) < 5:
-            raise UserException.usernameBelowMinimum()
+            raise UserException.charsbelowMinimum()
+        
         if len (username) > 15:
-            raise UserException.usernameExceedCharLimit()
+            raise UserException.exceededCharLimit()
+        
         if userDAO.get_user_by_username(username) != None:
             raise UserException.usernameAlreadyExists(username)
+        
+    def validateFirstAndLastName(firstName, lastName):
+        if firstName == None:
+            raise UserException.void()
+        
+        if len(firstName) < 3:
+            raise UserException.charsbelowMinimum()
+        
+        if len(firstName) > 20:
+            raise UserException.exceededCharLimit()
+        
+        if lastName == None:
+            raise UserException.void()
+        
+        if len(lastName) < 15:
+            raise UserException.charsbelowMinimum()
+        
+        if len(lastName) > 30:
+            raise UserException.exceededCharLimit()
