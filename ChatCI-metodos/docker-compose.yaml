@@ -1,0 +1,65 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: chatci_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: Chatci
+      POSTGRES_USER: metodos_projeto
+      POSTGRES_PASSWORD: metodos2024.2
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metodos_projeto -d Chatci"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: chatci_pgadmin
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - app-network
+    restart: unless-stopped
+    
+  web:
+    build:
+      context: ./ChatCI
+      dockerfile: Dockerfile
+    container_name: chatci_web
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./ChatCI:/app
+    ports:
+      - "5001:5001"
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: Chatci
+      POSTGRES_USER: metodos_projeto
+      POSTGRES_PASSWORD: metodos2024.2
+      APP_SECRET: chave_secreta_do_meu_app
+      DEBUG: true
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
