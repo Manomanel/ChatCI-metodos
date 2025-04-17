@@ -33,4 +33,8 @@ class UserException (Exception):
     
     @staticmethod
     def invalidLastName() -> 'UserException':
-        return UserException('Sobrenome inválido!') 
+        return UserException('Sobrenome inválido!')
+    
+    @staticmethod
+    def invalidPassword(password) -> 'UserException':
+        return UserException('Senha inválida!')

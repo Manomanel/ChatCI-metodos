@@ -45,3 +45,32 @@ class EmailValidator(IValidator):
         
         if not (userDAO.get_user_by_email(email)):
             raise UserException.invalidEmail()
+        
+class PasswordValidator(IValidator):
+    def __init__(self, userDAO):
+        self.userDAO = userDAO
+        
+    def validate(self, password):
+        if password == None:
+            raise UserException.invalidPassword()
+        
+        if len (password) < 10:
+            raise UserException.invalidPassword()
+        
+        if len(password) > 64:
+            raise UserException.invalidPassword()
+        
+        if not any(password.isalpha() for char in password):
+            raise UserException.invalidPassword()
+        
+        if not any(password.isdigit() for char in password):
+            raise UserException.invalidPassword()
+        
+        if not any(not password.isalnum() for char in password):
+            raise UserException.invalidPassword()
+        
+        if not any(password.isupper() for char in password):
+            raise UserException.invalidPassword()
+        
+        if not any(password.islower() for char in password):
+            raise UserException.invalidPassword()
