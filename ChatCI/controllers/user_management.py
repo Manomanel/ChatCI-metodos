@@ -1,146 +1,95 @@
-from database.dao.user_dao import UserPersistence
-from database.dao.profile_dao import ProfileDAO
-import logging
+from database.dao.factory.sql_dao_factory import SQLDAOFactory
+from controllers.user_control import UserControl
+from models.user import User
 import hashlib
+import logging
+import os
+from database.dao.profile_dao import ProfileDAO 
+
 
 logger = logging.getLogger('gerenciador_usuarios')
 
+
 class UserManagement:
-    """
-    Classe responsável pela gestão de usuários.
-    """
     def __init__(self):
-        self.user_dao = UserPersistence()
-        self.profile_dao = ProfileDAO()
-    
-    def validar_login(self, email_ou_username, senha):
-        """
-        Valida o login do usuário.
-        """
+        factory = SQLDAOFactory()
+        user_dao = factory.create_user_dao()
+        self.user_control = UserControl(user_dao)
+        self.profile_dao = ProfileDAO()  
+
+    def validar_login(self, username, senha):
         try:
-            # Verifica se o input é um email ou username
-            # caso tenha @ ira diretamente para email, caso contrario vai para username
-            if '@' in email_ou_username:
-                usuario = self.user_dao.get_user_by_email(email_ou_username)
-            else:
-                usuario = self.user_dao.get_user_by_username(email_ou_username)
-            
+            todos = self.user_control.list_all()
+            usuario = next((u for u in todos if u.email == username or u.name == username), None)
             if not usuario:
-                logger.info(f"Tentativa de login: usuário {email_ou_username} não encontrado")
                 return None
 
-            # verifica se a senha esta correta 
-            if self._verificar_senha(usuario['password'], senha):
-                logger.info(f"Login bem sucedido para o usuário {email_ou_username}")
+            if self._verificar_senha(usuario.password, senha):
                 return usuario
-            else:
-                logger.info(f"Tentativa de login: senha incorreta para {email_ou_username}")
-                return None
-                
+            return None
         except Exception as e:
             logger.error(f"Erro ao validar login: {e}")
             return None
-    
+
     def _verificar_senha(self, senha_hash, senha_texto):
-        """
-        Verifica se a senha informada é igual ao hash armazenado.
-        """
         try:
             partes = senha_hash.split('$')
             if len(partes) != 4:
                 return False
-                
+
             algoritmo, iteracoes, salt, hash_armazenado = partes
             iteracoes = int(iteracoes)
-            
-            # verifica se a senha armazenada é igual ao hash da senha informada
-            # usando o mesmo algoritmo, salt e numero de iterações
-            # o hash é gerado com o mesmo algoritmo, salt e numero de iterações
+
             hash_calculado = hashlib.pbkdf2_hmac(
                 'sha256',
                 senha_texto.encode('utf-8'),
                 salt.encode('utf-8'),
                 iteracoes
             ).hex()
-            
+
             return hash_calculado == hash_armazenado
-            
         except Exception as e:
             logger.error(f"Erro ao verificar senha: {e}")
             return False
-    
-    def adicionar_usuario(self, nome, email, tipo, senha):
-        """
-        Adiciona um novo usuário ao sistema.
-        """
+
+    def adicionar_usuario(self, nome, email, senha, matricula):
         try:
-            partes_nome = nome.split()
-            first_name = partes_nome[0]
-            last_name = ' '.join(partes_nome[1:]) if len(partes_nome) > 1 else ''
-
-            is_student = tipo.lower() == "estudante"
-            is_professor = tipo.lower() == "professor"
-
-            username = email.split('@')[0]
-
-            username_base = username
-            contador = 1
-            while self.user_dao.get_user_by_username(username):
-                username = f"{username_base}{contador}"
-                contador += 1
-
-            # criacao do usuario
-            user_id = self.user_dao.create_user(
-                username=username,
+            user = User(
+                id=None,
+                name=nome,
                 email=email,
-                password=senha,
-                first_name=first_name,
-                last_name=last_name,
-                student=is_student,
-                professor=is_professor
+                password=self._gerar_hash_senha(senha),
+                matricula=matricula
             )
-
-            self.profile_dao.create(
-                user_id=user_id,
-                bio=f"{'Estudante' if is_student else 'Professor'} - Cadastrado via sistema web"
-            )
-            
-            logger.info(f"Usuário {username} ({email}) criado com sucesso!")
-            return user_id
-            
+            self.user_control.add(user)
+            return user
         except Exception as e:
             logger.error(f"Erro ao adicionar usuário: {e}")
             return None
-        
-    def get_user_by_id(self, user_id):
-        """
-        Busca um usuário pelo ID
-        
-        Args:
-            user_id: ID do usuário
-            
-        Returns:
-            Dicionário com dados do usuário ou None caso não encontrado
-        """
-        try:
-            return self.user_dao.get_user_by_id(user_id)
-        except Exception as e:
-            logger.error(f"Erro ao buscar usuário por ID: {e}")
-            return None
 
-    def atualizar_usuario(self, user_id, **dados):
-        """
-        Atualiza dados de um usuário
-        
-        Args:
-            user_id: ID do usuário
-            **dados: Dados a serem atualizados
-            
-        Returns:
-            True se o usuário foi atualizado, False caso contrário
-        """
+    def listar_usuarios(self):
+        return self.user_control.list_all()
+
+    def remover_usuario(self, user_id):
         try:
-            return self.user_dao.update_user(user_id, **dados)
+            self.user_control.delete(user_id)
+            return True
         except Exception as e:
-            logger.error(f"Erro ao atualizar usuário: {e}")
+            logger.error(f"Erro ao remover usuário: {e}")
             return False
+        
+    def _gerar_hash_senha(self, senha_texto):
+        try:
+            algoritmo = 'sha256'
+            salt = os.urandom(16).hex()
+            iteracoes = 100000
+            hash_gerado = hashlib.pbkdf2_hmac(
+                algoritmo,
+                senha_texto.encode('utf-8'),
+                salt.encode('utf-8'),
+                iteracoes
+            ).hex()
+            return f"{algoritmo}${iteracoes}${salt}${hash_gerado}"
+        except Exception as e:
+            logger.error(f"Erro ao gerar hash da senha: {e}")
+            return senha_texto  # fallback inseguro (evite em produção)
