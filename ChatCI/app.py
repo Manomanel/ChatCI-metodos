@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session, flash
+from flask import Flask, render_template, redirect, request, session, flash, jsonify
 from controllers.user_management import UserManagement
 from database.initializer import DatabaseInitializer
 from database.manager import DatabaseManager
@@ -6,6 +6,9 @@ import logging
 import os
 from dotenv import load_dotenv
 from werkzeug.middleware.proxy_fix import ProxyFix
+from database.dao.factory.sql_dao_factory import SQLDAOFactory
+from controllers.user_control import UserControl
+from models.user import User
 
 load_dotenv()
 
@@ -20,10 +23,14 @@ logging.basicConfig(
 logger = logging.getLogger('app')
 
 app = Flask(__name__)
+# Injetar a DAO no UserControl
+factory = SQLDAOFactory()
+user_dao = factory.create_user_dao()
+user_control = UserControl(user_dao)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 app.secret_key = os.getenv('APP_SECRET', 'chave_secreta_padrao')
 
-UserManagement = UserManagement()
+user_mgmt = UserManagement()
 
 def init_db():
     try:
@@ -49,14 +56,13 @@ def inicial():
 def logar():
     email = request.form.get("usuario")
     senha = request.form.get("senha")
-    usuario = UserManagement.validar_login(email, senha)
+    usuario = user_mgmt.validar_login(email, senha)
     if usuario:
-        session['user_id'] = usuario['id']
-        session['username'] = usuario['username']
-        session['nome'] = f"{usuario['first_name']} {usuario['last_name']}".strip()
-        session['email'] = usuario['email']
-        session['is_student'] = usuario['student']
-        session['is_professor'] = usuario['professor']
+        session['user_id'] = usuario.id
+        session['username'] = usuario.name  
+        session['nome'] = usuario.name      
+        session['email'] = usuario.email
+        session['matricula'] = usuario.matricula
         
         return redirect("/inicial")
     return render_template("login.html", erro="Usuário ou senha incorretos")
@@ -71,6 +77,8 @@ def finalizar_cadastro():
     email = request.form.get("email")
     senha = request.form.get("senha")
     tipo = request.form.get("tipo")
+    matricula = request.form.get("matricula")
+
     
     # Mapear os tipos do formulário para os valores esperados pelo backend
     tipo_mapeado = {
@@ -86,14 +94,16 @@ def finalizar_cadastro():
                               email=email, 
                               tipo=tipo)
 
-    usuario_existente = UserManagement.user_dao.get_user_by_email(email)
+    usuarios = user_mgmt.listar_usuarios()
+    usuario_existente = next((u for u in usuarios if u.email == email), None)
+
     if usuario_existente:
         return render_template("cadastro.html", 
                               erro="Este email já está em uso",
                               nome=nome, 
                               tipo=tipo)
 
-    user_id = UserManagement.adicionar_usuario(nome, email, tipo_mapeado, senha)
+    user_id = user_mgmt.adicionar_usuario(nome, email, senha, matricula)
     
     if user_id:
         flash("Cadastro realizado com sucesso! Você pode fazer login agora.", "success")
@@ -126,7 +136,7 @@ def profile():
         return redirect("/")
     
     user_id = session.get('user_id')
-    profile = UserManagement.profile_dao.get_by_user_id(user_id)
+    profile = user_mgmt.profile_dao.get_by_user_id(user_id)
     
     if not profile:
         return redirect("/logado")
@@ -152,3 +162,26 @@ if __name__ == "__main__":
             db_manager.close_all_connections()
         except:
             pass
+
+@app.route("/users", methods=["POST"])
+def add_user():
+    data = request.json
+    user = User(
+        id=None,  # o DAO atribui
+        name=data["name"],
+        email=data["email"],
+        password=data["password"],
+        matricula=data["matricula"]
+    )
+    user_control.add(user)
+    return jsonify({"message": "Usuário adicionado com sucesso!"}), 201
+
+@app.route("/users", methods=["GET"])
+def list_users():
+    users = user_control.list_all()
+    return jsonify([user.__dict__ for user in users])
+
+@app.route("/users/<int:user_id>", methods=["DELETE"])
+def delete_user(user_id):
+    user_control.delete(user_id)
+    return jsonify({"message": "Usuário deletado com sucesso!"})
