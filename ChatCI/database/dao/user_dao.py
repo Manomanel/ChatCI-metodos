@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
+from entities.user import User
 class UserDAO(ABC):
     @abstractmethod
     def get_user_by_username(self, username: str) ->  Optional[Dict[str, Any]]:

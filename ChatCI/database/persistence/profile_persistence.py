@@ -1,10 +1,10 @@
 from typing import Dict, Any, Optional
-from database.dao.base_dao import BaseDAO
+from database.dao.base_dao import BasePersistence
 import logging
 
 logger = logging.getLogger('profile_dao')
 
-class ProfileDAO(BaseDAO):
+class ProfilePersistence(BasePersistence):
     """DAO para manipulação da tabela de perfis de usuários"""
     def create(self, user_id: int, bio: str = "", profile_picture: str = None) -> int:
         """

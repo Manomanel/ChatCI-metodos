@@ -1,5 +1,5 @@
 from typing import List, Dict, Any, Optional
-from database.dao.base_dao import BaseDAO
+from database.dao.base_dao import BasePersistence
 import hashlib
 import secrets
 import logging
@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger('user_dao')
 
-class UserPersistence(BaseDAO):
+class UserPersistence(BasePersistence):
     def get_user_by_username(self, username: str) -> Optional[Dict[str, Any]]:
         query = "SELECT * FROM users WHERE username = %s"
         results = self._execute_query(query, (username,))

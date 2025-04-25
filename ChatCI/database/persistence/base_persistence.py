@@ -4,7 +4,7 @@ import logging
 
 logger = logging.getLogger('base_dao')
 
-class BaseDAO:
+class BasePersistence:
     """Classe base para todos os DAOs com métodos comuns"""
     def __init__(self):
         self.db_manager = DatabaseManager()
