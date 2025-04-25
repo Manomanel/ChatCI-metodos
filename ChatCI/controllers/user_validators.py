@@ -1,14 +1,18 @@
 from login_exception import LoginException
 import re
-from database.dao.user_dao import UserDAO
+from abc import ABC, abstractmethod
 
 #Interface que delega as classes que vão validar o login do usuário
-class IValidator:
-    def validate(self, user):
-        pass
+class IValidator(ABC):
+   @abstractmethod
+   def validate(self, user):
+      pass
 
 class NameValidator(IValidator):
-    def validate(self, first_name, last_name):
+    def validate(self, user):
+        first_name = user.first_name
+        last_name = user.last_name
+        
         if not first_name or len(first_name) < 3 or len(first_name) > 20:
             raise LoginException.invalidFirstName()
         if not last_name or len(last_name) < 5 or len(last_name) > 30:
@@ -18,15 +22,17 @@ class UsernameValidator(IValidator):
     def __init__(self, userDAO):
         self.userDAO = userDAO
     
-    def validate(self, username):
+    def validate(self, user):
+        username = user.username
+        
         if username == None:
             raise LoginException.void()
         
-        if any(username.isdigit() for char in username):
+        if any(char.isdigit() for char in username):
             raise LoginException.usernameHasNumbers()
         
         if len (username) < 5:
-            raise LoginException.charsbelowMinimum()
+            raise LoginException.charsBelowMinimum()
         
         if len (username) > 15:
             raise LoginException.exceededCharLimit()
@@ -38,7 +44,9 @@ class EmailValidator(IValidator):
     def __init__(self, userDAO):
         self.userDAO = userDAO
 
-    def validate(self, email):
+    def validate(self, user):
+        email = user.email
+        
         regex = r"^[\w\.-]+@(ci|academico|di)\.ufpb\.br$"
 
         if re.match(regex, email) == None:
@@ -51,27 +59,26 @@ class PasswordValidator(IValidator):
     def __init__(self, userDAO):
         self.userDAO = userDAO
         
-    def validate(self, password):
+    def validate(self, user):
+        password = user.password
+        
         if password == None:
             raise LoginException.invalidPassword()
         
-        if len (password) < 10:
+        if len(password) < 10 or len(password) > 64:
+         raise LoginException.invalidPassword()
+        
+        if not any(char.isalpha() for char in password):
             raise LoginException.invalidPassword()
         
-        if len(password) > 64:
+        if not any(char.isdigit() for char in password):
             raise LoginException.invalidPassword()
         
-        if not any(password.isalpha() for char in password):
+        if not any(not char.isalnum() for char in password):
             raise LoginException.invalidPassword()
         
-        if not any(password.isdigit() for char in password):
+        if not any(char.isupper() for char in password):
             raise LoginException.invalidPassword()
         
-        if not any(not password.isalnum() for char in password):
-            raise LoginException.invalidPassword()
-        
-        if not any(password.isupper() for char in password):
-            raise LoginException.invalidPassword()
-        
-        if not any(password.islower() for char in password):
+        if not any(char.islower() for char in password):
             raise LoginException.invalidPassword()
