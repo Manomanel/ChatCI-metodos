@@ -276,9 +276,7 @@ class DatabaseInitializer:
                     """
                 ]
             }
-        ]
-        
-        
+        ]    
         success = True
         for migration in migrations:
             if not self.apply_migration(migration["name"], migration["queries"]):

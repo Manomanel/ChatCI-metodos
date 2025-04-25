@@ -1,5 +1,6 @@
 from login_exception import LoginException
 import re
+from database.dao.user_dao import UserDAO
 
 #Interface que delega as classes que vão validar o login do usuário
 class IValidator:
@@ -30,7 +31,7 @@ class UsernameValidator(IValidator):
         if len (username) > 15:
             raise LoginException.exceededCharLimit()
         
-        if userDAO.get_user_by_username(username) != None:
+        if UserDAO.get_user_by_username(username) != None:
             raise LoginException.usernameAlreadyExists(username)
 
 class EmailValidator(IValidator):
@@ -43,7 +44,7 @@ class EmailValidator(IValidator):
         if re.match(regex, email) == None:
             raise LoginException.invalidEmail()
         
-        if not (userDAO.get_user_by_email(email)):
+        if not (UserDAO.get_user_by_email(email)):
             raise LoginException.invalidEmail()
         
 class PasswordValidator(IValidator):

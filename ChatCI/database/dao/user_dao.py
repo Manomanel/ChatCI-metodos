@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
-from entities.user import User
+
 class UserDAO(ABC):
     @abstractmethod
-    def get_user_by_username(self, username: str) ->  Optional[Dict[str, Any]]:
+    def get_user_by_username(self, username: str) -> Optional[Dict[str, Any]]:
         pass
     
     @abstractmethod
-    def get_user_by_email(self, email: str) -> Optional[Dict[str: Any]]:
+    def get_user_by_email(self, email: str) -> Optional[Dict[str, Any]]:
         pass
 
     @abstractmethod
@@ -19,11 +19,14 @@ class UserDAO(ABC):
         pass
 
     @abstractmethod
-    def create_user(self, user: User) -> int:
+    def create_user(self, username: str, email: str, password: str, first_name: str, 
+                    last_name: str, student: bool = True, professor: bool = False, 
+                    email_verified: bool = False, is_staff: bool = False, 
+                    is_superuser: bool = False) -> int:
         pass
 
     @abstractmethod
-    def update_user(self, userid: int, **fields) -> bool:
+    def update_user(self, user_id: int, **fields) -> bool:
         pass
 
     @abstractmethod
@@ -31,5 +34,6 @@ class UserDAO(ABC):
         pass
 
     @abstractmethod
-    def create_superuser(self, user: User) -> int:
+    def create_superuser(self, username: str, email: str, password: str, 
+                        first_name: str, last_name: str) -> int:
         pass
