@@ -1,4 +1,4 @@
-from ChatCI.controllers.login_exception import LoginException
+from login_exception import LoginException
 import re
 
 #Interface que delega as classes que vão validar o login do usuário
