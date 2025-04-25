@@ -1,5 +1,5 @@
 from typing import Dict, Any, Optional
-from database.dao.base_dao import BasePersistence
+from ChatCI.database.persistence.base_persistence import BasePersistence
 import logging
 
 logger = logging.getLogger('profile_dao')

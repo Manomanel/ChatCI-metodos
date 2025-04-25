@@ -1,5 +1,5 @@
-from database.dao.user_persistence import UserPersistence
-from database.dao.profile_dao import ProfilePersistence
+from database.persistence.user_persistence import UserPersistence
+from database.persistence.profile_persistence import ProfilePersistence
 import logging
 import hashlib
 
