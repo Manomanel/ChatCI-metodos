@@ -1,5 +1,5 @@
 from typing import List, Dict, Any, Optional
-from ChatCI.database.persistence.base_persistence import BasePersistence
+from .base_persistence import BasePersistence
 import hashlib
 import secrets
 import logging

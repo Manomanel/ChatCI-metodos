@@ -209,8 +209,75 @@ class DatabaseInitializer:
                     """
                 ]
             },
-            
+            {
+                "name": "004_create_coordinators_table",
+                "queries": [
+                    """
+                    CREATE TABLE IF NOT EXISTS coordinators (
+                        id SERIAL PRIMARY KEY,
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        curso VARCHAR(255) NOT NULL,
+                        UNIQUE(user_id)
+                    )
+                    """
+                ]
+            },
+            {
+                "name": "005_create_groups_table",
+                "queries": [
+                    """
+                    CREATE TABLE IF NOT EXISTS groups (
+                        id SERIAL PRIMARY KEY,
+                        name VARCHAR(255) NOT NULL,
+                        description TEXT NOT NULL DEFAULT '',
+                        created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    )
+                    """
+                ]
+            },
+            {
+                "name": "006_create_groups_members_table",
+                "queries": [
+                    """
+                    CREATE TABLE IF NOT EXISTS groups_members (
+                        id SERIAL PRIMARY KEY,
+                        group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        UNIQUE(group_id, user_id)
+                    )
+                    """
+                ]
+            },
+            {
+                "name": "007_create_groups_banned_members_table",
+                "queries": [
+                    """
+                    CREATE TABLE IF NOT EXISTS groups_banned_members (
+                        id SERIAL PRIMARY KEY,
+                        group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        UNIQUE(group_id, user_id)
+                    )
+                    """
+                ]
+            },
+            {
+                "name": "008_create_messages_table",
+                "queries": [
+                    """
+                    CREATE TABLE IF NOT EXISTS messages (
+                        id SERIAL PRIMARY KEY,
+                        group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        text TEXT NOT NULL,
+                        file VARCHAR(255) NULL,
+                        created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    )
+                    """
+                ]
+            }
         ]
+        
         
         success = True
         for migration in migrations:
