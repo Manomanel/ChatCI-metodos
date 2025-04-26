@@ -23,7 +23,7 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 app.secret_key = os.getenv('APP_SECRET', 'chave_secreta_padrao')
 
-UserManagement = UserManagement()
+user_manager = UserManagement()
 
 def init_db():
     try:
@@ -49,7 +49,7 @@ def inicial():
 def logar():
     email = request.form.get("usuario")
     senha = request.form.get("senha")
-    usuario = UserManagement.validar_login(email, senha)
+    usuario = user_manager.validar_login(email, senha)
     if usuario:
         session['user_id'] = usuario['id']
         session['username'] = usuario['username']
@@ -86,14 +86,14 @@ def finalizar_cadastro():
                               email=email, 
                               tipo=tipo)
 
-    usuario_existente = UserManagement.user_dao.get_user_by_email(email)
+    usuario_existente = user_manager.user_persistence.get_user_by_email(email)
     if usuario_existente:
         return render_template("cadastro.html", 
                               erro="Este email já está em uso",
                               nome=nome, 
                               tipo=tipo)
 
-    user_id = UserManagement.adicionar_usuario(nome, email, tipo_mapeado, senha)
+    user_id = user_manager.adicionar_usuario(nome, email, tipo_mapeado, senha)
     
     if user_id:
         flash("Cadastro realizado com sucesso! Você pode fazer login agora.", "success")
@@ -126,7 +126,7 @@ def profile():
         return redirect("/")
     
     user_id = session.get('user_id')
-    profile = UserManagement.profile_dao.get_by_user_id(user_id)
+    profile = user_manager.profile_dao.get_by_user_id(user_id)
     
     if not profile:
         return redirect("/logado")
