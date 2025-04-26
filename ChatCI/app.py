@@ -70,7 +70,9 @@ def cadastro():
 
 @app.route("/finalizar_cadastro", methods=["POST"])
 def finalizar_cadastro():
-    nome = request.form.get("nome")
+    nome = request.form.get("username")
+    first_name = request.form.get("primeiro_nome")
+    last_name = request.form.get("ultimo_nome")
     email = request.form.get("email")
     senha = request.form.get("senha")
     tipo = request.form.get("tipo")
@@ -82,10 +84,12 @@ def finalizar_cadastro():
         "administrador": "Professor"  
     }.get(tipo, "Estudante")
 
-    if not nome or not email or not senha or not tipo:
+    if not nome or not email or not senha or not tipo or not first_name or not last_name:
         return render_template("cadastro.html", 
                               erro="Todos os campos são obrigatórios",
-                              nome=nome, 
+                              nome=nome,
+                              first_name=first_name,
+                              last_name=last_name, 
                               email=email, 
                               tipo=tipo)
 
@@ -96,7 +100,7 @@ def finalizar_cadastro():
                               nome=nome, 
                               tipo=tipo)
 
-    user_id = facade.cadastrar_usuario(nome, email, tipo_mapeado, senha)
+    user_id = facade.cadastrar_usuario(nome, first_name, last_name, email, tipo_mapeado, senha)
     
     if user_id:
         flash("Cadastro realizado com sucesso! Você pode fazer login agora.", "success")

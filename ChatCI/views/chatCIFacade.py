@@ -20,12 +20,12 @@ class ChatCIFacade:
         session.clear()
     
     #cadastro
-    def cadastrar_usuario(self, nome: str, email: str, tipo: str, senha: str):
+    def cadastrar_usuario(self, nome: str, first_name: str, last_name: str, email: str, tipo: str, senha: str):
         """
         Registra um novo usuário. 
         Retorna o user_id em caso de sucesso, ou None em caso de erro.
         """
-        return self.user.adicionar_usuario(nome, email, tipo, senha)
+        return self.user.adicionar_usuario(nome, first_name, last_name, email, tipo, senha)
 
     def buscar_usuario_por_id(self, user_id: int):
         """
