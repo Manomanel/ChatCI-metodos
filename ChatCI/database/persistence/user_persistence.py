@@ -4,10 +4,11 @@ import hashlib
 import secrets
 import logging
 from datetime import datetime, timedelta
+from ..dao.user_dao import UserDAO
 
 logger = logging.getLogger('user_dao')
 
-class UserPersistence(BasePersistence):
+class UserPersistence(BasePersistence, UserDAO):
     def get_user_by_username(self, username: str) -> Optional[Dict[str, Any]]:
         query = "SELECT * FROM users WHERE username = %s"
         results = self._execute_query(query, (username,))
@@ -186,26 +187,3 @@ class UserPersistence(BasePersistence):
             is_staff=True,
             is_superuser=True
         )
-    
-    def _execute_insert_returning_id(self, query: str, params: tuple = None) -> int:
-        connection = None
-        cursor = None
-        
-        try:
-            connection = self.db_manager.get_connection()
-            cursor = connection.cursor()
-            cursor.execute(query, params)
-            id_gerado = cursor.fetchone()[0]
-            connection.commit()
-            return id_gerado
-            
-        except Exception as e:
-            logger.error(f"Erro ao executar inserção: {e}")
-            if connection:
-                connection.rollback()
-            raise
-        finally:
-            if cursor:
-                cursor.close()
-            if connection:
-                self.db_manager.release_connection(connection)
