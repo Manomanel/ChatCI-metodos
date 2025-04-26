@@ -36,5 +36,13 @@ class LoginException (Exception):
         return LoginException('Sobrenome inválido!')
     
     @staticmethod
-    def invalidPassword(password) -> 'LoginException':
-        return LoginException('Senha inválida!')
+    def invalidPasswordRegistration(password) -> 'LoginException':
+        return LoginException('Senha inválida para registro!')
+
+    @staticmethod
+    def emailorUsernameDoesnotExist(email) -> 'LoginException':
+        return LoginException('O e-mail ou usuário não existem!')
+    
+    @staticmethod
+    def wrongPassword(password) -> 'LoginException':
+        return LoginException('Senha incorreta!')
