@@ -7,6 +7,9 @@
    <body>
       <h1><strong>Chat-CI</strong></h1>
       <form action="/finalizar_cadastro" method="post">
+         {% if erro %}
+            <p style="color: red;">{{ erro }}</p>
+         {% endif %}
          <label for="nome">Nome de Usuário:</label><br />
          <input type="text" id="nome" name="nome" /><br /><br />
          <label for="email">Email:</label><br />

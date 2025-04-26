@@ -6,6 +6,9 @@ import logging
 import os
 from dotenv import load_dotenv
 from werkzeug.middleware.proxy_fix import ProxyFix
+from views.chatCIFacade import ChatCIFacade
+
+facade = ChatCIFacade()
 
 load_dotenv()
 
@@ -49,7 +52,7 @@ def inicial():
 def logar():
     email = request.form.get("usuario")
     senha = request.form.get("senha")
-    usuario = user_manager.validar_login(email, senha)
+    usuario = facade.login(email, senha)
     if usuario:
         session['user_id'] = usuario['id']
         session['username'] = usuario['username']
@@ -93,7 +96,7 @@ def finalizar_cadastro():
                               nome=nome, 
                               tipo=tipo)
 
-    user_id = user_manager.adicionar_usuario(nome, email, tipo_mapeado, senha)
+    user_id = facade.cadastrar_usuario(nome, email, tipo_mapeado, senha)
     
     if user_id:
         flash("Cadastro realizado com sucesso! Você pode fazer login agora.", "success")
@@ -126,7 +129,7 @@ def profile():
         return redirect("/")
     
     user_id = session.get('user_id')
-    profile = user_manager.profile_dao.get_by_user_id(user_id)
+    profile = facade.buscar_perfil(user_id)
     
     if not profile:
         return redirect("/logado")
