@@ -10,7 +10,7 @@ class UserManagement:
     Classe responsável pela gestão de usuários.
     """
     def __init__(self):
-        self.user_persistence = UserDAOFactory.get_instance()
+        self.userDAO = UserDAOFactory.get_instance()
         self.profile_dao = ProfilePersistence()
     
     def validar_login(self, email_ou_username, senha):
@@ -21,9 +21,9 @@ class UserManagement:
             # Verifica se o input é um email ou username
             # caso tenha @ ira diretamente para email, caso contrario vai para username
             if '@' in email_ou_username:
-                usuario = self.user_persistence.get_user_by_email(email_ou_username)
+                usuario = self.userDAO.get_user_by_email(email_ou_username)
             else:
-                usuario = self.user_persistence.get_user_by_username(email_ou_username)
+                usuario = self.userDAO.get_user_by_username(email_ou_username)
             
             if not usuario:
                 logger.info(f"Tentativa de login: usuário {email_ou_username} não encontrado")
@@ -85,12 +85,12 @@ class UserManagement:
 
             username_base = username
             contador = 1
-            while self.user_persistence.get_user_by_username(username):
+            while self.userDAO.get_user_by_username(username):
                 username = f"{username_base}{contador}"
                 contador += 1
 
             # criacao do usuario
-            user_id = self.user_persistence.create_user(
+            user_id = self.userDAO.create_user(
                 username=username,
                 email=email,
                 password=senha,
@@ -123,7 +123,7 @@ class UserManagement:
             Dicionário com dados do usuário ou None caso não encontrado
         """
         try:
-            return self.user_persistence.get_user_by_id(user_id)
+            return self.userDAO.get_user_by_id(user_id)
         except Exception as e:
             logger.error(f"Erro ao buscar usuário por ID: {e}")
             return None
@@ -140,7 +140,7 @@ class UserManagement:
             True se o usuário foi atualizado, False caso contrário
         """
         try:
-            return self.user_persistence.update_user(user_id, **dados)
+            return self.userDAO.update_user(user_id, **dados)
         except Exception as e:
             logger.error(f"Erro ao atualizar usuário: {e}")
             return False
