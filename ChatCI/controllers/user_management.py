@@ -40,7 +40,7 @@ class UserManagement:
             is_student = user.tipo.lower() == "estudante"
             is_professor = user.tipo.lower() == "professor"
 
-            username_base = username
+            username_base = user.username
             contador = 1
             while self.userDAO.get_user_by_username(user.username):
                 username = f"{username_base}{contador}"
