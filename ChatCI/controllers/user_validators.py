@@ -41,7 +41,7 @@ class NameValidator(IValidator):
         
         if not first_name or len(first_name) < 3 or len(first_name) > 20:
             raise LoginException.invalidFirstName()
-        if not last_name or len(last_name) < 5 or len(last_name) > 30:
+        if not last_name or len(last_name) < 3 or len(last_name) > 30:
             raise LoginException.invalidLastName()
         
 class UsernameRegistrationValidator(IValidator):

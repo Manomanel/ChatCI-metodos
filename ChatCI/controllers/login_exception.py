@@ -9,11 +9,11 @@ class LoginException (Exception):
     
     @staticmethod
     def exceededCharLimit() -> 'LoginException':
-        return LoginException('Excedeu o limite de caracteres!')
+        return LoginException('Nome de usuário excedeu a quantidade de caracteres!')
     
     @staticmethod
     def charsBelowMinimum() -> 'LoginException':
-        return LoginException('Abaixo da menor quantidade de caracteres!')
+        return LoginException('Nome de usuário abaixo da menor quantidade de caracteres!')
     
     @staticmethod
     def invalidEmail() -> 'LoginException':
