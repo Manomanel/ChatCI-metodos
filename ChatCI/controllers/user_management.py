@@ -1,5 +1,8 @@
 from database.factory.user_dao_factory import UserDAOFactory
 from database.persistence.profile_persistence import ProfilePersistence
+from user_validation import UserValidation
+from user_validators import IValidator, NameValidator, UsernameRegistrationValidator, EmailValidator, LoginValidator, PasswordRegistrationValidator
+from login_exception import  LoginException
 import logging
 import hashlib
 
@@ -12,33 +15,16 @@ class UserManagement:
     def __init__(self):
         self.userDAO = UserDAOFactory.get_instance()
         self.profile_dao = ProfilePersistence()
+        self.validator = None
     
     def validar_login(self, email_ou_username, senha):
-        """
-        Valida o login do usuário.
-        """
+        validator = LoginValidator(self.userDAO) 
         try:
-            # Verifica se o input é um email ou username
-            # caso tenha @ ira diretamente para email, caso contrario vai para username
-            if '@' in email_ou_username:
-                usuario = self.userDAO.get_user_by_email(email_ou_username)
-            else:
-                usuario = self.userDAO.get_user_by_username(email_ou_username)
-            
-            if not usuario:
-                logger.info(f"Tentativa de login: usuário {email_ou_username} não encontrado")
-                return None
-
-            # verifica se a senha esta correta 
-            if self._verificar_senha(usuario['password'], senha):
-                logger.info(f"Login bem sucedido para o usuário {email_ou_username}")
-                return usuario
-            else:
-                logger.info(f"Tentativa de login: senha incorreta para {email_ou_username}")
-                return None
-                
-        except Exception as e:
-            logger.error(f"Erro ao validar login: {e}")
+            usuario = validator.validate(email_ou_username, senha)
+            logger.info(f'Login bem sucedido para o usuário {email_ou_username}')
+            return usuario
+        except LoginException as e:
+            logger.error(f'Erro de login ou senha: {e}')
             return None
     
     def _verificar_senha(self, senha_hash, senha_texto):

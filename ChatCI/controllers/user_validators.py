@@ -77,6 +77,8 @@ class LoginValidator(IValidator):
             
             if not passwordValidator(password, user.password):
                 raise LoginException.wrongPassword()
+            
+            return user
                 
         def passwordValidator(self, password, dbPassword):
             partes = dbPassword.split('$')
