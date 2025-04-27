@@ -40,7 +40,7 @@ class UsernameRegistrationValidator(IValidator):
         if len (username) > 15:
             raise LoginException.exceededCharLimit()
         
-        if UserDAO.get_user_by_username(username) != None:
+        if self.UserDAO.get_user_by_username(username) != None:
             raise LoginException.usernameAlreadyExists(username)
 
 class EmailValidator(IValidator):
@@ -55,7 +55,7 @@ class EmailValidator(IValidator):
         if re.match(regex, email) == None:
             raise LoginException.invalidEmail()
         
-        if not (UserDAO.get_user_by_email(email)):
+        if not (self.userDAO.get_user_by_email(email)):
             raise LoginException.invalidEmail()
         
 class LoginValidator:

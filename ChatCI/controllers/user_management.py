@@ -27,34 +27,6 @@ class UserManagement:
             logger.error(f'Erro de login ou senha: {e}')
             return None
     
-    def _verificar_senha(self, senha_hash, senha_texto):
-        """
-        Verifica se a senha informada é igual ao hash armazenado.
-        """
-        try:
-            partes = senha_hash.split('$')
-            if len(partes) != 4:
-                return False
-                
-            algoritmo, iteracoes, salt, hash_armazenado = partes
-            iteracoes = int(iteracoes)
-            
-            # verifica se a senha armazenada é igual ao hash da senha informada
-            # usando o mesmo algoritmo, salt e numero de iterações
-            # o hash é gerado com o mesmo algoritmo, salt e numero de iterações
-            hash_calculado = hashlib.pbkdf2_hmac(
-                'sha256',
-                senha_texto.encode('utf-8'),
-                salt.encode('utf-8'),
-                iteracoes
-            ).hex()
-            
-            return hash_calculado == hash_armazenado
-            
-        except Exception as e:
-            logger.error(f"Erro ao verificar senha: {e}")
-            return False
-    
     def adicionar_usuario(self, username, first_name, last_name, email, tipo, senha):
         """
         Adiciona um novo usuário ao sistema.
