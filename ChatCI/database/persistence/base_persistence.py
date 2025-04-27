@@ -2,7 +2,7 @@ from typing import List, Dict, Any
 from database.manager import DatabaseManager
 import logging
 
-logger = logging.getLogger('base_dao')
+logger = logging.getLogger('base_persistence')
 
 class BasePersistence:
     """Classe base para todos os DAOs com métodos comuns"""
