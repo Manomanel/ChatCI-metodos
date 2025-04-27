@@ -1,4 +1,4 @@
-from user_validators import IValidator
+from controllers.user_validators import IValidator
 
 # first_name: 20 caracteres
 # last_name: 30 caracteres

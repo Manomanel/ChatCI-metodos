@@ -1,4 +1,4 @@
-from login_exception import LoginException
+from controllers.login_exception import LoginException
 import re
 from abc import ABC, abstractmethod
 import logging 
@@ -58,47 +58,47 @@ class EmailValidator(IValidator):
         if not (UserDAO.get_user_by_email(email)):
             raise LoginException.invalidEmail()
         
-class LoginValidator(IValidator):
+class LoginValidator:
     def __init__(self, userDAO):
         self.userDAO = userDAO
         self.user = None
 
-        def validate (self, usernameOrEmail, password):
-            #Verifica se o input é um e-mail ou username
-            if '@' in usernameOrEmail:
-                user = userDAO.get_user_by_email(usernameOrEmail)
-            else:
-                user = userDAO.get_user_by_username(usernameOrEmail)
+    def validate (self, usernameOrEmail, password):
+        #Verifica se o input é um e-mail ou username
+        if '@' in usernameOrEmail:
+            user = self.userDAO.get_user_by_email(usernameOrEmail)
+        else:
+            user = self.userDAO.get_user_by_username(usernameOrEmail)
 
-            #Retorna erro se não é um usuário
-            if not user:
-                logger.info(f'Tentativa de login: {usernameOrEmail} não encontrado')
-                raise LoginException.emailorUsernameDoesnotExist()
+        #Retorna erro se não é um usuário
+        if not user:
+            logger.info(f'Tentativa de login: {usernameOrEmail} não encontrado')
+            raise LoginException.emailorUsernameDoesnotExist(usernameOrEmail)
+        
+        if not self.passwordValidator(password, user['password']):
+            raise LoginException.wrongPassword()
+        
+        return user
+    
+    def passwordValidator(self, password, dbPassword):
+        partes = dbPassword.split('$')
+        if len(partes) != 4:
+            return False
             
-            if not passwordValidator(password, user.password):
-                raise LoginException.wrongPassword()
-            
-            return user
-                
-        def passwordValidator(self, password, dbPassword):
-            partes = dbPassword.split('$')
-            if len(partes) != 4:
-                return False
-                
-            algoritmo, iteracoes, salt, hash_armazenado = partes
-            iteracoes = int(iteracoes)
-            
-            # verifica se a senha armazenada é igual ao hash da senha informada
-            # usando o mesmo algoritmo, salt e numero de iterações
-            # o hash é gerado com o mesmo algoritmo, salt e numero de iterações
-            hash_calculado = hashlib.pbkdf2_hmac(
-                'sha256',
-                password.encode('utf-8'),
-                salt.encode('utf-8'),
-                iteracoes
-            ).hex()
-            
-            return hash_calculado == hash_armazenado
+        algoritmo, iteracoes, salt, hash_armazenado = partes
+        iteracoes = int(iteracoes)
+        
+        # verifica se a senha armazenada é igual ao hash da senha informada
+        # usando o mesmo algoritmo, salt e numero de iterações
+        # o hash é gerado com o mesmo algoritmo, salt e numero de iterações
+        hash_calculado = hashlib.pbkdf2_hmac(
+            'sha256',
+            password.encode('utf-8'),
+            salt.encode('utf-8'),
+            iteracoes
+        ).hex()
+        
+        return hash_calculado == hash_armazenado
 
 class PasswordRegistrationValidator(IValidator):
     def __init__(self, userDAO):

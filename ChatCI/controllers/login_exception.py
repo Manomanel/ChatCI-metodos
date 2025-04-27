@@ -44,5 +44,5 @@ class LoginException (Exception):
         return LoginException('O e-mail ou usuário não existem!')
     
     @staticmethod
-    def wrongPassword(password) -> 'LoginException':
+    def wrongPassword() -> 'LoginException':
         return LoginException('Senha incorreta!')
