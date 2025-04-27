@@ -20,8 +20,12 @@ class LoginException (Exception):
         return LoginException('E-mail inválido!')
     
     @staticmethod
+    def emailAlreadyExists() -> 'LoginException':
+        return LoginException('E-mail já está sendo usado!')
+    
+    @staticmethod
     def usernameAlreadyExists(username) -> 'LoginException':
-        return LoginException(f'username {username} já existe!')
+        return LoginException(f'Username {username} já existe!')
     
     @staticmethod
     def usernameHasNumbers() -> 'LoginException':
@@ -29,7 +33,7 @@ class LoginException (Exception):
     
     @staticmethod
     def invalidFirstName() -> 'LoginException':
-        return LoginException('Nome inválido!')
+        return LoginException('Primeiro nome inválido!')
     
     @staticmethod
     def invalidLastName() -> 'LoginException':

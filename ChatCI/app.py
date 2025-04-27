@@ -26,8 +26,6 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 app.secret_key = os.getenv('APP_SECRET', 'chave_secreta_padrao')
 
-user_manager = UserManagement()
-
 def init_db():
     try:
         logger.info("Inicializando o banco de dados...")
@@ -93,14 +91,17 @@ def finalizar_cadastro():
                               email=email, 
                               tipo=tipo)
 
-    usuario_existente = user_manager.user_persistence.get_user_by_email(email)
-    if usuario_existente:
-        return render_template("cadastro.html", 
-                              erro="Este email já está em uso",
-                              nome=nome, 
-                              tipo=tipo)
 
-    user_id = facade.cadastrar_usuario(nome, first_name, last_name, email, tipo_mapeado, senha)
+    user_id, erro = facade.cadastrar_usuario(nome, first_name, last_name, email, tipo_mapeado, senha)
+    
+    if erro:
+        return render_template("cadastro.html",
+                               erro=erro,
+                               nome=nome,
+                               primeiro_nome=first_name,
+                               ultimo_nome=last_name,
+                               email=email,
+                               tipo=tipo)
     
     if user_id:
         flash("Cadastro realizado com sucesso! Você pode fazer login agora.", "success")

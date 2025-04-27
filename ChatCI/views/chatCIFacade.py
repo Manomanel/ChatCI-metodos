@@ -1,13 +1,15 @@
 from controllers.user_management import UserManagement
 from controllers.user_validation import UserRegistrationValidator
-from controllers.user_validators import IValidator, NameValidator, EmailRegistrationValidator, UsernameRegistrationValidator, PasswordValidator
+from controllers.user_validators import IValidator, NameValidator, UsernameRegistrationValidator, EmailRegistrationValidator, PasswordValidator, UsernameDBValidator, EmailDBValidator
 from controllers.login_exception import LoginException
 from entities.user import User
+from database.factory.user_dao_factory import UserDAOFactory
 
 class ChatCIFacade:
     def __init__(self):
         self.user = UserManagement()
         #self.msg  = MessageManagement()
+        self.user_persistence = UserDAOFactory.get_instance()
         
     #login
     def login(self, email_ou_username: str, senha: str):
@@ -32,14 +34,16 @@ class ChatCIFacade:
         user = User(None, nome, email, senha, first_name, last_name, tipo, False, False)
         validator = UserRegistrationValidator([
             NameValidator(),
-            PasswordValidator(),
+            UsernameRegistrationValidator(),
             EmailRegistrationValidator(),
-            UsernameRegistrationValidator()
+            PasswordValidator(),
+            UsernameDBValidator(self.user_persistence),
+            EmailDBValidator(self.user_persistence)
         ])
         try:
             validator.validate (user)
         except LoginException as e:
-            return None
+            return None, e.message
         return self.user.adicionar_usuario(nome, first_name, last_name, email, tipo, senha)
 
     def buscar_usuario_por_id(self, user_id: int):

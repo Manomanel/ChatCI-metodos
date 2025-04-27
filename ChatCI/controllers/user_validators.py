@@ -1,4 +1,5 @@
-from login_exception import LoginException
+from controllers.login_exception import LoginException
+from database.dao.user_dao import UserDAO
 import re
 from abc import ABC, abstractmethod
 
@@ -48,8 +49,8 @@ class UsernameDBValidator(IValidator):
             raise LoginException.usernameAlreadyExists(username)
 
 class EmailRegistrationValidator(IValidator):
-    def __init__(self, userDAO):
-        self.userDAO = userDAO
+    def __init__(self):
+        return
 
     def validate(self, user):
         email = user.email
@@ -66,7 +67,7 @@ class EmailDBValidator(IValidator):
     def validate (self, user):
         email = user.email
         if not (self.userDAO.get_user_by_email(email)):
-            raise LoginException.invalidEmail()
+            raise LoginException.emailAlreadyExists()
 
 class PasswordValidator(IValidator):
     def __init__(self):
@@ -76,22 +77,22 @@ class PasswordValidator(IValidator):
         password = user.password
         
         if password == None:
-            raise LoginException.invalidPassword()
+            raise LoginException.invalidPasswordRegistration()
         
         if len(password) < 10 or len(password) > 64:
-         raise LoginException.invalidPassword()
+         raise LoginException.invalidPasswordRegistration()
         
         if not any(char.isalpha() for char in password):
-            raise LoginException.invalidPassword()
+            raise LoginException.invalidPasswordRegistration()
         
         if not any(char.isdigit() for char in password):
-            raise LoginException.invalidPassword()
+            raise LoginException.invalidPasswordRegistration()
         
         if not any(not char.isalnum() for char in password):
-            raise LoginException.invalidPassword()
+            raise LoginException.invalidPasswordRegistration()
         
         if not any(char.isupper() for char in password):
-            raise LoginException.invalidPassword()
+            raise LoginException.invalidPasswordRegistration()
         
         if not any(char.islower() for char in password):
-            raise LoginException.invalidPassword()
+            raise LoginException.invalidPasswordRegistration()
