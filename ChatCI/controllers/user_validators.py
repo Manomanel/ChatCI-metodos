@@ -91,7 +91,7 @@ class EmailDBValidator(IValidator):
 
     def validate (self, user):
         email = user.email
-        if not (self.userDAO.get_user_by_email(email)):
+        if self.userDAO.get_user_by_email(email):
             raise LoginException.emailAlreadyExists()
 
 class PasswordValidator(IValidator):
