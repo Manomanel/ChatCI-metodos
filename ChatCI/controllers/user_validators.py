@@ -73,7 +73,7 @@ class LoginValidator:
         #Retorna erro se não é um usuário
         if not user:
             logger.info(f'Tentativa de login: {usernameOrEmail} não encontrado')
-            raise LoginException.emailorUsernameDoesnotExist(usernameOrEmail)
+            raise LoginException.emailorUsernameDoesnotExist()
         
         if not self.passwordValidator(password, user['password']):
             raise LoginException.wrongPassword()

@@ -68,22 +68,6 @@ class UserManagement:
         except Exception as e:
             logger.error(f"Erro ao adicionar usuário: {e}")
             return None
-        
-    def get_user_by_id(self, user_id):
-        """
-        Busca um usuário pelo ID
-        
-        Args:
-            user_id: ID do usuário
-            
-        Returns:
-            Dicionário com dados do usuário ou None caso não encontrado
-        """
-        try:
-            return self.userDAO.get_user_by_id(user_id)
-        except Exception as e:
-            logger.error(f"Erro ao buscar usuário por ID: {e}")
-            return None
 
     def atualizar_usuario(self, user_id, **dados):
         """
