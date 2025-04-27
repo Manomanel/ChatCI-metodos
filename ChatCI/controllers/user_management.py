@@ -1,7 +1,7 @@
 from database.factory.user_dao_factory import UserDAOFactory
 from database.persistence.profile_persistence import ProfilePersistence
 from controllers.user_validation import UserValidation
-from controllers.user_validators import IValidator, NameValidator, UsernameRegistrationValidator
+from controllers.user_validators import IValidator, NameValidator, UsernameRegistrationValidator, LoginValidator
 from controllers.login_exception import  LoginException
 import logging
 import hashlib

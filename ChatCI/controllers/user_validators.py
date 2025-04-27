@@ -1,13 +1,38 @@
 from controllers.login_exception import LoginException
 from database.dao.user_dao import UserDAO
 import re
+import logging
 from abc import ABC, abstractmethod
+
+logger = logging.getLogger('gerenciador_usuarios')
 
 #Interface que delega as classes que vão validar o login do usuário
 class IValidator(ABC):
    @abstractmethod
    def validate(self, user):
       pass
+
+class LoginValidator:
+    def __init__(self, userDAO):
+        self.userDAO = userDAO
+        self.user = None
+
+    def validate (self, usernameOrEmail, password):
+        #Verifica se o input é um e-mail ou username
+        if '@' in usernameOrEmail:
+            user = self.userDAO.get_user_by_email(usernameOrEmail)
+        else:
+            user = self.userDAO.get_user_by_username(usernameOrEmail)
+
+        #Retorna erro se não é um usuário
+        if not user:
+            logger.info(f'Tentativa de login: {usernameOrEmail} não encontrado')
+            raise LoginException.emailorUsernameDoesnotExist()
+        
+        if not self.passwordValidator(password, user['password']):
+            raise LoginException.wrongPassword()
+        
+        return user
 
 class NameValidator(IValidator):
     def validate(self, user):
