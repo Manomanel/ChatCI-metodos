@@ -2,6 +2,7 @@ from controllers.login_exception import LoginException
 from database.dao.user_dao import UserDAO
 import re
 import logging
+import hashlib
 from abc import ABC, abstractmethod
 
 logger = logging.getLogger('gerenciador_usuarios')
@@ -33,6 +34,26 @@ class LoginValidator:
             raise LoginException.wrongPassword()
         
         return user
+    
+    def passwordValidator(self, password, dbPassword):
+        partes = dbPassword.split('$')
+        if len(partes) != 4:
+            return False
+            
+        algoritmo, iteracoes, salt, hash_armazenado = partes
+        iteracoes = int(iteracoes)
+        
+        # verifica se a senha armazenada é igual ao hash da senha informada
+        # usando o mesmo algoritmo, salt e numero de iterações
+        # o hash é gerado com o mesmo algoritmo, salt e numero de iterações
+        hash_calculado = hashlib.pbkdf2_hmac(
+            'sha256',
+            password.encode('utf-8'),
+            salt.encode('utf-8'),
+            iteracoes
+        ).hex()
+        
+        return hash_calculado == hash_armazenado
 
 class NameValidator(IValidator):
     def validate(self, user):

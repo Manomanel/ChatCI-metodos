@@ -50,7 +50,7 @@ class UserManagement:
             user_id = self.userDAO.create_user(
                 username=user.username,
                 email=user.email,
-                password=user.senha,
+                password=user.password,
                 first_name=user.first_name,
                 last_name=user.last_name,
                 student=is_student,
