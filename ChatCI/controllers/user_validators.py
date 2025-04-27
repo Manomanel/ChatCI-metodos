@@ -1,10 +1,7 @@
-from controllers.login_exception import LoginException
+from login_exception import LoginException
 import re
 from abc import ABC, abstractmethod
-import logging 
-import hashlib 
 
-logger = logging.getLogger('gerenciador_usuarios')
 #Interface que delega as classes que vão validar o login do usuário
 class IValidator(ABC):
    @abstractmethod
@@ -22,8 +19,8 @@ class NameValidator(IValidator):
             raise LoginException.invalidLastName()
         
 class UsernameRegistrationValidator(IValidator):
-    def __init__(self, userDAO):
-        self.userDAO = userDAO
+    def __init__(self):
+        return
     
     def validate(self, user):
         username = user.username
@@ -40,10 +37,17 @@ class UsernameRegistrationValidator(IValidator):
         if len (username) > 15:
             raise LoginException.exceededCharLimit()
         
-        if self.UserDAO.get_user_by_username(username) != None:
+class UsernameDBValidator(IValidator):
+    def __init__(self, userDAO):
+        self.userDAO = userDAO
+
+    def validate(self, user):
+        username = user.username
+
+        if self.userDAO.get_user_by_username(username) != None:
             raise LoginException.usernameAlreadyExists(username)
 
-class EmailValidator(IValidator):
+class EmailRegistrationValidator(IValidator):
     def __init__(self, userDAO):
         self.userDAO = userDAO
 
@@ -55,75 +59,39 @@ class EmailValidator(IValidator):
         if re.match(regex, email) == None:
             raise LoginException.invalidEmail()
         
+class EmailDBValidator(IValidator):
+    def __init__(self, userDAO):
+        self.userDAO = userDAO
+
+    def validate (self, user):
+        email = user.email
         if not (self.userDAO.get_user_by_email(email)):
             raise LoginException.invalidEmail()
-        
-class LoginValidator:
-    def __init__(self, userDAO):
-        self.userDAO = userDAO
-        self.user = None
 
-    def validate (self, usernameOrEmail, password):
-        #Verifica se o input é um e-mail ou username
-        if '@' in usernameOrEmail:
-            user = self.userDAO.get_user_by_email(usernameOrEmail)
-        else:
-            user = self.userDAO.get_user_by_username(usernameOrEmail)
-
-        #Retorna erro se não é um usuário
-        if not user:
-            logger.info(f'Tentativa de login: {usernameOrEmail} não encontrado')
-            raise LoginException.emailorUsernameDoesnotExist()
-        
-        if not self.passwordValidator(password, user['password']):
-            raise LoginException.wrongPassword()
-        
-        return user
+class PasswordValidator(IValidator):
+    def __init__(self):
+        return 
     
-    def passwordValidator(self, password, dbPassword):
-        partes = dbPassword.split('$')
-        if len(partes) != 4:
-            return False
-            
-        algoritmo, iteracoes, salt, hash_armazenado = partes
-        iteracoes = int(iteracoes)
-        
-        # verifica se a senha armazenada é igual ao hash da senha informada
-        # usando o mesmo algoritmo, salt e numero de iterações
-        # o hash é gerado com o mesmo algoritmo, salt e numero de iterações
-        hash_calculado = hashlib.pbkdf2_hmac(
-            'sha256',
-            password.encode('utf-8'),
-            salt.encode('utf-8'),
-            iteracoes
-        ).hex()
-        
-        return hash_calculado == hash_armazenado
-
-class PasswordRegistrationValidator(IValidator):
-    def __init__(self, userDAO):
-        self.userDAO = userDAO
-        
     def validate(self, user):
         password = user.password
         
         if password == None:
-            raise LoginException.invalidPasswordRegistration()
+            raise LoginException.invalidPassword()
         
         if len(password) < 10 or len(password) > 64:
-         raise LoginException.invalidPasswordRegistration()
+         raise LoginException.invalidPassword()
         
         if not any(char.isalpha() for char in password):
-            raise LoginException.invalidPasswordRegistration()
+            raise LoginException.invalidPassword()
         
         if not any(char.isdigit() for char in password):
-            raise LoginException.invalidPasswordRegistration()
+            raise LoginException.invalidPassword()
         
         if not any(not char.isalnum() for char in password):
-            raise LoginException.invalidPasswordRegistration()
+            raise LoginException.invalidPassword()
         
         if not any(char.isupper() for char in password):
-            raise LoginException.invalidPasswordRegistration()
+            raise LoginException.invalidPassword()
         
         if not any(char.islower() for char in password):
-            raise LoginException.invalidPasswordRegistration()
+            raise LoginException.invalidPassword()

@@ -1,4 +1,8 @@
 from controllers.user_management import UserManagement
+from controllers.user_validation import UserRegistrationValidator
+from controllers.user_validators import IValidator, NameValidator, EmailRegistrationValidator, UsernameRegistrationValidator, PasswordValidator
+from controllers.login_exception import LoginException
+from entities.user import User
 
 class ChatCIFacade:
     def __init__(self):
@@ -25,6 +29,17 @@ class ChatCIFacade:
         Registra um novo usuário. 
         Retorna o user_id em caso de sucesso, ou None em caso de erro.
         """
+        user = User(None, nome, email, senha, first_name, last_name, tipo, False, False)
+        validator = UserRegistrationValidator([
+            NameValidator(),
+            PasswordValidator(),
+            EmailRegistrationValidator(),
+            UsernameRegistrationValidator()
+        ])
+        try:
+            validator.validate (user)
+        except LoginException as e:
+            return None
         return self.user.adicionar_usuario(nome, first_name, last_name, email, tipo, senha)
 
     def buscar_usuario_por_id(self, user_id: int):

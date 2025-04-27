@@ -13,3 +13,11 @@ class UserValidation:
     def validate(self, user):
         for validator in self.validators:
             validator.validate(user)
+
+class UserRegistrationValidator:
+    def __init__(self, validators: list[IValidator]):
+        self.validators = validators #Criar os validadores em User Control
+
+    def validate(self, user):
+        for validator in self.validators:
+            validator.validate(user)

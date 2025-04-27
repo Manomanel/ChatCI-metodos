@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, request, session, flash
 from controllers.user_management import UserManagement
+from controllers.user_validators import EmailDBValidator
 from database.initializer import DatabaseInitializer
 from database.manager import DatabaseManager
 import logging
@@ -9,7 +10,6 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from views.chatCIFacade import ChatCIFacade
 
 facade = ChatCIFacade()
-
 load_dotenv()
 
 logging.basicConfig(
