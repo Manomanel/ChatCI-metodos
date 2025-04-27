@@ -6,6 +6,9 @@ import logging
 import os
 from dotenv import load_dotenv
 from werkzeug.middleware.proxy_fix import ProxyFix
+from views.chatCIFacade import ChatCIFacade
+
+facade = ChatCIFacade()
 
 load_dotenv()
 
@@ -49,7 +52,7 @@ def inicial():
 def logar():
     email = request.form.get("usuario")
     senha = request.form.get("senha")
-    usuario = user_manager.validar_login(email, senha)
+    usuario = facade.login(email, senha)
     if usuario:
         session['user_id'] = usuario['id']
         session['username'] = usuario['username']
@@ -67,7 +70,9 @@ def cadastro():
 
 @app.route("/finalizar_cadastro", methods=["POST"])
 def finalizar_cadastro():
-    nome = request.form.get("nome")
+    nome = request.form.get("username")
+    first_name = request.form.get("primeiro_nome")
+    last_name = request.form.get("ultimo_nome")
     email = request.form.get("email")
     senha = request.form.get("senha")
     tipo = request.form.get("tipo")
@@ -79,10 +84,12 @@ def finalizar_cadastro():
         "administrador": "Professor"  
     }.get(tipo, "Estudante")
 
-    if not nome or not email or not senha or not tipo:
+    if not nome or not email or not senha or not tipo or not first_name or not last_name:
         return render_template("cadastro.html", 
                               erro="Todos os campos são obrigatórios",
-                              nome=nome, 
+                              nome=nome,
+                              first_name=first_name,
+                              last_name=last_name, 
                               email=email, 
                               tipo=tipo)
 
@@ -93,7 +100,7 @@ def finalizar_cadastro():
                               nome=nome, 
                               tipo=tipo)
 
-    user_id = user_manager.adicionar_usuario(nome, email, tipo_mapeado, senha)
+    user_id = facade.cadastrar_usuario(nome, first_name, last_name, email, tipo_mapeado, senha)
     
     if user_id:
         flash("Cadastro realizado com sucesso! Você pode fazer login agora.", "success")
@@ -126,7 +133,7 @@ def profile():
         return redirect("/")
     
     user_id = session.get('user_id')
-    profile = user_manager.profile_dao.get_by_user_id(user_id)
+    profile = facade.buscar_perfil(user_id)
     
     if not profile:
         return redirect("/logado")

@@ -55,19 +55,18 @@ class UserManagement:
             logger.error(f"Erro ao verificar senha: {e}")
             return False
     
-    def adicionar_usuario(self, nome, email, tipo, senha):
+    def adicionar_usuario(self, username, first_name, last_name, email, tipo, senha):
         """
         Adiciona um novo usuário ao sistema.
         """
         try:
-            partes_nome = nome.split()
-            first_name = partes_nome[0]
-            last_name = ' '.join(partes_nome[1:]) if len(partes_nome) > 1 else ''
+            #partes_nome = nome.split()
+            #first_name = partes_nome[0]
+            #last_name = ' '.join(partes_nome[1:]) if len(partes_nome) > 1 else ''
+            #username = email.split('@')[0]
 
             is_student = tipo.lower() == "estudante"
             is_professor = tipo.lower() == "professor"
-
-            username = email.split('@')[0]
 
             username_base = username
             contador = 1

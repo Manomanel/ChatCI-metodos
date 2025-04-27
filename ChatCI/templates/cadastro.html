@@ -7,8 +7,15 @@
    <body>
       <h1><strong>Chat-CI</strong></h1>
       <form action="/finalizar_cadastro" method="post">
-         <label for="nome">Nome de Usuário:</label><br />
-         <input type="text" id="nome" name="nome" /><br /><br />
+         {% if erro %}
+            <p style="color: red;">{{ erro }}</p>
+         {% endif %}
+         <label for="username">Nome de Usuário:</label><br />
+         <input type="text" id="username" name="username" /><br /><br />
+         <label for="primeiro_nome">Primeiro Nome:</label><br />
+         <input type="text" id="primeiro_nome" name="primeiro_nome" /><br /><br />
+         <label for="ultimo_nome">Último Nome:</label><br />
+         <input type="text" id="ultimo_nome" name="ultimo_nome" /><br /><br />
          <label for="email">Email:</label><br />
          <input type="email" id="email" name="email" /><br /><br />
          <label for="senha">Senha:</label><br />
