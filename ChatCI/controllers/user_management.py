@@ -27,7 +27,7 @@ class UserManagement:
             logger.error(f'Erro de login ou senha: {e}')
             return None
     
-    def adicionar_usuario(self, username, first_name, last_name, email, tipo, senha):
+    def adicionar_usuario(self, user):
         """
         Adiciona um novo usuário ao sistema.
         """
@@ -37,22 +37,22 @@ class UserManagement:
             #last_name = ' '.join(partes_nome[1:]) if len(partes_nome) > 1 else ''
             #username = email.split('@')[0]
 
-            is_student = tipo.lower() == "estudante"
-            is_professor = tipo.lower() == "professor"
+            is_student = user.tipo.lower() == "estudante"
+            is_professor = user.tipo.lower() == "professor"
 
             username_base = username
             contador = 1
-            while self.userDAO.get_user_by_username(username):
+            while self.userDAO.get_user_by_username(user.username):
                 username = f"{username_base}{contador}"
                 contador += 1
 
             # criacao do usuario
             user_id = self.userDAO.create_user(
-                username=username,
-                email=email,
-                password=senha,
-                first_name=first_name,
-                last_name=last_name,
+                username=user.username,
+                email=user.email,
+                password=user.senha,
+                first_name=user.first_name,
+                last_name=user.last_name,
                 student=is_student,
                 professor=is_professor
             )
@@ -62,7 +62,7 @@ class UserManagement:
                 bio=f"{'Estudante' if is_student else 'Professor'} - Cadastrado via sistema web"
             )
             
-            logger.info(f"Usuário {username} ({email}) criado com sucesso!")
+            logger.info(f"Usuário {user.username} ({user.email}) criado com sucesso!")
             return user_id
             
         except Exception as e:

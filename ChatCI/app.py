@@ -1,8 +1,8 @@
 from flask import Flask, render_template, redirect, request, session, flash
 from controllers.user_management import UserManagement
-from controllers.user_validators import EmailDBValidator
 from database.initializer import DatabaseInitializer
 from database.manager import DatabaseManager
+from views.chatCIFacade import ChatCIFacade
 import logging
 import os
 from dotenv import load_dotenv
