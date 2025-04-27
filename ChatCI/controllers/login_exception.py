@@ -24,7 +24,7 @@ class LoginException (Exception):
         return LoginException(f'username {username} já existe!')
     
     @staticmethod
-    def usernameHasNumbers(username) -> 'LoginException':
+    def usernameHasNumbers() -> 'LoginException':
         return LoginException('Não pode ter números!')
     
     @staticmethod
@@ -36,11 +36,11 @@ class LoginException (Exception):
         return LoginException('Sobrenome inválido!')
     
     @staticmethod
-    def invalidPasswordRegistration(password) -> 'LoginException':
+    def invalidPasswordRegistration() -> 'LoginException':
         return LoginException('Senha inválida para registro!')
 
     @staticmethod
-    def emailorUsernameDoesnotExist(email) -> 'LoginException':
+    def emailorUsernameDoesnotExist() -> 'LoginException':
         return LoginException('O e-mail ou usuário não existem!')
     
     @staticmethod
