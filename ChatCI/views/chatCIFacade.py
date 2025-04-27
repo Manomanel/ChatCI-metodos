@@ -44,7 +44,7 @@ class ChatCIFacade:
             validator.validate (user)
         except LoginException as e:
             return None, e.message
-        return self.user.adicionar_usuario(nome, first_name, last_name, email, tipo, senha)
+        return self.user.adicionar_usuario(user), None
 
     def buscar_usuario_por_id(self, user_id: int):
         """
