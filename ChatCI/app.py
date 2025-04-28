@@ -5,14 +5,12 @@ from database.manager import DatabaseManager
 from database.persistence.group_persistence import GroupPersistence
 from database.persistence.message_persistence import MessagePersistence
 from database.persistence.event_persistence import EventPersistence
-from bot.application import SACIApplication
 import logging
 import os
 from dotenv import load_dotenv
 from werkzeug.middleware.proxy_fix import ProxyFix
 from views.chatCIFacade import ChatCIFacade
-from flask_swagger_ui import get_swaggerui_blueprint
-from flasgger import Swagger, swag_from
+from flasgger import Swagger
 from flask_cors import CORS
 from functools import wraps
 from mediator.mediator import Mediator
@@ -814,8 +812,7 @@ def enviar_mensagem(grupo_id):
                 "success": False,
                 "error": "Texto da mensagem é obrigatório"
             }), 400
-        
-        # Usar o Mediator para enviar a mensagem
+
         message_id = mediator.notify("SEND_MESSAGE", {
             "group_id": grupo_id,
             "user_id": user_id,
@@ -919,8 +916,7 @@ def get_mensagens(grupo_id):
         
         limit = request.args.get('limit', 50, type=int)
         offset = request.args.get('offset', 0, type=int)
-        
-        # Usar o MessagePersistence diretamente para buscar mensagens
+
         messages = message_manager.get_group_messages(grupo_id, limit, offset)
         
         return jsonify({
@@ -929,6 +925,428 @@ def get_mensagens(grupo_id):
         })
     except Exception as e:
         logger.error(f"Erro ao buscar mensagens: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+        
+@app.route("/api/grupos/<int:grupo_id>/membros/<int:user_id>/banir", methods=["POST"])
+@admin_required
+def banir_membro(grupo_id, user_id):
+    """
+    Ban a user from a group
+    ---
+    tags:
+      - Groups
+    security:
+      - bearerAuth: []
+      - sessionAuth: []
+    parameters:
+      - name: grupo_id
+        in: path
+        type: integer
+        required: true
+        description: Group ID
+      - name: user_id
+        in: path
+        type: integer
+        required: true
+        description: User ID to ban
+    responses:
+      200:
+        description: User banned successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            message:
+              type: string
+      400:
+        description: Failed to ban user
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      401:
+        description: Not authorized
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      403:
+        description: Not allowed
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      404:
+        description: Group or user not found
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    try:
+        group = group_manager.get_group_by_id(grupo_id)
+        if not group:
+            return jsonify({
+                "success": False,
+                "error": "Grupo não encontrado"
+            }), 404
+
+        from controllers.user_management import UserManagement
+        user_manager = UserManagement()
+        user = user_manager.get_user_by_id(user_id)
+        if not user:
+            return jsonify({
+                "success": False,
+                "error": "Usuário não encontrado"
+            }), 404
+
+        if group_manager.is_banned(grupo_id, user_id):
+            return jsonify({
+                "success": False,
+                "error": "Usuário já está banido deste grupo"
+            }), 400
+
+        if group_manager.ban_user(grupo_id, user_id):
+            return jsonify({
+                "success": True,
+                "message": "Usuário banido com sucesso"
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "error": "Erro ao banir usuário"
+            }), 500
+            
+    except Exception as e:
+        logger.error(f"Erro ao banir usuário: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+
+@app.route("/api/grupos/<int:grupo_id>/membros/<int:user_id>/desbanir", methods=["POST"])
+@admin_required
+def desbanir_membro(grupo_id, user_id):
+    """
+    Unban a user from a group
+    ---
+    tags:
+      - Groups
+    security:
+      - bearerAuth: []
+      - sessionAuth: []
+    parameters:
+      - name: grupo_id
+        in: path
+        type: integer
+        required: true
+        description: Group ID
+      - name: user_id
+        in: path
+        type: integer
+        required: true
+        description: User ID to unban
+    responses:
+      200:
+        description: User unbanned successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            message:
+              type: string
+      400:
+        description: Failed to unban user
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      401:
+        description: Not authorized
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      403:
+        description: Not allowed
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      404:
+        description: Group or user not found
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    try:
+        group = group_manager.get_group_by_id(grupo_id)
+        if not group:
+            return jsonify({
+                "success": False,
+                "error": "Grupo não encontrado"
+            }), 404
+
+        from controllers.user_management import UserManagement
+        user_manager = UserManagement()
+        user = user_manager.get_user_by_id(user_id)
+        if not user:
+            return jsonify({
+                "success": False,
+                "error": "Usuário não encontrado"
+            }), 404
+
+        if not group_manager.is_banned(grupo_id, user_id):
+            return jsonify({
+                "success": False,
+                "error": "Usuário não está banido deste grupo"
+            }), 400
+
+        if group_manager.unban_user(grupo_id, user_id):
+            return jsonify({
+                "success": True,
+                "message": "Usuário desbanido com sucesso"
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "error": "Erro ao desbanir usuário"
+            }), 500
+            
+    except Exception as e:
+        logger.error(f"Erro ao desbanir usuário: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+
+@app.route("/api/grupos/<int:grupo_id>/membros", methods=["GET"])
+@login_required
+def listar_membros_grupo(grupo_id):
+    """
+    List all members of a group
+    ---
+    tags:
+      - Groups
+    security:
+      - bearerAuth: []
+      - sessionAuth: []
+    parameters:
+      - name: grupo_id
+        in: path
+        type: integer
+        required: true
+        description: Group ID
+    responses:
+      200:
+        description: Group members retrieved successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            members:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  username:
+                    type: string
+                  nome:
+                    type: string
+                  email:
+                    type: string
+      401:
+        description: Not authorized
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      403:
+        description: Not a member of the group
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      404:
+        description: Group not found
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    try:
+        user_id = session.get('user_id')
+
+        group = group_manager.get_group_by_id(grupo_id)
+        if not group:
+            return jsonify({
+                "success": False,
+                "error": "Grupo não encontrado"
+            }), 404
+
+        if not group_manager.is_member(grupo_id, user_id) and not session.get('is_professor') and not session.get('is_superuser'):
+            return jsonify({
+                "success": False,
+                "error": "Você não é membro deste grupo"
+            }), 403
+
+        members = group_manager.get_group_members(grupo_id)
+
+        formatted_members = []
+        for member in members:
+            formatted_members.append({
+                "id": member['id'],
+                "username": member['username'],
+                "nome": f"{member['first_name']} {member['last_name']}".strip(),
+                "email": member['email']
+            })
+        
+        return jsonify({
+            "success": True,
+            "members": formatted_members
+        })
+            
+    except Exception as e:
+        logger.error(f"Erro ao listar membros do grupo: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+
+@app.route("/api/grupos/<int:grupo_id>/membros/banidos", methods=["GET"])
+@admin_required
+def listar_membros_banidos(grupo_id):
+    """
+    List all banned members of a group
+    ---
+    tags:
+      - Groups
+    security:
+      - bearerAuth: []
+      - sessionAuth: []
+    parameters:
+      - name: grupo_id
+        in: path
+        type: integer
+        required: true
+        description: Group ID
+    responses:
+      200:
+        description: Banned members retrieved successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            banned_members:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  username:
+                    type: string
+                  nome:
+                    type: string
+                  email:
+                    type: string
+      401:
+        description: Not authorized
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      403:
+        description: Not allowed
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      404:
+        description: Group not found
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    try:
+        group = group_manager.get_group_by_id(grupo_id)
+        if not group:
+            return jsonify({
+                "success": False,
+                "error": "Grupo não encontrado"
+            }), 404
+
+        banned_members = group_manager.get_banned_members(grupo_id)
+
+        formatted_banned_members = []
+        for member in banned_members:
+            formatted_banned_members.append({
+                "id": member['id'],
+                "username": member['username'],
+                "nome": f"{member['first_name']} {member['last_name']}".strip(),
+                "email": member['email']
+            })
+        
+        return jsonify({
+            "success": True,
+            "banned_members": formatted_banned_members
+        })
+            
+    except Exception as e:
+        logger.error(f"Erro ao listar membros banidos do grupo: {e}")
         return jsonify({
             "success": False,
             "error": "Erro interno do servidor"

@@ -139,3 +139,90 @@ class GroupPersistence(BasePersistence, GroupDAO):
         ORDER BY g.name
         """
         return self._execute_query(query, (user_id,))
+    
+    def ban_user(self, group_id: int, user_id: int) -> bool:
+        """
+        Adiciona um usuário à lista de banidos de um grupo
+        
+        Args:
+            group_id: ID do grupo
+            user_id: ID do usuário
+            
+        Returns:
+            True se o usuário foi banido, False caso contrário
+        """
+        try:
+            # Remove o usuário do grupo, se for membro
+            if self.is_member(group_id, user_id):
+                self.remove_member(group_id, user_id)
+            
+            # Adiciona à lista de banidos
+            query = """
+            INSERT INTO groups_banned_members (group_id, user_id)
+            VALUES (%s, %s)
+            """
+            rows_affected = self._execute_update(query, (group_id, user_id))
+            return rows_affected > 0
+        except Exception as e:
+            logger.error(f"Erro ao banir usuário: {e}")
+            return False
+
+    def unban_user(self, group_id: int, user_id: int) -> bool:
+        """
+        Remove um usuário da lista de banidos de um grupo
+        
+        Args:
+            group_id: ID do grupo
+            user_id: ID do usuário
+            
+        Returns:
+            True se o usuário foi desbanido, False caso contrário
+        """
+        try:
+            query = """
+            DELETE FROM groups_banned_members 
+            WHERE group_id = %s AND user_id = %s
+            """
+            rows_affected = self._execute_update(query, (group_id, user_id))
+            return rows_affected > 0
+        except Exception as e:
+            logger.error(f"Erro ao desbanir usuário: {e}")
+            return False
+
+    def get_group_members(self, group_id: int) -> List[Dict[str, Any]]:
+        """
+        Retorna todos os membros de um grupo
+        
+        Args:
+            group_id: ID do grupo
+            
+        Returns:
+            Lista de membros do grupo
+        """
+        query = """
+        SELECT u.id, u.username, u.first_name, u.last_name, u.email
+        FROM users u
+        JOIN groups_members gm ON u.id = gm.user_id
+        WHERE gm.group_id = %s
+        ORDER BY u.username
+        """
+        return self._execute_query(query, (group_id,))
+
+    def get_banned_members(self, group_id: int) -> List[Dict[str, Any]]:
+        """
+        Retorna todos os usuários banidos de um grupo
+        
+        Args:
+            group_id: ID do grupo
+            
+        Returns:
+            Lista de usuários banidos do grupo
+        """
+        query = """
+        SELECT u.id, u.username, u.first_name, u.last_name, u.email
+        FROM users u
+        JOIN groups_banned_members gbm ON u.id = gbm.user_id
+        WHERE gbm.group_id = %s
+        ORDER BY u.username
+        """
+        return self._execute_query(query, (group_id,))
