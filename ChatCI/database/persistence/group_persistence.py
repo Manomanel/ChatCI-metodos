@@ -1,10 +1,11 @@
 from typing import List, Dict, Any, Optional
 from .base_persistence import BasePersistence
 import logging
+from ..dao.group_dao import GroupDAO
 
 logger = logging.getLogger('group_dao')
 
-class GroupPersistence(BasePersistence):
+class GroupPersistence(BasePersistence, GroupDAO):
     """DAO para manipulação da tabela de grupos"""
     
     def create_group(self, name: str, description: str = "") -> int:

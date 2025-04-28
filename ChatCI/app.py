@@ -4,6 +4,7 @@ from database.initializer import DatabaseInitializer
 from database.manager import DatabaseManager
 from database.persistence.group_persistence import GroupPersistence
 from database.persistence.message_persistence import MessagePersistence
+from database.persistence.event_persistence import EventPersistence
 from bot.application import SACIApplication
 import logging
 import os
@@ -16,6 +17,7 @@ from flask_cors import CORS
 from functools import wraps
 from mediator.mediator import Mediator
 from components.components import SACIBotComponent, GroupManagerComponent, MessageManagerComponent
+from datetime import datetime
 
 facade = ChatCIFacade()
 load_dotenv()
@@ -147,14 +149,15 @@ def admin_required(f):
     return decorated_function
 
 user_manager = UserManagement()
+# instancia de cada dao
 group_manager = GroupPersistence()
 message_manager = MessagePersistence()
+event_manager = EventPersistence()
 
-# Configuração do Mediator
+# MEDIATOR PARA MENSAGENS E GRUPOS
 mediator = Mediator()
 mediator.set_daos(group_manager, message_manager)
 
-# Registro dos componentes
 saci_component = SACIBotComponent()
 group_component = GroupManagerComponent()
 message_component = MessageManagerComponent()
@@ -1033,6 +1036,636 @@ def admin_scrape_saci():
     except Exception as e:
         logger.error(f"Erro na integração SACI: {e}")
         return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route("/api/eventos", methods=["GET"])
+def get_eventos():
+    """
+    Get all events
+    ---
+    tags:
+      - Events
+    parameters:
+      - name: tipo
+        in: query
+        type: string
+        required: false
+        description: Type of events to retrieve (all, upcoming, past)
+      - name: limit
+        in: query
+        type: integer
+        required: false
+        description: Number of events to return
+    responses:
+      200:
+        description: Events retrieved successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            events:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  link:
+                    type: string
+                  event_date:
+                    type: string
+                    format: date
+                  created_at:
+                    type: string
+                    format: date-time
+      500:
+        description: Server error
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    try:
+        tipo = request.args.get('tipo', 'all')
+        limit = request.args.get('limit', type=int)
+        
+        if tipo == 'upcoming':
+            events = event_manager.get_upcoming_events(limit)
+        elif tipo == 'past':
+            events = event_manager.get_past_events(limit)
+        else:
+            events = event_manager.get_all_events()
+        
+        return jsonify({
+            "success": True,
+            "events": events
+        })
+    except Exception as e:
+        logger.error(f"Erro ao buscar eventos: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+
+@app.route("/api/eventos/<int:evento_id>", methods=["GET"])
+def get_evento(evento_id):
+    """
+    Get event details
+    ---
+    tags:
+      - Events
+    parameters:
+      - name: evento_id
+        in: path
+        type: integer
+        required: true
+        description: Event ID
+    responses:
+      200:
+        description: Event details retrieved successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            event:
+              type: object
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string
+                description:
+                  type: string
+                link:
+                  type: string
+                event_date:
+                  type: string
+                  format: date
+                created_at:
+                  type: string
+                  format: date-time
+      404:
+        description: Event not found
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      500:
+        description: Server error
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    try:
+        event = event_manager.get_event_by_id(evento_id)
+        
+        if not event:
+            return jsonify({
+                "success": False,
+                "error": "Evento não encontrado"
+            }), 404
+        
+        return jsonify({
+            "success": True,
+            "event": event
+        })
+    except Exception as e:
+        logger.error(f"Erro ao buscar evento: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+
+@app.route("/api/eventos", methods=["POST"])
+@admin_required
+def criar_evento():
+    """
+    Create a new event
+    ---
+    tags:
+      - Events
+    security:
+      - bearerAuth: []
+      - sessionAuth: []
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            title:
+              type: string
+              description: Event title
+            description:
+              type: string
+              description: Event description
+            link:
+              type: string
+              description: Event related link
+            event_date:
+              type: string
+              format: date
+              description: Event date (YYYY-MM-DD)
+          required:
+            - title
+            - description
+            - event_date
+    responses:
+      200:
+        description: Event created successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            message:
+              type: string
+            event_id:
+              type: integer
+      400:
+        description: Invalid request
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      401:
+        description: Unauthorized
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      403:
+        description: Forbidden
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      500:
+        description: Server error
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    if request.method == "OPTIONS":
+        return jsonify({}), 200
+        
+    try:
+        # Verifica se a requisição é JSON
+        if not request.is_json:
+            return jsonify({
+                "success": False,
+                "error": "Content-Type deve ser application/json"
+            }), 400
+            
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({
+                "success": False,
+                "error": "Dados não recebidos"
+            }), 400
+            
+        title = data.get("title")
+        description = data.get("description")
+        link = data.get("link", "")
+        event_date = data.get("event_date")
+        
+        if not all([title, description, event_date]):
+            return jsonify({
+                "success": False,
+                "error": "Título, descrição e data do evento são obrigatórios"
+            }), 400
+
+        try:
+            event_date = datetime.strptime(event_date, "%Y-%m-%d").date()
+        except ValueError:
+            return jsonify({
+                "success": False,
+                "error": "Formato de data inválido. Use YYYY-MM-DD"
+            }), 400
+        
+        event_id = event_manager.create_event(title, description, link, event_date)
+        
+        if event_id:
+            return jsonify({
+                "success": True,
+                "message": "Evento criado com sucesso",
+                "event_id": event_id
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "error": "Erro ao criar evento"
+            }), 500
+    except Exception as e:
+        logger.error(f"Erro ao criar evento: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+
+@app.route("/api/eventos/<int:evento_id>", methods=["PUT"])
+@admin_required
+def atualizar_evento(evento_id):
+    """
+    Update an event
+    ---
+    tags:
+      - Events
+    security:
+      - bearerAuth: []
+      - sessionAuth: []
+    parameters:
+      - name: evento_id
+        in: path
+        type: integer
+        required: true
+        description: Event ID
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            title:
+              type: string
+              description: Event title
+            description:
+              type: string
+              description: Event description
+            link:
+              type: string
+              description: Event related link
+            event_date:
+              type: string
+              format: date
+              description: Event date (YYYY-MM-DD)
+    responses:
+      200:
+        description: Event updated successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            message:
+              type: string
+      400:
+        description: Invalid request
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      401:
+        description: Unauthorized
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      403:
+        description: Forbidden
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      404:
+        description: Event not found
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      500:
+        description: Server error
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    if request.method == "OPTIONS":
+        return jsonify({}), 200
+        
+    try:
+        event = event_manager.get_event_by_id(evento_id)
+        if not event:
+            return jsonify({
+                "success": False,
+                "error": "Evento não encontrado"
+            }), 404
+
+        if not request.is_json:
+            return jsonify({
+                "success": False,
+                "error": "Content-Type deve ser application/json"
+            }), 400
+            
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({
+                "success": False,
+                "error": "Dados não recebidos"
+            }), 400
+            
+        title = data.get("title")
+        description = data.get("description")
+        link = data.get("link")
+        event_date_str = data.get("event_date")
+        
+        event_date = None
+        if event_date_str:
+            # Converter a data para o formato correto
+            from datetime import datetime
+            try:
+                event_date = datetime.strptime(event_date_str, "%Y-%m-%d").date()
+            except ValueError:
+                return jsonify({
+                    "success": False,
+                    "error": "Formato de data inválido. Use YYYY-MM-DD"
+                }), 400
+        
+        # Atualiza o evento
+        success = event_manager.update_event(
+            evento_id,
+            title=title,
+            description=description,
+            link=link,
+            event_date=event_date
+        )
+        
+        if success:
+            return jsonify({
+                "success": True,
+                "message": "Evento atualizado com sucesso"
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "error": "Erro ao atualizar evento"
+            }), 500
+    except Exception as e:
+        logger.error(f"Erro ao atualizar evento: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+
+@app.route("/api/eventos/<int:evento_id>", methods=["DELETE"])
+@admin_required
+def deletar_evento(evento_id):
+    """
+    Delete an event
+    ---
+    tags:
+      - Events
+    security:
+      - bearerAuth: []
+      - sessionAuth: []
+    parameters:
+      - name: evento_id
+        in: path
+        type: integer
+        required: true
+        description: Event ID
+    responses:
+      200:
+        description: Event deleted successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            message:
+              type: string
+      401:
+        description: Unauthorized
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      403:
+        description: Forbidden
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      404:
+        description: Event not found
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      500:
+        description: Server error
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    try:
+        # Verifica se o evento existe
+        event = event_manager.get_event_by_id(evento_id)
+        if not event:
+            return jsonify({
+                "success": False,
+                "error": "Evento não encontrado"
+            }), 404
+            
+        # Remove o evento
+        success = event_manager.delete_event(evento_id)
+        
+        if success:
+            return jsonify({
+                "success": True,
+                "message": "Evento removido com sucesso"
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "error": "Erro ao remover evento"
+            }), 500
+    except Exception as e:
+        logger.error(f"Erro ao remover evento: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+
+@app.route("/api/eventos/busca", methods=["GET"])
+def buscar_eventos():
+    """
+    Search for events by title
+    ---
+    tags:
+      - Events
+    parameters:
+      - name: titulo
+        in: query
+        type: string
+        required: true
+        description: Title to search for
+    responses:
+      200:
+        description: Search results
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            events:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  link:
+                    type: string
+                  event_date:
+                    type: string
+                    format: date
+                  created_at:
+                    type: string
+                    format: date-time
+      400:
+        description: Invalid request
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      500:
+        description: Server error
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    try:
+        titulo = request.args.get('titulo')
+        
+        if not titulo:
+            return jsonify({
+                "success": False,
+                "error": "Parâmetro 'titulo' é obrigatório"
+            }), 400
+            
+        events = event_manager.get_events_by_title(titulo)
+        
+        return jsonify({
+            "success": True,
+            "events": events
+        })
+    except Exception as e:
+        logger.error(f"Erro ao buscar eventos: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
 
 @app.errorhandler(404)
 def not_found_error(error):

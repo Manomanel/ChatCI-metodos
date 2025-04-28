@@ -2,10 +2,11 @@ from typing import List, Dict, Any, Optional
 from .base_persistence import BasePersistence
 import logging
 from datetime import datetime
+from ..dao.message_dao import MessageDAO
 
 logger = logging.getLogger('message_dao')
 
-class MessagePersistence(BasePersistence):
+class MessagePersistence(BasePersistence, MessageDAO):
     """DAO para manipulação da tabela de mensagens"""
     
     def create_message(self, group_id: int, user_id: int, text: str, file: str = None) -> int:
