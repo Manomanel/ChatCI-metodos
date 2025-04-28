@@ -1,4 +1,3 @@
-# message_service.py
 from typing import List, Dict, Any, Optional
 from database.persistence.message_persistence import MessagePersistence
 from database.persistence.group_persistence import GroupPersistence
@@ -17,12 +16,10 @@ class MessageService:
     
     def send_message_to_group(self, group_id: int, user_id: int, text: str) -> int:
         """Envia uma mensagem para um grupo"""
-        # Verifica se o usuário é membro do grupo
         if not self.group_dao.is_member(group_id, user_id):
             logger.warning(f"Usuário {user_id} não é membro do grupo {group_id}")
             return None
-        
-        # Verifica se o usuário está banido
+
         if self.group_dao.is_banned(group_id, user_id):
             logger.warning(f"Usuário {user_id} está banido do grupo {group_id}")
             return None
@@ -37,7 +34,6 @@ class MessageService:
             return
         
         welcome_message = f"Bem-vindos ao grupo {group['name']}!"
-        
-        # Envia a mensagem como usuário do sistema (ID 1)
+
         system_user_id = 1
         self.message_dao.create_message(group_id, system_user_id, welcome_message)
