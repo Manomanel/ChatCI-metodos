@@ -74,3 +74,21 @@ class ProfilePersistence(BasePersistence, ProfileDAO):
         
         rows_affected = self._execute_update(query, tuple(params))
         return rows_affected > 0
+    
+    def save_memento(self, user_id: int) -> bool:
+        profile = self.get_by_user_id(user_id)
+        if not profile:
+            return False
+        
+        query = """
+        INSERT INTO profile_history (user_id, bio, profile_picture)
+        VALUES (%s, %s, %s)
+        """
+
+        self._execute_insert_returning_id(query, (
+            profile['user_id'],
+            profile.get('bio'),
+            profile.get('profile_picture')
+        ))
+
+        

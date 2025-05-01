@@ -281,11 +281,12 @@ class DatabaseInitializer:
                 "queries": [
                     """
                     CREATE TABLE profile_history (
-                        id SERIAL PRIMARY KEY,
-                        user_id INTEGER NOT NULL REFERENCES users(id),
-                        bio TEXT,
-                        profile_picture TEXT,
-                        modified_at TIMESTAMP DEFAULT NOW()
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER NOT NULL,
+                    bio TEXT,
+                    profile_picture TEXT,
+                    saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    )
                         """
                 ]
             }
