@@ -75,6 +75,8 @@ class ProfilePersistence(BasePersistence, ProfileDAO):
         rows_affected = self._execute_update(query, tuple(params))
         return rows_affected > 0
     
+
+    #CLASSE ORIGINADORA DO MEMENTO, O MEMENTO É A TABELA PROFILE HISTORY DA DB
     def save_memento(self, user_id: int) -> bool:
         #Salva o perfil atual como um memento no banco de dados
         profile = self.get_by_user_id(user_id)

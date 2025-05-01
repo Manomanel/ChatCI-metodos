@@ -91,6 +91,7 @@ class UserManagement:
             logger.error(f"Erro ao atualizar usuário: {e}")
             return False
         
+    #CARETAKER DO MEMENTO
     def atualizar_perfil (self, user_id, bio = None, profile_picture = None):
         try:
             self.profile_dao.save_memento(user_id)
