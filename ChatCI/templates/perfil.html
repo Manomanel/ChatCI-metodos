@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-   <head>
-      <meta charset="UTF-8" />
-      <title>Perfil</title>
-   </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil - ChatCI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="{{ url_for('static', filename='img/chatci-logo.png') }}" alt="ChatCI Logo" class="logo">
+      <h1>{{ nome }}</h1>
+      <h3>{{ email }}</h3>
+    </header>
 
-   <body>
-      <header>
-         <h1>{{ nome }}</h1>
-         <h3>{{ email }}</h3>
-      </header>
-      <form action="/inicial" method="get">
-         <input type="submit" value="Voltar para tela inicial" />
-      </form>
-   </body>
+    <div class="actions">
+      <button onclick="location.href='/inicial'" class="btn btn-primary">
+        Voltar para tela inicial
+      </button>
+    </div>
+  </div>
+</body>
 </html>
