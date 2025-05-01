@@ -65,3 +65,12 @@ class ChatCIFacade:
         Retorna o perfil associado (bio, foto, etc.).
         """
         return self.user.profile_dao.get_by_user_id(user_id)
+    
+    
+    def atualiza_perfil(self, user_id: int, bio: str, profile_picture = None):
+        """
+        Atualiza o perfil associado ao usuário"""
+        return self.user.atualizar_perfil(user_id, bio, profile_picture)
+    
+    def restaura_perfil(self, user_id: int):
+        return self.user.desfazer_mudancas_perfil(user_id)
