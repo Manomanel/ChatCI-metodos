@@ -4,12 +4,14 @@ from controllers.user_validators import IValidator, NameValidator, UsernameRegis
 from controllers.login_exception import LoginException
 from entities.user import User
 from database.factory.user_dao_factory import UserDAOFactory
+from storage.binary_file_adapter import BinaryFileAdapter, ArquivoBinario
 
 class ChatCIFacade:
     def __init__(self):
         self.user = UserManagement()
         #self.msg  = MessageManagement()
         self.user_persistence = UserDAOFactory.get_instance()
+        self.file_adapter = BinaryFileAdapter()
         
     #login
     def login(self, email_ou_username: str, senha: str):
@@ -74,3 +76,16 @@ class ChatCIFacade:
     
     def restaura_perfil(self, user_id: int):
         return self.user.desfazer_mudancas_perfil(user_id)
+    
+    def save_file(self, file_data: bytes, file_name: str) -> bool:
+        """
+        Salva um arquivo no sistema utilizando a persistência de arquivos binários.
+        """
+        arquivo = ArquivoBinario(file_data, file_name)
+        return self.file_adapter.saveFile(arquivo)
+
+    def get_file(self, file_id: int) -> ArquivoBinario:
+        """
+        Recupera um arquivo binário do sistema.
+        """
+        return self.file_adapter.getFile(file_id)
