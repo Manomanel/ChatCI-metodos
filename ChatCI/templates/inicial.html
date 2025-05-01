@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-   <head>
-      <meta charset="UTF-8" />
-      <title>ChatCI</title>
-   </head>
-   <body>
-      <h1><strong>Chat-CI</strong></h1>
-      <br /><br />
-      <div>
-         <p>Acessar chat das disciplinas</p>
-         <ul>
-            <li><button>Pesquisa Operacional</button></li>
-            <li><button>Sistemas de Informações nas Organizações</button></li>
-         </ul>
-      </div>
-      <form action="/" method="get">
-         <input type="submit" value="Voltar para o Login" />
-      </form>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatCI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="{{ url_for('static', filename='img/chatci-logo.png') }}" alt="ChatCI Logo" class="logo">
+      <h1>ChatCI</h1>
+    </header>
 
-      <form action="/perfil" method="get">
-         <input type="submit" value="perfil" />
-      </form>
-   </body>
+    <p style="text-align:center; margin-bottom:16px;">Acessar chat das disciplinas:</p>
+    <ul class="courses">
+      <li><button class="btn btn-primary">Pesquisa Operacional</button></li>
+      <li><button class="btn btn-primary">Sistemas de Informações nas Organizações</button></li>
+    </ul>
+
+    <div class="actions">
+      <button onclick="location.href='/'" class="btn btn-secondary">Voltar para o Login</button>
+      <button onclick="location.href='/perfil'" class="btn btn-secondary">Meu Perfil</button>
+    </div>
+  </div>
+</body>
 </html>
