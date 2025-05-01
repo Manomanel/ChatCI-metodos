@@ -90,3 +90,19 @@ class UserManagement:
         except Exception as e:
             logger.error(f"Erro ao atualizar usuário: {e}")
             return False
+        
+    def atualizar_perfil (self, user_id, bio = None, profile_picture = None):
+        try:
+            self.profile_dao.save_memento(user_id)
+
+            return self.profile_dao.update(user_id, bio, profile_picture)
+        except Exception as e:
+            logger.error(f"Erro ao atualizar: {e}")
+            return False
+        
+    def desfazer_mudancas_perfil(self, user_id):
+        try:
+            return self.profile_dao.restore_last_memento(user_id)
+        except Exception as e:
+            logger.error(f"Erro ao restaurar o perfil: {e}")
+            return False
