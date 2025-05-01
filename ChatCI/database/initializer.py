@@ -275,6 +275,19 @@ class DatabaseInitializer:
                     )
                     """
                 ]
+            },
+            {
+                "name": "009_create_profile_history_table",
+                "queries": [
+                    """
+                    CREATE TABLE profile_history (
+                        id SERIAL PRIMARY KEY,
+                        user_id INTEGER NOT NULL REFERENCES users(id),
+                        bio TEXT,
+                        profile_picture TEXT,
+                        modified_at TIMESTAMP DEFAULT NOW()
+                        """
+                ]
             }
         ]    
         success = True
