@@ -1,35 +1,51 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-   <head>
-      <meta charset="UTF-8" />
-      <title>Cadastro - ChatCI</title>
-   </head>
-   <body>
-      <h1><strong>Chat-CI</strong></h1>
-      <form action="/finalizar_cadastro" method="post">
-         {% if erro %}
-            <p style="color: red;">{{ erro }}</p>
-         {% endif %}
-         <label for="username">Nome de Usuário:</label><br />
-         <input type="text" id="username" name="username" /><br /><br />
-         <label for="primeiro_nome">Primeiro Nome:</label><br />
-         <input type="text" id="primeiro_nome" name="primeiro_nome" /><br /><br />
-         <label for="ultimo_nome">Último Nome:</label><br />
-         <input type="text" id="ultimo_nome" name="ultimo_nome" /><br /><br />
-         <label for="email">Email:</label><br />
-         <input type="email" id="email" name="email" /><br /><br />
-         <label for="senha">Senha:</label><br />
-         <input type="password" id="senha" name="senha" /><br /><br />
-         <label for="tipo">Tipo de Cadastro:</label><br />
-         <select name="tipo" id="tipo">
-            <option value="aluno">Aluno</option>
-            <option value="professor">Professor</option>
-            <option value="administrador">Administrador</option></select
-         ><br /><br />
-         <input type="submit" value="Finalizar" />
-      </form>
-      <form action="/" method="get">
-         <input type="submit" value="Voltar" />
-      </form>
-   </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro - ChatCI</title>
+  <!-- importa o CSS de aparência -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="{{ url_for('static', filename='img/chatci-logo.png') }}" alt="ChatCI Logo" class="logo">
+      <h1>Cadastro</h1>
+    </header>
+
+    <form action="/finalizar_cadastro" method="post" class="form">
+      {% if erro %}
+        <p class="error">{{ erro }}</p>
+      {% endif %}
+
+      <label for="username">Nome de Usuário:</label>
+      <input type="text" id="username" name="username" class="input-field">
+
+      <label for="primeiro_nome">Primeiro Nome:</label>
+      <input type="text" id="primeiro_nome" name="primeiro_nome" class="input-field">
+
+      <label for="ultimo_nome">Último Nome:</label>
+      <input type="text" id="ultimo_nome" name="ultimo_nome" class="input-field">
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" class="input-field">
+
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" name="senha" class="input-field">
+
+      <label for="tipo">Tipo de Cadastro:</label>
+      <select id="tipo" name="tipo" class="input-field">
+        <option value="aluno">Aluno</option>
+        <option value="professor">Professor</option>
+        <option value="administrador">Administrador</option>
+      </select>
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary">Finalizar</button>
+        <button type="button" onclick="window.location.href='/'" class="btn btn-secondary">Voltar</button>
+      </div>
+    </form>
+  </div>
+</body>
 </html>
