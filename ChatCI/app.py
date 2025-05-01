@@ -34,13 +34,11 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 app.secret_key = os.getenv('APP_SECRET', 'chave_secreta_padrao')
 
-# Configuração de sessão
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SESSION_COOKIE_SECURE'] = False  # Mude para True se usar HTTPS
-app.config['PERMANENT_SESSION_LIFETIME'] = 86400  # 24 horas
+app.config['SESSION_COOKIE_SECURE'] = False
+app.config['PERMANENT_SESSION_LIFETIME'] = 86400
 
-# Configuração do CORS
 CORS(app, resources={
     r"/api/*": {
         "origins": "*",
@@ -83,7 +81,7 @@ swagger_config = {
 swagger_template = {
     "swagger": "2.0",
     "info": {
-        "title": "SACI Application API",
+        "title": "C API",
         "description": "API documentation for SACI application",
         "version": "1.0.0"
     },
@@ -175,6 +173,8 @@ def init_db():
             logger.error("Falha ao inicializar o banco de dados!")
     except Exception as e:
         logger.error(f"Erro ao inicializar o banco de dados: {e}")
+        
+# ENDPOINTS ----------------------------------------------------
 
 @app.route("/api/test-auth", methods=["GET"])
 @login_required
@@ -290,7 +290,6 @@ def login():
         return jsonify({}), 200
         
     try:
-        # Verifica se a requisição é JSON
         if not request.is_json:
             return jsonify({
                 "success": False,
@@ -379,7 +378,7 @@ def cadastro():
               type: string
             tipo:
               type: string
-              enum: [aluno, professor, administrador]
+              enum: [aluno, professor, admin, superuser]
           required:
             - username
             - primeiro_nome
@@ -413,7 +412,6 @@ def cadastro():
         return jsonify({}), 200
         
     try:
-        # Verifica se a requisição é JSON
         if not request.is_json:
             return jsonify({
                 "success": False,
@@ -422,7 +420,6 @@ def cadastro():
             
         data = request.get_json()
         
-        # Verifica se os dados foram recebidos corretamente
         if not data:
             return jsonify({
                 "success": False,
@@ -436,11 +433,16 @@ def cadastro():
         senha = data.get("senha")
         tipo = data.get("tipo")
         
+        # Define tipo_mapeado para o cadastro do usuário
         tipo_mapeado = {
             "aluno": "Estudante",
             "professor": "Professor",
-            "administrador": "Professor"
+            "admin": "Professor",
+            "superuser": "Professor"
         }.get(tipo, "Estudante")
+        
+        # Define o valor de is_superuser baseado no tipo
+        is_superuser = tipo in ["admin", "superuser"]
 
         if not all([nome, email, senha, tipo, first_name, last_name]):
             return jsonify({
@@ -448,7 +450,8 @@ def cadastro():
                 "error": "Todos os campos são obrigatórios"
             }), 400
 
-        user_id, erro = facade.cadastrar_usuario(nome, first_name, last_name, email, tipo_mapeado, senha)
+        # Chama o método existente, mas passa informações adicionais
+        user_id, erro = facade.cadastrar_usuario(nome, first_name, last_name, email, tipo_mapeado, senha, is_superuser)
         
         if erro:
             return jsonify({

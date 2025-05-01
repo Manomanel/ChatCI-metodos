@@ -26,12 +26,11 @@ class ChatCIFacade:
         session.clear()
     
     #cadastro
-    def cadastrar_usuario(self, nome: str, first_name: str, last_name: str, email: str, tipo: str, senha: str):
+    def cadastrar_usuario(self, user):
         """
-        Registra um novo usuário. 
+        Registra um novo usuário.
         Retorna o user_id em caso de sucesso, ou None em caso de erro.
         """
-        user = User(None, nome, email, senha, first_name, last_name, tipo, False, False)
         validator = UserRegistrationValidator([
             NameValidator(),
             UsernameRegistrationValidator(),
@@ -41,11 +40,11 @@ class ChatCIFacade:
             EmailDBValidator(self.user_persistence)
         ])
         try:
-            validator.validate (user)
+            validator.validate(user)
         except LoginException as e:
             return None, e.message
         return self.user.adicionar_usuario(user), None
-
+    
     def buscar_usuario_por_id(self, user_id: int):
         """
         Retorna o dict de usuário para exibição ou edição.

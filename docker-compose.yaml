@@ -1,3 +1,5 @@
+version: '3'
+
 services:
   postgres:
     image: postgres:15
@@ -53,6 +55,21 @@ services:
       POSTGRES_PASSWORD: metodos2024.2
       APP_SECRET: chave_secreta_do_meu_app
       DEBUG: true
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: chatci_frontend
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+    environment:
+      REACT_APP_API_URL: http://localhost:5001
     networks:
       - app-network
     restart: unless-stopped
