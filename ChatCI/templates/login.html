@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Login - ChatCI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - ChatCI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1><strong>Chat-CI</strong></h1>
+  <div class="container">
+    <header>
+      <img src="{{ url_for('static', filename='img/chatci-logo.png') }}" alt="ChatCI Logo" class="logo">
+      <h1>ChatCI</h1>
+    </header>
+
     {% if erro %}
-        <p style="color: red;">{{ erro }}</p>
+      <p class="error">{{ erro }}</p>
     {% endif %}
-    <form action="/logar" method="post">
-        <label for="usuario">Usuário ou Email:</label><br>
-        <input type="text" id="usuario" name="usuario"><br><br>
-        <label for="senha">Senha:</label><br>
-        <input type="password" id="senha" name="senha"><br><br>
-        <input type="submit" value="Entrar">
+
+    <form action="/logar" method="post" class="form">
+      <label for="usuario">Usuário ou Email:</label>
+      <input type="text" id="usuario" name="usuario" class="input-field">
+
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" name="senha" class="input-field">
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary">Entrar</button>
+      </div>
     </form>
-    <br>
-    <form action="/cadastro" method="get">
-        <input type="submit" value="Cadastro">
-    </form>
+
+    <div class="actions" style="margin-top:16px;">
+      <form action="/cadastro" method="get">
+        <button type="submit" class="btn btn-secondary">Cadastro</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
