@@ -7,9 +7,9 @@
 2- Abrir no navegador localhost:80 (se não der certo tentar só localhost)
 
 3- Fazer o cadastro com estas especificações:
-    -Username não pode ter números
-    -Senha precisa ter caractere especial, uma letra maiúscula e minúscula, maior que 10 caracteres e número
-    -email precisa terminar com '@academico.ufpb.br', '@ci.ufpb.br' ou '@di.ufpb.br'
+    - Username não pode ter números
+    - Senha precisa ter caractere especial, uma letra maiúscula e minúscula, maior que 10 caracteres e número
+    - email precisa terminar com '@academico.ufpb.br', '@ci.ufpb.br' ou '@di.ufpb.br'
 
 4- Após fazer o login fazer a integração das turmas no painel de ADMIN, isto irá criar os grupos com webscraping do SACI
 
