@@ -82,10 +82,10 @@ class ChatCIFacade:
         Salva um arquivo no sistema utilizando a persistência de arquivos binários.
         """
         arquivo = ArquivoBinario(file_data, file_name)
-        return self.file_adapter.saveFile(arquivo)
+        return self.file_adapter.salva_arquivo_adaptado(arquivo)
 
     def busca_arquivo(self, file_id: int) -> ArquivoBinario:
         """
         Recupera um arquivo binário do sistema.
         """
-        return self.file_adapter.getFile(file_id)
+        return self.file_adapter.salva_arquivo_adaptado(file_id)
