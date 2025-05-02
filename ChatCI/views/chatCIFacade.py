@@ -77,14 +77,14 @@ class ChatCIFacade:
     def restaura_perfil(self, user_id: int):
         return self.user.desfazer_mudancas_perfil(user_id)
     
-    def save_file(self, file_data: bytes, file_name: str) -> bool:
+    def salva_arquivo(self, file_data: bytes, file_name: str) -> bool:
         """
         Salva um arquivo no sistema utilizando a persistência de arquivos binários.
         """
         arquivo = ArquivoBinario(file_data, file_name)
         return self.file_adapter.saveFile(arquivo)
 
-    def get_file(self, file_id: int) -> ArquivoBinario:
+    def busca_arquivo(self, file_id: int) -> ArquivoBinario:
         """
         Recupera um arquivo binário do sistema.
         """
