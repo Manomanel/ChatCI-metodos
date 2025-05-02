@@ -1,5 +1,5 @@
-from interface.file_storage import FileStorage
-from persistence.binary_file_persistence import BinaryFilePersistence
+from file_storage import FileStorage
+from database.persistence.binary_file_persistence import BinaryFilePersistence
 
 class BinaryFileAdapter(FileStorage):
     """
