@@ -1,18 +1,29 @@
+# Base image
 FROM python:3.11-slim
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y postgresql-client netcat-openbsd && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    netcat-openbsd \
+    wget \
+    gnupg \
+    unzip \
+    curl \
+    chromium \
+    chromium-driver \
+    && rm -rf /var/lib/apt/lists/*
 
-# Como estamos dentro da pasta ChatCI, podemos usar diretamente
+ENV CHROME_BIN=/usr/bin/chromium
+ENV DISPLAY=:99
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar o restante do código fonte
 COPY . .
 
-# Expor a porta
-EXPOSE 5000
+RUN mkdir -p logs
 
-# Iniciar o servidor
+EXPOSE 5001
+
 CMD ["python", "app.py"]

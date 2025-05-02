@@ -4,12 +4,15 @@ from controllers.user_validators import IValidator, NameValidator, UsernameRegis
 from controllers.login_exception import LoginException
 from entities.user import User
 from database.factory.user_dao_factory import UserDAOFactory
+from storage.binary_file_adapter import BinaryFileAdapter
+from entities.arquivo_binario import ArquivoBinario
 
 class ChatCIFacade:
     def __init__(self):
         self.user = UserManagement()
         #self.msg  = MessageManagement()
         self.user_persistence = UserDAOFactory.get_instance()
+        self.file_adapter = BinaryFileAdapter()
         
     #login
     def login(self, email_ou_username: str, senha: str):
@@ -26,12 +29,24 @@ class ChatCIFacade:
         session.clear()
     
     #cadastro
-    def cadastrar_usuario(self, nome: str, first_name: str, last_name: str, email: str, tipo: str, senha: str):
+    def cadastrar_usuario(self, nome: str, first_name: str, last_name: str, email: str, tipo: str, senha: str, is_superuser: bool):  # Adicionei o último parâmetro
         """
         Registra um novo usuário. 
         Retorna o user_id em caso de sucesso, ou None em caso de erro.
         """
-        user = User(None, nome, email, senha, first_name, last_name, tipo, False, False)
+        # 2. Corrigir a criação do User incluindo is_superuser
+        user = User(
+            userid=None,
+            username=nome,
+            email=email,
+            password=senha,
+            first_name=first_name,
+            last_name=last_name,
+            tipo=tipo,
+            email_verified=False,
+            is_superuser=is_superuser  # Novo parâmetro adicionado
+        )
+        
         validator = UserRegistrationValidator([
             NameValidator(),
             UsernameRegistrationValidator(),
@@ -40,12 +55,13 @@ class ChatCIFacade:
             UsernameDBValidator(self.user_persistence),
             EmailDBValidator(self.user_persistence)
         ])
+        
         try:
-            validator.validate (user)
+            validator.validate(user)
         except LoginException as e:
             return None, e.message
         return self.user.adicionar_usuario(user), None
-
+    
     def buscar_usuario_por_id(self, user_id: int):
         """
         Retorna o dict de usuário para exibição ou edição.
@@ -65,3 +81,25 @@ class ChatCIFacade:
         Retorna o perfil associado (bio, foto, etc.).
         """
         return self.user.profile_dao.get_by_user_id(user_id)
+    
+    
+    def atualiza_perfil(self, user_id: int, bio: str, profile_picture = None):
+        """
+        Atualiza o perfil associado ao usuário"""
+        return self.user.atualizar_perfil(user_id, bio, profile_picture)
+    
+    def restaura_perfil(self, user_id: int):
+        return self.user.desfazer_mudancas_perfil(user_id)
+    
+    def salva_arquivo(self, file_data: bytes, file_name: str) -> bool:
+        """
+        Salva um arquivo no sistema utilizando a persistência de arquivos binários.
+        """
+        arquivo = ArquivoBinario(file_data, file_name)
+        return self.file_adapter.getFile(arquivo)
+
+    def busca_arquivo(self, file_id: int) -> ArquivoBinario:
+        """
+        Recupera um arquivo binário do sistema.
+        """
+        return self.file_adapter.saveFile(file_id)

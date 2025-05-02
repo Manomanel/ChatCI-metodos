@@ -202,8 +202,8 @@ class DatabaseInitializer:
                         id SERIAL PRIMARY KEY,
                         title VARCHAR(255) NOT NULL,
                         description TEXT NOT NULL,
-                        link VARCHAR(255) NOT NULL DEFAULT '',
-                        event_date DATE NOT NULL,
+                        local VARCHAR(255) NOT NULL,
+                        event_date TIMESTAMP WITH TIME ZONE NOT NULL,
                         created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
                     )
                     """
@@ -274,6 +274,20 @@ class DatabaseInitializer:
                         created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
                     )
                     """
+                ]
+            },
+            {
+                "name": "009_create_profile_history_table",
+                "queries": [
+                    """
+                    CREATE TABLE profile_history (
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER NOT NULL,
+                    bio TEXT,
+                    profile_picture TEXT,
+                    saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    )
+                        """
                 ]
             }
         ]    

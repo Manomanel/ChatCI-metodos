@@ -1,0 +1,1542 @@
+[
+    {
+        "code": "1204112",
+        "turma": "01",
+        "nome": "ADMINISTRAÇÃO DE SISTEMAS DE INFORMAÇÕES",
+        "hora": "6T2345",
+        "alunos": "9",
+        "departamento": "CCSA - DA",
+        "sala": "CI 308",
+        "professor": "undefined"
+    },
+    {
+        "code": "5102009",
+        "turma": "01",
+        "nome": "ALGEBRA LINEAR COMPUTACIONAL",
+        "hora": "35M23",
+        "alunos": "34",
+        "departamento": "CI-DCC",
+        "sala": "CI T03 (Auditório)",
+        "professor": "FELIPE ANTONIO GARCIA MORENO"
+    },
+    {
+        "code": "GDCOC0076",
+        "turma": "02",
+        "nome": "ANÁLISE E PROJETO DE ALGORITMOS",
+        "hora": "35T45",
+        "alunos": "60",
+        "departamento": "CI-DCC",
+        "sala": "CI 102",
+        "professor": "BRUNO PETRATO BRUCK"
+    },
+    {
+        "code": "GDCOC0076",
+        "turma": "01",
+        "nome": "ANÁLISE E PROJETO DE ALGORITMOS",
+        "hora": "35T45",
+        "alunos": "63",
+        "departamento": "CI-DCC",
+        "sala": "CI T06",
+        "professor": "LUCIDIO DOS ANJOS FORMIGA CABRAL"
+    },
+    {
+        "code": "GDCOC0095",
+        "turma": "01",
+        "nome": "ANÁLISE MULTIVARIADA E APRENDIZAGEM NÃO SUPERVISIONADO",
+        "hora": "35T45",
+        "alunos": "16",
+        "departamento": "CI-DCC",
+        "sala": "CI 104",
+        "professor": "SERGIO DE CARVALHO BEZERRA"
+    },
+    {
+        "code": "GDCOC0094",
+        "turma": "01",
+        "nome": "APRENDIZADO PROFUNDO",
+        "hora": "35T23",
+        "alunos": "12",
+        "departamento": "CI-DCC",
+        "sala": "CI 104",
+        "professor": "TIAGO MARITAN UGULINO DE ARAUJO"
+    },
+    {
+        "code": "GDCOC0092",
+        "turma": "01-[5T23]",
+        "nome": "APRENDIZAGEM DE MÁQUINA",
+        "hora": "5T23",
+        "alunos": "28",
+        "departamento": "CI-DCC",
+        "sala": "LIEPE 07",
+        "professor": "GILBERTO FARIAS e BRUNO JEFFERSON"
+    },
+    {
+        "code": "GDCOC0092",
+        "turma": "01-[3T23]",
+        "nome": "APRENDIZAGEM DE MÁQUINA",
+        "hora": "3T23",
+        "alunos": "28",
+        "departamento": "CI-DCC",
+        "sala": "CI 106",
+        "professor": "GILBERTO FARIAS e BRUNO JEFFERSON"
+    },
+    {
+        "code": "GDSCO0035",
+        "turma": "01",
+        "nome": "ARQUITETURA DE COMPUTADORES",
+        "hora": "35M45",
+        "alunos": "62",
+        "departamento": "CI-DSC",
+        "sala": "LIEPE 05/06",
+        "professor": "AUGUSTO DE HOLANDA BARRETO MARTINS TAVARES"
+    },
+    {
+        "code": "GDSCO0036",
+        "turma": "02",
+        "nome": "ARQUITETURA DE COMPUTADORES I",
+        "hora": "24M23",
+        "alunos": "60",
+        "departamento": "CI-DSC",
+        "sala": "CI T06",
+        "professor": "HAMILTON SOARES DA SILVA"
+    },
+    {
+        "code": "GDSCO0037",
+        "turma": "02",
+        "nome": "ARQUITETURA DE COMPUTADORES II",
+        "hora": "24M45",
+        "alunos": "54",
+        "departamento": "CI-DSC",
+        "sala": "CI T06",
+        "professor": "HAMILTON SOARES DA SILVA"
+    },
+    {
+        "code": "5101001",
+        "turma": "01",
+        "nome": "AVALIAÇÃO DE DESEMPENHO DE SISTEMAS OPERACIONAIS",
+        "hora": "24T23",
+        "alunos": "41",
+        "departamento": "CI-DSC",
+        "sala": "CI 102",
+        "professor": "JOSILENE AIRES MOREIRA"
+    },
+    {
+        "code": "1107180",
+        "turma": "01",
+        "nome": "BANCO DE DADOS I",
+        "hora": "24M45",
+        "alunos": "47",
+        "departamento": "CI - DI",
+        "sala": "LIEPE 07",
+        "professor": "MARCELO IURY DE SOUSA OLIVEIRA"
+    },
+    {
+        "code": "1107180",
+        "turma": "02",
+        "nome": "BANCO DE DADOS I",
+        "hora": "24M23",
+        "alunos": "55",
+        "departamento": "CI - DI",
+        "sala": "CI T03 (Auditório)",
+        "professor": "MARCELO IURY DE SOUSA OLIVEIRA"
+    },
+    {
+        "code": "GDCOC0098",
+        "turma": "01-[3T23]",
+        "nome": "BIG DATA",
+        "hora": "3T23",
+        "alunos": "17",
+        "departamento": "CI-DCC",
+        "sala": "LIEPE 07",
+        "professor": "RAONI KULESZA"
+    },
+    {
+        "code": "GDCOC0098",
+        "turma": "01-[5T23]",
+        "nome": "BIG DATA",
+        "hora": "5T23",
+        "alunos": "17",
+        "departamento": "CI-DCC",
+        "sala": "CI 106",
+        "professor": "RAONI KULESZA"
+    },
+    {
+        "code": "5102006",
+        "turma": "01",
+        "nome": "CÁLCULO DAS PROBABILIDADES I",
+        "hora": "35M45",
+        "alunos": "53",
+        "departamento": "CI-DCC",
+        "sala": "LIEPE 04",
+        "professor": "KELY DIANA VILLACORTA VILLACORTA"
+    },
+    {
+        "code": "1108100",
+        "turma": "03",
+        "nome": "CÁLCULO DAS PROBABILIDADES E ESTATÍSTICA I",
+        "hora": "35T23",
+        "alunos": "40",
+        "departamento": "CCEN-DE",
+        "sala": "CI 304",
+        "professor": "FRANCISCO ELMIRO DE SOUSA FILHO"
+    },
+    {
+        "code": "1103177",
+        "turma": "14",
+        "nome": "CÁLCULO DIFERENCIAL E INTEGRAL I",
+        "hora": "24M23",
+        "alunos": "50",
+        "departamento": "CCEN-DM",
+        "sala": "LIEPE 07",
+        "professor": "OSLENNE NOGUEIRA DE ARAÚJO"
+    },
+    {
+        "code": "1103177",
+        "turma": "13",
+        "nome": "CÁLCULO DIFERENCIAL E INTEGRAL I",
+        "hora": "24M23",
+        "alunos": "40",
+        "departamento": "CCEN-DM",
+        "sala": "LIEPE 04",
+        "professor": "EVERALDO SOUTO DE MEDEIROS"
+    },
+    {
+        "code": "1103177",
+        "turma": "12",
+        "nome": "CÁLCULO DIFERENCIAL E INTEGRAL I",
+        "hora": "24M45",
+        "alunos": "50",
+        "departamento": "CCEN-DM",
+        "sala": "LIEPE 04",
+        "professor": "OSLENNE NOGUEIRA DE ARAÚJO"
+    },
+    {
+        "code": "1103178",
+        "turma": "13",
+        "nome": "CÁLCULO DIFERENCIAL E INTEGRAL II",
+        "hora": "24T45",
+        "alunos": "70",
+        "departamento": "CCEN-DM",
+        "sala": "LIEPE 07",
+        "professor": "UBERLANDIO BATISTA SEVERO"
+    },
+    {
+        "code": "1103178",
+        "turma": "14",
+        "nome": "CÁLCULO DIFERENCIAL E INTEGRAL II",
+        "hora": "24T23",
+        "alunos": "60",
+        "departamento": "CCEN-DM",
+        "sala": "LIEPE 07",
+        "professor": "KELEN CRISTINA CRIVELARO SILVESTRE"
+    },
+    {
+        "code": "1103232",
+        "turma": "09",
+        "nome": "CÁLCULO DIFERENCIAL E INTEGRAL III",
+        "hora": "24T45",
+        "alunos": "55",
+        "departamento": "CCEN-DM",
+        "sala": "CI T03 (Auditório)",
+        "professor": "PEDRO ANTONIO GOMEZ VENEGAS"
+    },
+    {
+        "code": "1103232",
+        "turma": "10",
+        "nome": "CÁLCULO DIFERENCIAL E INTEGRAL III",
+        "hora": "24T45",
+        "alunos": "53",
+        "departamento": "CCEN-DM",
+        "sala": "CI T06",
+        "professor": "EDUARDO GONCALVES DOS SANTOS"
+    },
+    {
+        "code": "GDCOC0072",
+        "turma": "01",
+        "nome": "CALCULO NUMERICO",
+        "hora": "35M45",
+        "alunos": "62",
+        "departamento": "CI-DCC",
+        "sala": "CI T03 (Auditório)",
+        "professor": "MOISES DANTAS DOS SANTOS"
+    },
+    {
+        "code": "1103118",
+        "turma": "14",
+        "nome": "CÁLCULO VETORIAL E GEOMETRIA ANALÍTICA",
+        "hora": "35T23",
+        "alunos": "43",
+        "departamento": "CCEN-DM",
+        "sala": "CI T06",
+        "professor": "OTONIEL NOGUEIRA e BRUNO HENRIQUE"
+    },
+    {
+        "code": "1103118",
+        "turma": "07",
+        "nome": "CÁLCULO VETORIAL E GEOMETRIA ANALÍTICA",
+        "hora": "35M23",
+        "alunos": "40",
+        "departamento": "CCEN-DM",
+        "sala": "CI T06",
+        "professor": "PEDRO ANTONIO HINOJOSA VERA"
+    },
+    {
+        "code": "1103118",
+        "turma": "13",
+        "nome": "CÁLCULO VETORIAL E GEOMETRIA ANALÍTICA",
+        "hora": "35T23",
+        "alunos": "48",
+        "departamento": "CCEN-DM",
+        "sala": "LIEPE 04",
+        "professor": "ADRIANO ALVES DE MEDEIROS"
+    },
+    {
+        "code": "GDCOC0115",
+        "turma": "01",
+        "nome": "CIÊNCIA DE DADOS EM FINANÇAS",
+        "hora": "6M2345",
+        "alunos": "16",
+        "departamento": "CI-DCC",
+        "sala": "CI 308",
+        "professor": "SERGIO DE CARVALHO BEZERRA"
+    },
+    {
+        "code": "GDSCO0021",
+        "turma": "01",
+        "nome": "CIRCUITOS LOGICOS I",
+        "hora": "24M45",
+        "alunos": "47",
+        "departamento": "CI-DSC",
+        "sala": "CI T03 (Auditório)",
+        "professor": "JOSE ANTONIO GOMES DE LIMA"
+    },
+    {
+        "code": "GDSCO0022",
+        "turma": "01",
+        "nome": "CIRCUITOS LOGICOS II",
+        "hora": "24M23",
+        "alunos": "47",
+        "departamento": "CI-DSC",
+        "sala": "LIEPE 03 (Lab Hardware)",
+        "professor": "VERONICA MARIA LIMA SILVA"
+    },
+    {
+        "code": "1107120",
+        "turma": "01",
+        "nome": "COMPUTADORES E SOCIEDADE",
+        "hora": "6M23",
+        "alunos": "19",
+        "departamento": "CI - DI",
+        "sala": "CI 107",
+        "professor": "ED PORTO BEZERRA"
+    },
+    {
+        "code": "GDINF0106",
+        "turma": "02",
+        "nome": "COMPUTADORES E SOCIEDADE",
+        "hora": "24M23",
+        "alunos": "49",
+        "departamento": "CI - DI",
+        "sala": "CI SB01",
+        "professor": "ED PORTO BEZERRA"
+    },
+    {
+        "code": "GDINF0106",
+        "turma": "01",
+        "nome": "COMPUTADORES E SOCIEDADE",
+        "hora": "24M45",
+        "alunos": "61",
+        "departamento": "CI - DI",
+        "sala": "CI 102",
+        "professor": "ED PORTO BEZERRA"
+    },
+    {
+        "code": "GDSCO0040",
+        "turma": "01",
+        "nome": "CONCEPÇÃO ESTRUTURADA DE CIRCUITOS INTEGRADOS",
+        "hora": "35M23",
+        "alunos": "23",
+        "departamento": "CI-DSC",
+        "sala": "LIEPE 03 (Lab Hardware)",
+        "professor": "ROMULO CALADO PANTALEAO CAMARA"
+    },
+    {
+        "code": "GDSCO0043",
+        "turma": "01",
+        "nome": "CONSTRUÇÃO DE COMPILADORES I",
+        "hora": "24T23",
+        "alunos": "44",
+        "departamento": "CI-DSC",
+        "sala": "CI 304",
+        "professor": "ANDREI DE ARAUJO FORMIGA"
+    },
+    {
+        "code": "DSCO00025",
+        "turma": "01",
+        "nome": "DESIGN DE INTERAÇÃO",
+        "hora": "6T2345",
+        "alunos": "4",
+        "departamento": "CI-DSC",
+        "sala": "CI 104",
+        "professor": "VALDECIR BECKER"
+    },
+    {
+        "code": "GDSCO0023",
+        "turma": "01",
+        "nome": "ELETRICIDADE E CIRCUITOS PARA COMPUTAÇÃO I",
+        "hora": "35T45",
+        "alunos": "30",
+        "departamento": "CI-DSC",
+        "sala": "CI 106",
+        "professor": "HENRIQUE THADEU BALTAR DE MEDEIROS CABRAL MORAES"
+    },
+    {
+        "code": "GDSCO0023",
+        "turma": "02",
+        "nome": "ELETRICIDADE E CIRCUITOS PARA COMPUTAÇÃO I",
+        "hora": "35M23",
+        "alunos": "30",
+        "departamento": "CI-DSC",
+        "sala": "CI 105",
+        "professor": "MARDSON FREITAS DE AMORIM"
+    },
+    {
+        "code": "GDSCO0023",
+        "turma": "03",
+        "nome": "ELETRICIDADE E CIRCUITOS PARA COMPUTAÇÃO I",
+        "hora": "24T45",
+        "alunos": "8",
+        "departamento": "CI-DSC",
+        "sala": "CI 307",
+        "professor": "HENRIQUE THADEU BALTAR DE MEDEIROS CABRAL MORAES"
+    },
+    {
+        "code": "GDSCO0024",
+        "turma": "01-[5M23]",
+        "nome": "ELETRICIDADE E CIRCUITOS PARA COMPUTAÇÃO II",
+        "hora": "5M23",
+        "alunos": "34",
+        "departamento": "CI-DSC",
+        "sala": "CI 311",
+        "professor": "LUCIANO SALES BARROS"
+    },
+    {
+        "code": "GDSCO0024",
+        "turma": "01-[3M23]",
+        "nome": "ELETRICIDADE E CIRCUITOS PARA COMPUTAÇÃO II",
+        "hora": "3M23",
+        "alunos": "34",
+        "departamento": "CI-DSC",
+        "sala": "CI 106",
+        "professor": "LUCIANO SALES BARROS"
+    },
+    {
+        "code": "GDSCO0026",
+        "turma": "01",
+        "nome": "ELETRONICA APLICADA I",
+        "hora": "35T23",
+        "alunos": "30",
+        "departamento": "CI-DSC",
+        "sala": "CI 311",
+        "professor": "RUY ALBERTO PISANI ALTAFIM"
+    },
+    {
+        "code": "GDSCO0027",
+        "turma": "02",
+        "nome": "ELETRONICA APLICADA II",
+        "hora": "24T23",
+        "alunos": "27",
+        "departamento": "CI-DSC",
+        "sala": "CI 104",
+        "professor": "HUGO LEONARDO DAVI DE SOUZA CAVALCANTE"
+    },
+    {
+        "code": "GDCOC0106",
+        "turma": "01",
+        "nome": "EMPREENDEDORISMO",
+        "hora": "7M2345",
+        "alunos": "20",
+        "departamento": "CI-DCC",
+        "sala": "CI T03 (Auditório)",
+        "professor": "ALISSON VASCONCELOS DE BRITO"
+    },
+    {
+        "code": "DINF00052",
+        "turma": "01",
+        "nome": "ENGENHARIA DE SISTEMAS DISTRIBUÍDOS",
+        "hora": "6T2345",
+        "alunos": "32",
+        "departamento": "CI - DI",
+        "sala": "CI 311",
+        "professor": "RAONI KULESZA"
+    },
+    {
+        "code": "1107128",
+        "turma": "02",
+        "nome": "ENGENHARIA DE SOFTWARE",
+        "hora": "35T23",
+        "alunos": "55",
+        "departamento": "CI - DI",
+        "sala": "CI SB01",
+        "professor": "YUSKA PAOLA COSTA AGUIAR"
+    },
+    {
+        "code": "1107128",
+        "turma": "01",
+        "nome": "ENGENHARIA DE SOFTWARE",
+        "hora": "24T45",
+        "alunos": "46",
+        "departamento": "CI - DI",
+        "sala": "CI 103",
+        "professor": "GLEDSON ELIAS DA SILVEIRA"
+    },
+    {
+        "code": "GDCOC0105",
+        "turma": "01",
+        "nome": "EQUAÇÕES DIFERENCIAIS ORDINÁRIAS",
+        "hora": "35M45",
+        "alunos": "18",
+        "departamento": "CI-DCC",
+        "sala": "CI 107",
+        "professor": "ANA PAULA PINTADO WYSE"
+    },
+    {
+        "code": "1107184",
+        "turma": "01",
+        "nome": "ESPECIFICACAO DE REQUISITOS DE SOFTWARE",
+        "hora": "35M23",
+        "alunos": "61",
+        "departamento": "CI - DI",
+        "sala": "CI SB01",
+        "professor": "DANIELLE ROUSY DIAS RICARTE"
+    },
+    {
+        "code": "1107186",
+        "turma": "02",
+        "nome": "ESTRUTURA DE DADOS",
+        "hora": "35T45",
+        "alunos": "65",
+        "departamento": "CI - DI",
+        "sala": "CI T03 (Auditório)",
+        "professor": "GILBERTO FARIAS DE SOUSA FILHO"
+    },
+    {
+        "code": "1107186",
+        "turma": "03",
+        "nome": "ESTRUTURA DE DADOS",
+        "hora": "24M23",
+        "alunos": "63",
+        "departamento": "CI - DI",
+        "sala": "CI 102",
+        "professor": "LILIANE DOS SANTOS MACHADO"
+    },
+    {
+        "code": "1107055",
+        "turma": "1",
+        "nome": "ESTRUTURA DE DADOS E COMPLEXIDADE DE ALGORITMOS",
+        "hora": "24T34",
+        "alunos": "30",
+        "departamento": "PPGI",
+        "sala": "CI SB01",
+        "professor": "LUCIDIO DOS ANJOS FORMIGA CABRAL"
+    },
+    {
+        "code": "DINF00048",
+        "turma": "01",
+        "nome": "ESTRUTURAS DE DADOS E ALGORITMOS II",
+        "hora": "35T45",
+        "alunos": "60",
+        "departamento": "CI - DI",
+        "sala": "CI 103",
+        "professor": "LINCOLN DAVID NERY E SILVA"
+    },
+    {
+        "code": "1101171",
+        "turma": "02",
+        "nome": "FÍSICA APLICADA À COMPUTAÇÃO I",
+        "hora": "24T23",
+        "alunos": "38",
+        "departamento": "CCEN-DF",
+        "sala": "LIEPE 04",
+        "professor": "ALEXANDRE DA SILVA ROSAS"
+    },
+    {
+        "code": "1101171",
+        "turma": "01",
+        "nome": "FÍSICA APLICADA À COMPUTAÇÃO I",
+        "hora": "24M23",
+        "alunos": "52",
+        "departamento": "CCEN-DF",
+        "sala": "LIEPE 05/06",
+        "professor": "ALEXANDRE DA SILVA ROSAS"
+    },
+    {
+        "code": "GDSCO0046",
+        "turma": "02",
+        "nome": "FÍSICA EXPERIMENTAL PARA COMPUTAÇÃO",
+        "hora": "6M23",
+        "alunos": "54",
+        "departamento": "CI-DSC",
+        "sala": "CI 103",
+        "professor": "HENRIQUE THADEU BALTAR DE MEDEIROS CABRAL MORAES"
+    },
+    {
+        "code": "DINF00053",
+        "turma": "02",
+        "nome": "GERENCIAMENTO DE PROJETO DE SOFTWARE",
+        "hora": "24T23",
+        "alunos": "39",
+        "departamento": "CI - DI",
+        "sala": "CI 103",
+        "professor": "DANIELLE ROUSY DIAS RICARTE"
+    },
+    {
+        "code": "GDCOC0107",
+        "turma": "01",
+        "nome": "INFERÊNCIA ESTATÍSTICA",
+        "hora": "24M23",
+        "alunos": "12",
+        "departamento": "CI-DCC",
+        "sala": "CI 104",
+        "professor": "ROBERTO QUIRINO DO NASCIMENTO"
+    },
+    {
+        "code": "DSCO00023",
+        "turma": "01",
+        "nome": "INOVAÇÃO DE BASE CIENTÍFICA-TECNOLÓGICA E EMPREENDEDORISMO",
+        "hora": "6M2345",
+        "alunos": "41",
+        "departamento": "CI-DSC",
+        "sala": "CI T03 (Auditório)",
+        "professor": "ALISSON VASCONCELOS DE BRITO"
+    },
+    {
+        "code": "1107021",
+        "turma": "1",
+        "nome": "INTELIGENCIA ARTIFICIAL",
+        "hora": "35T23",
+        "alunos": "8",
+        "departamento": "PPGI",
+        "sala": "LIEPE 05/06",
+        "professor": "NATASHA CORREIA QUEIROZ LINO"
+    },
+    {
+        "code": "GDCOC0075",
+        "turma": "01",
+        "nome": "INTELIGÊNCIA COMPUTACIONAL",
+        "hora": "35T45",
+        "alunos": "18",
+        "departamento": "CI-DCC",
+        "sala": "CI 307",
+        "professor": "JOSE MIGUEL AROZTEGUI MASSERA"
+    },
+    {
+        "code": "GDSCO0047",
+        "turma": "02",
+        "nome": "INTERAÇÃO HOMEM MÁQUINA",
+        "hora": "35T23",
+        "alunos": "61",
+        "departamento": "CI-DSC",
+        "sala": "CI 102",
+        "professor": "VALDECIR BECKER"
+    },
+    {
+        "code": "1107248",
+        "turma": "01",
+        "nome": "INTROD À ENGENHARIA DE COMPUTAÇÃO",
+        "hora": "35T45",
+        "alunos": "41",
+        "departamento": "CI-DSC",
+        "sala": "CI 304",
+        "professor": "ANAND SUBRAMANIAN"
+    },
+    {
+        "code": "1103179",
+        "turma": "07",
+        "nome": "INTRODUÇÃO À ÁLGEBRA LINEAR",
+        "hora": "35M23",
+        "alunos": "47",
+        "departamento": "CCEN-DM",
+        "sala": "LIEPE 04",
+        "professor": "JOSE GOMES DE ASSIS"
+    },
+    {
+        "code": "1103179",
+        "turma": "08",
+        "nome": "INTRODUÇÃO À ÁLGEBRA LINEAR",
+        "hora": "35T45",
+        "alunos": "61",
+        "departamento": "CCEN-DM",
+        "sala": "LIEPE 04",
+        "professor": "JOSE GOMES DE ASSIS"
+    },
+    {
+        "code": "DINF00046",
+        "turma": "01",
+        "nome": "INTRODUÇÃO À CIÊNCIA DA COMPUTAÇÃO",
+        "hora": "35M45",
+        "alunos": "45",
+        "departamento": "CI - DI",
+        "sala": "CI 103",
+        "professor": "THAIS GAUDENCIO DO REGO"
+    },
+    {
+        "code": "GDCOC0089",
+        "turma": "01",
+        "nome": "INTRODUÇÃO À CIÊNCIA DE DADOS",
+        "hora": "24T23",
+        "alunos": "31",
+        "departamento": "CI-DCC",
+        "sala": "CI 106",
+        "professor": "YURI DE ALMEIDA MALHEIROS BARBOSA"
+    },
+    {
+        "code": "GDSCO0051",
+        "turma": "01",
+        "nome": "INTRODUÇÃO À COMPUTAÇÃO GRÁFICA",
+        "hora": "24M23",
+        "alunos": "22",
+        "departamento": "CI-DSC",
+        "sala": "CI 106",
+        "professor": "undefined"
+    },
+    {
+        "code": "1402240",
+        "turma": "02",
+        "nome": "INTRODUÇÃO À FILOSOFIA",
+        "hora": "6T2345",
+        "alunos": "9",
+        "departamento": "CCHLA - DF",
+        "sala": "CI 107",
+        "professor": "GABRIEL REZENDE DE SOUZA PINTO"
+    },
+    {
+        "code": "1402240",
+        "turma": "01",
+        "nome": "INTRODUÇÃO À FILOSOFIA",
+        "hora": "6M2345",
+        "alunos": "15",
+        "departamento": "CCHLA - DF",
+        "sala": "CI 307",
+        "professor": "ANTONIO ALMEIDA RODRIGUES DA SILVA"
+    },
+    {
+        "code": "1402240",
+        "turma": "06",
+        "nome": "INTRODUÇÃO À FILOSOFIA",
+        "hora": "6T2345",
+        "alunos": "9",
+        "departamento": "CCHLA - DF",
+        "sala": "CI 307",
+        "professor": "MIGUEL ANGELO OLIVEIRA DO CARMO"
+    },
+    {
+        "code": "1107191",
+        "turma": "01",
+        "nome": "INTRODUCAO A INTELIGENCIA ARTIFICIAL",
+        "hora": "35M45",
+        "alunos": "46",
+        "departamento": "CI - DI",
+        "sala": "CI T06",
+        "professor": "NATASHA CORREIA QUEIROZ LINO"
+    },
+    {
+        "code": "1107191",
+        "turma": "02",
+        "nome": "INTRODUCAO A INTELIGENCIA ARTIFICIAL",
+        "hora": "35T45",
+        "alunos": "25",
+        "departamento": "CI - DI",
+        "sala": "CI 101",
+        "professor": "CLAUIRTON DE ALBUQUERQUE SIEBRA"
+    },
+    {
+        "code": "GDCOC0104",
+        "turma": "01",
+        "nome": "INTRODUÇÃO A INTELIGÊNCIA ARTIFICIAL",
+        "hora": "35M23",
+        "alunos": "22",
+        "departamento": "CI-DCC",
+        "sala": "CI 307",
+        "professor": "ANDREI DE ARAUJO FORMIGA"
+    },
+    {
+        "code": "GDSCO0052",
+        "turma": "01",
+        "nome": "INTRODUÇÃO À MECÂNICA DOS FLUÍDOS",
+        "hora": "4M45",
+        "alunos": "9",
+        "departamento": "CI-DSC",
+        "sala": "CI 306",
+        "professor": "HENRIQUE THADEU BALTAR DE MEDEIROS CABRAL MORAES"
+    },
+    {
+        "code": "GDSCO0053",
+        "turma": "01",
+        "nome": "INTRODUÇÃO À MICROELETRÔNICA",
+        "hora": "35T23",
+        "alunos": "36",
+        "departamento": "CI-DSC",
+        "sala": "CI 105",
+        "professor": "HUGO LEONARDO DAVI DE SOUZA CAVALCANTE"
+    },
+    {
+        "code": "1107136",
+        "turma": "06",
+        "nome": "INTRODUÇÃO A PROGRAMAÇÃO",
+        "hora": "35M23",
+        "alunos": "53",
+        "departamento": "CI - DI",
+        "sala": "CI T07",
+        "professor": "LINCOLN DAVID NERY E SILVA"
+    },
+    {
+        "code": "1107136",
+        "turma": "05",
+        "nome": "INTRODUÇÃO A PROGRAMAÇÃO",
+        "hora": "24M45",
+        "alunos": "40",
+        "departamento": "CI - DI",
+        "sala": "CI 106",
+        "professor": "BRUNO JEFFERSON DE SOUSA PESSOA"
+    },
+    {
+        "code": "GDINF0107",
+        "turma": "01",
+        "nome": "INTRODUÇÃO A PROGRAMAÇÃO PARA ENGENHARIA DE COMPUTAÇÃO",
+        "hora": "35M23",
+        "alunos": "36",
+        "departamento": "CI - DI",
+        "sala": "CI 102",
+        "professor": "VITOR MENEGHETTI UGULINO DE ARAUJO"
+    },
+    {
+        "code": "GDSCO0054",
+        "turma": "01",
+        "nome": "INTRODUÇÃO À TEORIA DA INFORMAÇÃO",
+        "hora": "24M23",
+        "alunos": "48",
+        "departamento": "CI-DSC",
+        "sala": "CI 103",
+        "professor": "LEONARDO VIDAL BATISTA"
+    },
+    {
+        "code": "1107137",
+        "turma": "01",
+        "nome": "INTRODUCAO AO COMPUTADOR",
+        "hora": "35M45",
+        "alunos": "35",
+        "departamento": "CI - DI",
+        "sala": "CI SB01",
+        "professor": "YUSKA PAOLA COSTA AGUIAR"
+    },
+    {
+        "code": "GDSCO0055",
+        "turma": "03",
+        "nome": "INTRODUÇÃO AO PROCESSAMENTO DIGITAL DE IMAGENS",
+        "hora": "24M45",
+        "alunos": "41",
+        "departamento": "CI-DSC",
+        "sala": "CI 103",
+        "professor": "LEONARDO VIDAL BATISTA"
+    },
+    {
+        "code": "GDSCO0055",
+        "turma": "02",
+        "nome": "INTRODUÇÃO AO PROCESSAMENTO DIGITAL DE IMAGENS",
+        "hora": "24M23",
+        "alunos": "47",
+        "departamento": "CI-DSC",
+        "sala": "CI 101",
+        "professor": "AUGUSTO DE HOLANDA BARRETO MARTINS TAVARES"
+    },
+    {
+        "code": "GDINF0101",
+        "turma": "01",
+        "nome": "LABORATÓRIO DE INTRODUÇÃO A PROGRAMAÇÃO",
+        "hora": "35M45",
+        "alunos": "37",
+        "departamento": "CI - DI",
+        "sala": "CI T07",
+        "professor": "VITOR MENEGHETTI UGULINO DE ARAUJO"
+    },
+    {
+        "code": "GDINF0102",
+        "turma": "01",
+        "nome": "LABORATORIO DE LINGUAGEM DE PROGRAMAÇÃO I",
+        "hora": "24T23",
+        "alunos": "42",
+        "departamento": "CI - DI",
+        "sala": "CI 105",
+        "professor": "DERZU OMAIA"
+    },
+    {
+        "code": "GDINF0108",
+        "turma": "01",
+        "nome": "LINGUAGEM DE PROGRAMAÇÃO I",
+        "hora": "35M45",
+        "alunos": "43",
+        "departamento": "CI - DI",
+        "sala": "CI 102",
+        "professor": "DERZU OMAIA"
+    },
+    {
+        "code": "1107148",
+        "turma": "01",
+        "nome": "LINGUAGEM DE PROGRAMAÇÃO II",
+        "hora": "24T23",
+        "alunos": "20",
+        "departamento": "CI - DI",
+        "sala": "CI 107",
+        "professor": "GLEDSON ELIAS DA SILVEIRA"
+    },
+    {
+        "code": "1107148",
+        "turma": "02",
+        "nome": "LINGUAGEM DE PROGRAMAÇÃO II",
+        "hora": "24M45",
+        "alunos": "56",
+        "departamento": "CI - DI",
+        "sala": "CI T07",
+        "professor": "CARLOS EDUARDO COELHO FREIRE BATISTA"
+    },
+    {
+        "code": "DCOC00062",
+        "turma": "01",
+        "nome": "LINGUAGENS FORMAIS E COMPUTABILIDADE",
+        "hora": "35M23",
+        "alunos": "49",
+        "departamento": "CI-DCC",
+        "sala": "CI 304",
+        "professor": "BRUNO PETRATO BRUCK"
+    },
+    {
+        "code": "GDCOC0079",
+        "turma": "01",
+        "nome": "LÓGICA APLICADA À COMPUTAÇÃO",
+        "hora": "24M45",
+        "alunos": "41",
+        "departamento": "CI-DCC",
+        "sala": "CI SB01",
+        "professor": "TATIANA ARAUJO SIMOES"
+    },
+    {
+        "code": "1107259",
+        "turma": "01",
+        "nome": "MATEMÁTICA DISCRETA",
+        "hora": "24M23",
+        "alunos": "60",
+        "departamento": "CI-DCC",
+        "sala": "CI 304",
+        "professor": "KELY DIANA VILLACORTA VILLACORTA"
+    },
+    {
+        "code": "1107259",
+        "turma": "02",
+        "nome": "MATEMÁTICA DISCRETA",
+        "hora": "24M45",
+        "alunos": "59",
+        "departamento": "CI-DCC",
+        "sala": "CI 304",
+        "professor": "FELIPE ANTONIO GARCIA MORENO"
+    },
+    {
+        "code": "GDSCO0025",
+        "turma": "01",
+        "nome": "MATERIAIS PARA MICRO E NANO TECNOLOGIA",
+        "hora": "6M2345",
+        "alunos": "38",
+        "departamento": "CI-DSC",
+        "sala": "CI 101",
+        "professor": "RUY ALBERTO PISANI ALTAFIM"
+    },
+    {
+        "code": "GDSCO0059",
+        "turma": "01",
+        "nome": "MECÂNICA PARA ENGENHARIA DA COMPUTAÇÃO",
+        "hora": "24M45",
+        "alunos": "42",
+        "departamento": "CI-DSC",
+        "sala": "CI 105",
+        "professor": "JAIRO ROCHA DE FARIA"
+    },
+    {
+        "code": "SINFO0075",
+        "turma": "01",
+        "nome": "METODOLOGIA DA PESQUISA CIENTÍFICA",
+        "hora": "2T3456",
+        "alunos": "32",
+        "departamento": "PPGI",
+        "sala": "CI 311",
+        "professor": "THAIS GAUDENCIO DO REGO"
+    },
+    {
+        "code": "SINFO0075",
+        "turma": "1",
+        "nome": "METODOLOGIA DA PESQUISA CIENTÍFICA",
+        "hora": "24M45",
+        "alunos": "20",
+        "departamento": "PPGI",
+        "sala": "CI 307",
+        "professor": "RUY ALBERTO PISANI ALTAFIM"
+    },
+    {
+        "code": "1107201",
+        "turma": "01",
+        "nome": "METODOLOGIA DO TRABALHO CIENTIFICO",
+        "hora": "6M345",
+        "alunos": "34",
+        "departamento": "CI - DI",
+        "sala": "CI 102",
+        "professor": "ELIZABET MARIA SPOHR DE MEDEIROS"
+    },
+    {
+        "code": "1107201",
+        "turma": "02",
+        "nome": "METODOLOGIA DO TRABALHO CIENTIFICO",
+        "hora": "4T456",
+        "alunos": "38",
+        "departamento": "CI - DI",
+        "sala": "CI 106",
+        "professor": "VALDECIR BECKER"
+    },
+    {
+        "code": "DINF00045",
+        "turma": "01",
+        "nome": "METODOLOGIA DO TRABALHO CIENTÍFICO PARA CIÊNCIA DA COMPUTAÇÃO",
+        "hora": "6M23",
+        "alunos": "42",
+        "departamento": "CI - DI",
+        "sala": "CI 106",
+        "professor": "GUSTAVO HENRIQUE MATOS BEZERRA MOTTA"
+    },
+    {
+        "code": "1107202",
+        "turma": "01-[5M23]",
+        "nome": "METODOS DE PROJETO DE SOFTWARE",
+        "hora": "5M23",
+        "alunos": "73",
+        "departamento": "CI - DI",
+        "sala": "CI 106",
+        "professor": "RAONI KULESZA"
+    },
+    {
+        "code": "1107202",
+        "turma": "01-[3M23]",
+        "nome": "METODOS DE PROJETO DE SOFTWARE",
+        "hora": "3M23",
+        "alunos": "73",
+        "departamento": "CI - DI",
+        "sala": "LIEPE 05/06",
+        "professor": "RAONI KULESZA"
+    },
+    {
+        "code": "GDCOC0093",
+        "turma": "01",
+        "nome": "MÉTODOS MATEMÁTICOS I",
+        "hora": "35M45",
+        "alunos": "43",
+        "departamento": "CI-DCC",
+        "sala": "CI 304",
+        "professor": "APARECIDO JESUINO DE SOUZA"
+    },
+    {
+        "code": "GDCOC0103",
+        "turma": "01",
+        "nome": "METÓDOS NUMÉRICOS I",
+        "hora": "24T23",
+        "alunos": "21",
+        "departamento": "CI-DCC",
+        "sala": "CI 307",
+        "professor": "ANA PAULA PINTADO WYSE"
+    },
+    {
+        "code": "5101003",
+        "turma": "01",
+        "nome": "MICROCONTROLADORES",
+        "hora": "35M45",
+        "alunos": "30",
+        "departamento": "CI-DSC",
+        "sala": "LIEPE 03 (Lab Hardware)",
+        "professor": "MARDSON FREITAS DE AMORIM"
+    },
+    {
+        "code": "GDCOC0097",
+        "turma": "01",
+        "nome": "MINERAÇÃO ESTATÍSTICA DE DADOS",
+        "hora": "35T23",
+        "alunos": "23",
+        "departamento": "CI-DCC",
+        "sala": "CI 307",
+        "professor": "SERGIO DE CARVALHO BEZERRA"
+    },
+    {
+        "code": "1108183",
+        "turma": "01",
+        "nome": "MODELOS PROBABILÍSTICOS PARA A COMPUTAÇÃO",
+        "hora": "24M23",
+        "alunos": "6",
+        "departamento": "CCEN-DE",
+        "sala": "CI 307",
+        "professor": "RONEI MARCOS DE MORAES"
+    },
+    {
+        "code": "GDCOC0070",
+        "turma": "01",
+        "nome": "OTIMIZAÇÃO DE GRANDE PORTE",
+        "hora": "35M23",
+        "alunos": "23",
+        "departamento": "CI-DCC",
+        "sala": "CI 104",
+        "professor": "ROBERTO QUIRINO DO NASCIMENTO"
+    },
+    {
+        "code": "GDCOC0090",
+        "turma": "01",
+        "nome": "OTIMIZAÇÃO NÃO-LINEAR",
+        "hora": "24T23",
+        "alunos": "21",
+        "departamento": "CI-DCC",
+        "sala": "CI 308",
+        "professor": "FELIPE ANTONIO GARCIA MORENO"
+    },
+    {
+        "code": "DINF00051",
+        "turma": "01-[5T23]",
+        "nome": "PARADIGMAS DE APRENDIZAGEM DE MÁQUINA",
+        "hora": "5T23",
+        "alunos": "64",
+        "departamento": "CI - DI",
+        "sala": "CI T07",
+        "professor": "DANIELA COELHO e THAIS GAUDENCIO"
+    },
+    {
+        "code": "DINF00051",
+        "turma": "01-[3T23]",
+        "nome": "PARADIGMAS DE APRENDIZAGEM DE MÁQUINA",
+        "hora": "3T23",
+        "alunos": "64",
+        "departamento": "CI - DI",
+        "sala": "CI T07",
+        "professor": "DANIELA COELHO e THAIS GAUDENCIO"
+    },
+    {
+        "code": "1107205",
+        "turma": "01",
+        "nome": "PARADIGMAS DE LINGUAGENS DE PROGRAMAÇÃO",
+        "hora": "35M45",
+        "alunos": "47",
+        "departamento": "CI - DI",
+        "sala": "LIEPE 07",
+        "professor": "GUSTAVO HENRIQUE MATOS BEZERRA MOTTA"
+    },
+    {
+        "code": "GDCOC0100",
+        "turma": "01",
+        "nome": "PESQUISA APLICADA À CIÊNCIA DE DADOS",
+        "hora": "6T234",
+        "alunos": "28",
+        "departamento": "CI-DCC",
+        "sala": "CI 105",
+        "professor": "ELIZABET MARIA SPOHR DE MEDEIROS"
+    },
+    {
+        "code": "1107206",
+        "turma": "01",
+        "nome": "PESQUISA APLICADA A COMPUTACAO",
+        "hora": "6T345",
+        "alunos": "29",
+        "departamento": "CI - DI",
+        "sala": "CI 106",
+        "professor": "JOSE ANTONIO GOMES DE LIMA"
+    },
+    {
+        "code": "DINF00056",
+        "turma": "01",
+        "nome": "PESQUISA APLICADA À COMPUTAÇÃO",
+        "hora": "6M45",
+        "alunos": "46",
+        "departamento": "CI - DI",
+        "sala": "CI 106",
+        "professor": "NATASHA CORREIA QUEIROZ LINO"
+    },
+    {
+        "code": "1107131",
+        "turma": "1",
+        "nome": "PESQUISA OPERACIONAL",
+        "hora": "6T3456 6N1",
+        "alunos": "10",
+        "departamento": "PPGI",
+        "sala": "CI 103",
+        "professor": "ANAND SUBRAMANIAN"
+    },
+    {
+        "code": "5102007",
+        "turma": "01",
+        "nome": "PESQUISA OPERACIONAL",
+        "hora": "24T23",
+        "alunos": "66",
+        "departamento": "CI-DCC",
+        "sala": "CI T06",
+        "professor": "TEOBALDO LEITE BULHÕES JUNIOR"
+    },
+    {
+        "code": "GDINF0133",
+        "turma": "01-[3M45]",
+        "nome": "PROCESSAMENTO DE LINGUAGEM NATURAL",
+        "hora": "3M45",
+        "alunos": "17",
+        "departamento": "CI - DI",
+        "sala": "CI 105",
+        "professor": "YURI DE ALMEIDA MALHEIROS BARBOSA"
+    },
+    {
+        "code": "GDINF0133",
+        "turma": "01-[5M45]",
+        "nome": "PROCESSAMENTO DE LINGUAGEM NATURAL",
+        "hora": "5M45",
+        "alunos": "17",
+        "departamento": "CI - DI",
+        "sala": "CI 307",
+        "professor": "YURI DE ALMEIDA MALHEIROS BARBOSA"
+    },
+    {
+        "code": "GDCOC0088",
+        "turma": "01",
+        "nome": "PROGRAMAÇÃO ESTRUTURADA",
+        "hora": "35T23",
+        "alunos": "29",
+        "departamento": "CI-DCC",
+        "sala": "CI 103",
+        "professor": "GIORGIA DE OLIVEIRA MATTOS"
+    },
+    {
+        "code": "DINF00050",
+        "turma": "01",
+        "nome": "PROGRAMAÇÃO FUNCIONAL",
+        "hora": "24T23",
+        "alunos": "70",
+        "departamento": "CI - DI",
+        "sala": "CI T07",
+        "professor": "GUSTAVO HENRIQUE MATOS BEZERRA MOTTA"
+    },
+    {
+        "code": "GDCOC0101",
+        "turma": "04",
+        "nome": "PROGRAMAÇÃO ORIENTADA A OBJETOS",
+        "hora": "35M45",
+        "alunos": "46",
+        "departamento": "CI-DCC",
+        "sala": "CI 106",
+        "professor": "DANIELLE ROUSY DIAS RICARTE"
+    },
+    {
+        "code": "GDCOC0101",
+        "turma": "01-[5M45]",
+        "nome": "PROGRAMAÇÃO ORIENTADA A OBJETOS",
+        "hora": "5M45",
+        "alunos": "26",
+        "departamento": "CI-DCC",
+        "sala": "CI 105",
+        "professor": "CARLOS EDUARDO COELHO FREIRE BATISTA"
+    },
+    {
+        "code": "GDCOC0101",
+        "turma": "01-[3M45]",
+        "nome": "PROGRAMAÇÃO ORIENTADA A OBJETOS",
+        "hora": "3M45",
+        "alunos": "26",
+        "departamento": "CI-DCC",
+        "sala": "CI 307",
+        "professor": "CARLOS EDUARDO COELHO FREIRE BATISTA"
+    },
+    {
+        "code": "GDSCO0062",
+        "turma": "01",
+        "nome": "REDES DE COMPUTADORES I",
+        "hora": "24T23",
+        "alunos": "40",
+        "departamento": "CI-DSC",
+        "sala": "CI T03 (Auditório)",
+        "professor": "IGUATEMI EDUARDO DA FONSECA"
+    },
+    {
+        "code": "GDSCO0062",
+        "turma": "02",
+        "nome": "REDES DE COMPUTADORES I",
+        "hora": "35T23",
+        "alunos": "51",
+        "departamento": "CI-DSC",
+        "sala": "CI 101",
+        "professor": "EWERTON MONTEIRO SALVADOR"
+    },
+    {
+        "code": "GDSCO0032",
+        "turma": "01",
+        "nome": "REDES SEM FIO",
+        "hora": "35T45",
+        "alunos": "40",
+        "departamento": "CI-DSC",
+        "sala": "CI 105",
+        "professor": "EWERTON MONTEIRO SALVADOR"
+    },
+    {
+        "code": "GDSCO0028",
+        "turma": "01",
+        "nome": "ROBOTICA",
+        "hora": "6M2345",
+        "alunos": "27",
+        "departamento": "CI-DSC",
+        "sala": "CI 104",
+        "professor": "TIAGO PEREIRA DO NASCIMENTO"
+    },
+    {
+        "code": "DSCO00021",
+        "turma": "01",
+        "nome": "SEGURANÇA COMPUTACIONAL",
+        "hora": "24M45",
+        "alunos": "39",
+        "departamento": "CI-DSC",
+        "sala": "LIEPE 05/06",
+        "professor": "IGUATEMI EDUARDO DA FONSECA"
+    },
+    {
+        "code": "INFO00006",
+        "turma": "1",
+        "nome": "SEMINÁRIOS",
+        "hora": "6M45",
+        "alunos": "6",
+        "departamento": "PPGI",
+        "sala": "CI 103",
+        "professor": "LILIANE DOS SANTOS MACHADO"
+    },
+    {
+        "code": "1103180",
+        "turma": "06",
+        "nome": "SÉRIES E EQUAÇÕES DIFERENCIAIS ORDINÁRIAS",
+        "hora": "35M23",
+        "alunos": "44",
+        "departamento": "CCEN-DM",
+        "sala": "LIEPE 07",
+        "professor": "MILTON DE LACERDA OLIVEIRA"
+    },
+    {
+        "code": "GDCOC0114",
+        "turma": "01",
+        "nome": "SÉRIES TEMPORAIS",
+        "hora": "24M23",
+        "alunos": "18",
+        "departamento": "CI-DCC",
+        "sala": "CI 308",
+        "professor": "MOISES DANTAS DOS SANTOS"
+    },
+    {
+        "code": "GDSCO0064",
+        "turma": "01",
+        "nome": "SINAIS E SISTEMAS DINÂMICOS",
+        "hora": "24M23",
+        "alunos": "35",
+        "departamento": "CI-DSC",
+        "sala": "CI 105",
+        "professor": "JAIRO ROCHA DE FARIA"
+    },
+    {
+        "code": "1204156",
+        "turma": "01",
+        "nome": "SISTEMA DE INFORMAÇÃO E DECISÃO",
+        "hora": "24M45",
+        "alunos": "11",
+        "departamento": "CCSA - DA",
+        "sala": "CI 308",
+        "professor": "PEDRO JACOME DE MOURA JUNIOR"
+    },
+    {
+        "code": "1107209",
+        "turma": "02",
+        "nome": "SISTEMAS BASEADOS EM CONHECIMENTO",
+        "hora": "6M2345",
+        "alunos": "71",
+        "departamento": "CI - DI",
+        "sala": "CI 304",
+        "professor": "CLAUIRTON DE ALBUQUERQUE SIEBRA"
+    },
+    {
+        "code": "GDADM0110",
+        "turma": "03",
+        "nome": "SISTEMAS DE INFORMAÇÃO NAS ORGANIZAÇÕES",
+        "hora": "6T2345",
+        "alunos": "29",
+        "departamento": "CCSA - DA",
+        "sala": "CI 101",
+        "professor": "CARLO GABRIEL PORTO BELLINI"
+    },
+    {
+        "code": "DSCO00022",
+        "turma": "01",
+        "nome": "SISTEMAS DISTRIBUÍDOS",
+        "hora": "35M45",
+        "alunos": "40",
+        "departamento": "CI-DSC",
+        "sala": "CI 101",
+        "professor": "FERNANDO MENEZES MATOS"
+    },
+    {
+        "code": "GDSCO0065",
+        "turma": "01",
+        "nome": "SISTEMAS E CONTROLE DE AUTOMAÇÃO",
+        "hora": "35M45",
+        "alunos": "24",
+        "departamento": "CI-DSC",
+        "sala": "CI 308",
+        "professor": "LUCIANO SALES BARROS"
+    },
+    {
+        "code": "INFO00076",
+        "turma": "1",
+        "nome": "SISTEMAS EMBARCADOS APLICADOS",
+        "hora": "35M45",
+        "alunos": "8",
+        "departamento": "PPGI",
+        "sala": "CI 104",
+        "professor": "ALISSON VASCONCELOS DE BRITO"
+    },
+    {
+        "code": "GDSCO0081",
+        "turma": "01",
+        "nome": "SISTEMAS EMBARCADOS I",
+        "hora": "35T23",
+        "alunos": "28",
+        "departamento": "CI-DSC",
+        "sala": "LIEPE 03 (Lab Hardware)",
+        "professor": "VERONICA MARIA LIMA SILVA"
+    },
+    {
+        "code": "INFO00087",
+        "turma": "1",
+        "nome": "SISTEMAS GRÁFICOS E MULTIMÍDIA",
+        "hora": "35T56",
+        "alunos": "7",
+        "departamento": "PPGI",
+        "sala": "CI T07",
+        "professor": "TIAGO MARITAN UGULINO DE ARAUJO"
+    },
+    {
+        "code": "GDSCO0068",
+        "turma": "01",
+        "nome": "SISTEMAS OPERACIONAIS I",
+        "hora": "35M23",
+        "alunos": "60",
+        "departamento": "CI-DSC",
+        "sala": "CI 103",
+        "professor": "FERNANDO MENEZES MATOS"
+    },
+    {
+        "code": "GDSCO0068",
+        "turma": "02",
+        "nome": "SISTEMAS OPERACIONAIS I",
+        "hora": "24M45",
+        "alunos": "63",
+        "departamento": "CI-DSC",
+        "sala": "CI 101",
+        "professor": "undefined"
+    },
+    {
+        "code": "GDCOC0102",
+        "turma": "01",
+        "nome": "TEORIA DAS PROBABILIDADES",
+        "hora": "24T23",
+        "alunos": "30",
+        "departamento": "CI-DCC",
+        "sala": "CI 101",
+        "professor": "ROBERTO QUIRINO DO NASCIMENTO"
+    },
+    {
+        "code": "GDCOC0091",
+        "turma": "01",
+        "nome": "TEORIA DOS GRAFOS APLICADA",
+        "hora": "24T45",
+        "alunos": "33",
+        "departamento": "CI-DCC",
+        "sala": "CI 101",
+        "professor": "JOSE MIGUEL AROZTEGUI MASSERA"
+    },
+    {
+        "code": "DINF00054",
+        "turma": "01",
+        "nome": "TESTE DE SOFTWARE",
+        "hora": "35T45",
+        "alunos": "48",
+        "departamento": "CI - DI",
+        "sala": "CI SB01",
+        "professor": "YUSKA PAOLA COSTA AGUIAR"
+    },
+    {
+        "code": "DINF00071",
+        "turma": "01",
+        "nome": "TÓPICOS AVANÇADOS EM CIÊNCIA DA COMPUTAÇÃO I",
+        "hora": "6M2345",
+        "alunos": "35",
+        "departamento": "CI - DI",
+        "sala": "CI 105",
+        "professor": "LINCOLN DAVID NERY E SILVA"
+    },
+    {
+        "code": "DINF00072",
+        "turma": "01",
+        "nome": "TÓPICOS AVANÇADOS EM CIÊNCIA DA COMPUTAÇÃO II",
+        "hora": "46T45",
+        "alunos": "51",
+        "departamento": "CI - DI",
+        "sala": "CI T07",
+        "professor": "THAIS GAUDENCIO e YURI DE e CARLOS EDUARDO"
+    },
+    {
+        "code": "1107253",
+        "turma": "01",
+        "nome": "TÓPICOS ESPECIAIS EM ENGENHARIA DE COMPUTAÇÃO I",
+        "hora": "24T45",
+        "alunos": "42",
+        "departamento": "CI - DI",
+        "sala": "CI 105",
+        "professor": "undefined"
+    },
+    {
+        "code": "GDSCO0075",
+        "turma": "1",
+        "nome": "TÓPICOS ESPECIAIS EM PROCESSAMENTO DIGITAL DE IMAGENS",
+        "hora": "24T45",
+        "alunos": "6",
+        "departamento": "CI-DSC",
+        "sala": "CI 104",
+        "professor": "AUGUSTO DE HOLANDA BARRETO MARTINS TAVARES"
+    },
+    {
+        "code": "GDSCOTRLH",
+        "turma": "01",
+        "nome": "TRILHA (Projeto de Tutoria)",
+        "hora": "6T123",
+        "alunos": "50",
+        "departamento": "CI-DSC",
+        "sala": "CI T06",
+        "professor": "MOISES DANTAS DOS SANTOS"
+    },
+    {
+        "code": "DINF00070",
+        "turma": "02",
+        "nome": "UCE - CIÊNCIA DA COMPUTAÇÃO / PROJETO INTEGRADO I",
+        "hora": "6M2345",
+        "alunos": "20",
+        "departamento": "CI - DI",
+        "sala": "CI T07",
+        "professor": "GIORGIA DE OLIVEIRA MATTOS"
+    },
+    {
+        "code": "GDCOC0096",
+        "turma": "01",
+        "nome": "VISUALIZAÇÃO DE DADOS",
+        "hora": "35M23",
+        "alunos": "36",
+        "departamento": "CI-DCC",
+        "sala": "CI 101",
+        "professor": "GUSTAVO CHARLES PEIXOTO DE OLIVEIRA"
+    }
+]

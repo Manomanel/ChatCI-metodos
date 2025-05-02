@@ -41,25 +41,17 @@ class UserManagement:
             return None
     
     def adicionar_usuario(self, user):
-        """
-        Adiciona um novo usuário ao sistema.
-        """
         try:
-            #partes_nome = nome.split()
-            #first_name = partes_nome[0]
-            #last_name = ' '.join(partes_nome[1:]) if len(partes_nome) > 1 else ''
-            #username = email.split('@')[0]
+            # Gera username único se necessário
+            username_base = user.username
+            contador = 1
+            while self.userDAO.get_user_by_username(user.username):
+                user.username = f"{username_base}{contador}"  # Corrigido para modificar user.username
+                contador += 1
 
             is_student = user.tipo.lower() == "estudante"
             is_professor = user.tipo.lower() == "professor"
 
-            username_base = user.username
-            contador = 1
-            while self.userDAO.get_user_by_username(user.username):
-                username = f"{username_base}{contador}"
-                contador += 1
-
-            # criacao do usuario
             user_id = self.userDAO.create_user(
                 username=user.username,
                 email=user.email,
@@ -67,7 +59,8 @@ class UserManagement:
                 first_name=user.first_name,
                 last_name=user.last_name,
                 student=is_student,
-                professor=is_professor
+                professor=is_professor,
+                is_superuser=user.is_superuser  # Adicionado parâmetro
             )
 
             self.profile_dao.create(
@@ -97,4 +90,21 @@ class UserManagement:
             return self.userDAO.update_user(user_id, **dados)
         except Exception as e:
             logger.error(f"Erro ao atualizar usuário: {e}")
+            return False
+        
+    #CARETAKER DO MEMENTO
+    def atualizar_perfil (self, user_id, bio = None, profile_picture = None):
+        try:
+            self.profile_dao.save_memento(user_id)
+
+            return self.profile_dao.update(user_id, bio, profile_picture)
+        except Exception as e:
+            logger.error(f"Erro ao atualizar: {e}")
+            return False
+        
+    def desfazer_mudancas_perfil(self, user_id):
+        try:
+            return self.profile_dao.restore_last_memento(user_id)
+        except Exception as e:
+            logger.error(f"Erro ao restaurar o perfil: {e}")
             return False
