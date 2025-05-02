@@ -7,6 +7,7 @@ import logging
 import hashlib
 from business.login_txt_report_generator import LoginTxtReportGenerator
 from business.login_html_report_generator import LoginHtmlReportGenerator
+from business.login_pdf_report_generator import LoginPdfReportGenerator
 
 
 logger = logging.getLogger('gerenciador_usuarios')
@@ -31,6 +32,9 @@ class UserManagement:
 
             html_gen = LoginHtmlReportGenerator()
             html_gen.generateReport(usuario)
+
+            pdf_gen = LoginPdfReportGenerator()
+            pdf_gen.generateReport(usuario)
             return usuario
         except LoginException as e:
             logger.error(f'Erro de login ou senha: {e}')
