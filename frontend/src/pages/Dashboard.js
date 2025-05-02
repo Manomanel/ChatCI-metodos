@@ -46,9 +46,7 @@ const Dashboard = () => {
     }
 
     try {
-      const response = await api.post(`/api/grupos/${selectedGroup.id}/entrar`, {
-        disciplina: selectedGroup.name // Using the group name as the discipline
-      });
+      const response = await api.post(`/api/grupos/${selectedGroup.id}/entrar`);
 
       if (response.data.success) {
         await fetchGroups();
@@ -194,11 +192,10 @@ const Dashboard = () => {
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
-          className="modal-dialog modal-dialog-centered"
-          overlayClassName="modal-overlay"
           style={{
             overlay: {
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              zIndex: 1000,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -209,44 +206,47 @@ const Dashboard = () => {
               left: 'auto',
               right: 'auto',
               bottom: 'auto',
-              border: 'none',
-              background: 'none',
-              padding: 0
+              width: '500px',
+              margin: '0 auto',
+              padding: 0,
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              background: '#fff',
+              overflow: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              outline: 'none'
             }
           }}
         >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Entrar na Turma</h5>
-              <button type="button" className="btn-close" onClick={closeModal}></button>
-            </div>
-            <div className="modal-body">
-              <h6>Turma: <strong>{selectedGroup?.name}</strong></h6>
-              
-              {selectedGroup && (
-                <div className="mt-3 mb-3 card">
-                  <div className="card-body small" style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                    {selectedGroup.description && formatDescription(selectedGroup.description)}
-                  </div>
+          <div className="p-3">
+            <h5 className="mb-3 border-bottom pb-2">Entrar na Turma</h5>
+            
+            {selectedGroup && (
+              <div>
+                <p><strong>Turma: {selectedGroup.name}</strong></p>
+                
+                <div className="border p-3 mb-3" style={{ maxHeight: '250px', overflowY: 'auto' }}>
+                  {selectedGroup.description && formatDescription(selectedGroup.description)}
                 </div>
-              )}
-              
-              <p className="mt-3">Confirma que deseja entrar nesta turma?</p>
-            </div>
-            <div className="modal-footer d-flex justify-content-center">
-              <button 
-                className="btn btn-primary mx-2"
-                onClick={handleJoinGroup}
-              >
-                Confirmar
-              </button>
-              <button 
-                className="btn btn-secondary mx-2"
-                onClick={closeModal}
-              >
-                Cancelar
-              </button>
-            </div>
+                
+                <p>Confirma que deseja entrar nesta turma?</p>
+                
+                <div className="d-flex justify-content-center mt-4">
+                  <button 
+                    className="btn btn-primary mx-2"
+                    onClick={handleJoinGroup}
+                  >
+                    Confirmar
+                  </button>
+                  <button 
+                    className="btn btn-secondary mx-2"
+                    onClick={closeModal}
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </Modal>
       </div>
