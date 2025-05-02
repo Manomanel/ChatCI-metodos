@@ -1471,17 +1471,6 @@ def get_eventos():
     ---
     tags:
       - Events
-    parameters:
-      - name: tipo
-        in: query
-        type: string
-        required: false
-        description: Type of events to retrieve (all, upcoming, past)
-      - name: limit
-        in: query
-        type: integer
-        required: false
-        description: Number of events to return
     responses:
       200:
         description: Events retrieved successfully
@@ -1520,15 +1509,8 @@ def get_eventos():
               type: string
     """
     try:
-        tipo = request.args.get('tipo', 'all')
-        limit = request.args.get('limit', type=int)
         
-        if tipo == 'upcoming':
-            events = event_manager.get_upcoming_events(limit)
-        elif tipo == 'past':
-            events = event_manager.get_past_events(limit)
-        else:
-            events = event_manager.get_all_events()
+        events = event_manager.get_all_events()
         
         return jsonify({
             "success": True,
@@ -1618,7 +1600,8 @@ def get_evento(evento_id):
             "error": "Erro interno do servidor"
         }), 500
 
-@app.route("/api/eventos", methods=["POST"])
+#CRIA O EVENTO
+@app.route("/api/eventos/criar", methods=["POST"])
 @admin_required
 def criar_evento():
     """
@@ -1636,23 +1619,29 @@ def criar_evento():
         schema:
           type: object
           properties:
-            title:
+            titulo:
               type: string
-              description: Event title
-            description:
+              description: Título do evento
+            descricao:
               type: string
-              description: Event description
-            link:
-              type: string
-              description: Event related link
-            event_date:
+              description: Descrição completa do evento
+            data:
               type: string
               format: date
-              description: Event date (YYYY-MM-DD)
+              description: Data do evento (YYYY-MM-DD)
+            hora:
+              type: string
+              format: time
+              description: Hora do evento (HH:MM)
+            local:
+              type: string
+              description: Local do evento
           required:
-            - title
-            - description
-            - event_date
+            - titulo
+            - descricao
+            - data
+            - hora
+            - local
     responses:
       200:
         description: Event created successfully
@@ -1667,99 +1656,49 @@ def criar_evento():
               type: integer
       400:
         description: Invalid request
-        schema:
-          type: object
-          properties:
-            success:
-              type: boolean
-            error:
-              type: string
       401:
         description: Unauthorized
-        schema:
-          type: object
-          properties:
-            success:
-              type: boolean
-            error:
-              type: string
       403:
         description: Forbidden
-        schema:
-          type: object
-          properties:
-            success:
-              type: boolean
-            error:
-              type: string
       500:
         description: Server error
-        schema:
-          type: object
-          properties:
-            success:
-              type: boolean
-            error:
-              type: string
     """
     if request.method == "OPTIONS":
         return jsonify({}), 200
         
     try:
-        # Verifica se a requisição é JSON
         if not request.is_json:
-            return jsonify({
-                "success": False,
-                "error": "Content-Type deve ser application/json"
-            }), 400
+            return jsonify({"success": False, "error": "Content-Type deve ser application/json"}), 400
             
         data = request.get_json()
         
-        if not data:
-            return jsonify({
-                "success": False,
-                "error": "Dados não recebidos"
-            }), 400
-            
-        title = data.get("title")
-        description = data.get("description")
-        link = data.get("link", "")
-        event_date = data.get("event_date")
-        
-        if not all([title, description, event_date]):
-            return jsonify({
-                "success": False,
-                "error": "Título, descrição e data do evento são obrigatórios"
-            }), 400
+        required_fields = ['titulo', 'descricao', 'data', 'hora', 'local']
+        if not all(field in data for field in required_fields):
+            return jsonify({"success": False, "error": "Todos os campos são obrigatórios"}), 400
 
         try:
-            event_date = datetime.strptime(event_date, "%Y-%m-%d").date()
+            event_datetime = datetime.strptime(f"{data['data']} {data['hora']}", "%Y-%m-%d %H:%M")
         except ValueError:
-            return jsonify({
-                "success": False,
-                "error": "Formato de data inválido. Use YYYY-MM-DD"
-            }), 400
+            return jsonify({"success": False, "error": "Formato de data/hora inválido"}), 400
         
-        event_id = event_manager.create_event(title, description, link, event_date)
+        event_id = event_manager.create_event(
+            title=data['titulo'],
+            description=data['descricao'],
+            local=data['local'],
+            event_date=event_datetime
+        )
         
-        if event_id:
-            return jsonify({
-                "success": True,
-                "message": "Evento criado com sucesso",
-                "event_id": event_id
-            })
-        else:
-            return jsonify({
-                "success": False,
-                "error": "Erro ao criar evento"
-            }), 500
-    except Exception as e:
-        logger.error(f"Erro ao criar evento: {e}")
         return jsonify({
-            "success": False,
-            "error": "Erro interno do servidor"
-        }), 500
+            "success": True,
+            "message": "Evento criado com sucesso",
+            "event_id": event_id
+        })
+        
+    except Exception as e:
+        logger.error(f"Erro ao criar evento: {str(e)}")
+        return jsonify({"success": False, "error": "Erro interno do servidor"}), 500
 
+#ATUALIZA O EVENTO POR ID
 @app.route("/api/eventos/<int:evento_id>", methods=["PUT"])
 @admin_required
 def atualizar_evento(evento_id):
@@ -1795,7 +1734,7 @@ def atualizar_evento(evento_id):
             event_date:
               type: string
               format: date
-              description: Event date (YYYY-MM-DD)
+              description: Event date (YYYY-MM-DD or ISO format)
     responses:
       200:
         description: Event updated successfully
@@ -1884,17 +1823,17 @@ def atualizar_evento(evento_id):
         
         event_date = None
         if event_date_str:
-            # Converter a data para o formato correto
-            from datetime import datetime
             try:
+                if 'T' in event_date_str:
+                    event_date_str = event_date_str.split('T')[0]
+
                 event_date = datetime.strptime(event_date_str, "%Y-%m-%d").date()
             except ValueError:
                 return jsonify({
                     "success": False,
-                    "error": "Formato de data inválido. Use YYYY-MM-DD"
+                    "error": "Formato de data inválido. Use YYYY-MM-DD ou formato ISO"
                 }), 400
-        
-        # Atualiza o evento
+
         success = event_manager.update_event(
             evento_id,
             title=title,

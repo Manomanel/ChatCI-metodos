@@ -10,10 +10,10 @@ const Events = () => {
   const [showForm, setShowForm] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [formData, setFormData] = useState({
-    titulo: '',
-    descricao: '',
-    data: '',
-    hora: '',
+    title: '',
+    description: '',
+    date: '',
+    time: '',
     local: ''
   });
 
@@ -23,18 +23,30 @@ const Events = () => {
 
   const fetchEvents = async () => {
     try {
-      setLoading(true);
       const response = await api.get('/api/eventos');
+      console.log('API Response:', response.data);
+      
       if (response.data.success) {
-        setEvents(response.data.eventos || []);
+        const eventsList = response.data.events || response.data.eventos || [];
+        
+        const formattedEvents = eventsList.map(event => ({
+          ...event,
+          date: event.event_date ? event.event_date.split('T')[0] : '',
+          time: event.event_date && event.event_date.includes('T') ? 
+                event.event_date.split('T')[1].slice(0,5) : '',
+          title: event.title || event.titulo || '',
+          description: event.description || event.descricao || '',
+          local: event.local || ''
+        }));
+        
+        console.log('Formatted Events:', formattedEvents);
+        setEvents(formattedEvents);
       } else {
-        setEvents([]);
-        setError('Erro ao carregar eventos: ' + (response.data.error || 'Resposta inválida do servidor'));
+        setError('Erro ao carregar eventos');
       }
     } catch (error) {
       console.error('Erro ao buscar eventos:', error);
-      setEvents([]);
-      setError('Erro ao carregar eventos. Por favor, tente novamente mais tarde.');
+      setError('Erro ao carregar eventos');
     } finally {
       setLoading(false);
     }
@@ -51,25 +63,82 @@ const Events = () => {
     setSuccess('');
     
     try {
-      let response;
-      if (selectedEvent) {
-        // Atualizar evento existente
-        response = await api.put(`/api/eventos/${selectedEvent.id}`, formData);
-      } else {
-        // Criar novo evento
-        response = await api.post('/api/eventos', formData);
+      // Validação adicional
+      if (!formData.date || !formData.time) {
+        setError('Data e hora são obrigatórias');
+        return;
       }
-      
-      if (response.data.success) {
-        setSuccess(selectedEvent ? 'Evento atualizado com sucesso!' : 'Evento criado com sucesso!');
-        resetForm();
-        fetchEvents();
-      } else {
-        setError(response.data.error || 'Erro ao salvar evento');
+
+      // Criação de um novo evento
+      if (!selectedEvent) {
+        // Para CRIAÇÃO, a API espera:
+        // titulo, descricao, data, hora, local
+        const createPayload = {
+          titulo: formData.title,
+          descricao: formData.description,
+          data: formData.date,
+          hora: formData.time,
+          local: formData.local
+        };
+
+        console.log('Payload para CRIAÇÃO:', createPayload);
+        
+        const response = await api.post('/api/eventos/criar', createPayload);
+        
+        console.log('Resposta da API (criação):', response.data);
+        
+        if (response.data.success) {
+          setSuccess('Evento criado!');
+          resetForm();
+          fetchEvents();
+          setTimeout(() => setSuccess(''), 3000);
+        } else {
+          setError(response.data.error || 'Erro na operação');
+        }
+      } 
+      // Atualização de um evento existente
+      else {
+        // CORREÇÃO: Remover o campo link que não existe na tabela
+        const updatePayload = {
+          title: formData.title,
+          description: formData.description,
+          event_date: formData.date,  // YYYY-MM-DD apenas
+          local: formData.local       // Adicionar local para preservar essa informação
+        };
+
+        console.log('Payload para EDIÇÃO (corrigido):', updatePayload);
+        console.log('ID do evento para update:', selectedEvent.id);
+        
+        const response = await api.put(`/api/eventos/${selectedEvent.id}`, updatePayload);
+        
+        console.log('Resposta da API (edição):', response.data);
+        
+        if (response.data.success) {
+          setSuccess('Evento atualizado!');
+          resetForm();
+          fetchEvents();
+          setTimeout(() => setSuccess(''), 3000);
+        } else {
+          setError(response.data.error || 'Erro na operação');
+        }
       }
     } catch (error) {
-      console.error('Erro ao salvar evento:', error);
-      setError('Erro ao salvar evento. Por favor, tente novamente mais tarde.');
+      console.error('Erro na operação:', error);
+      
+      // Log detalhado para debug
+      if (error.response) {
+        console.error('Status:', error.response.status);
+        console.error('Dados:', error.response.data);
+        console.error('Headers:', error.response.headers);
+      } else if (error.request) {
+        console.error('Requisição:', error.request);
+      } else {
+        console.error('Mensagem:', error.message);
+      }
+      
+      const errorMsg = error.response?.data?.error || 'Erro na comunicação com o servidor';
+      setError(errorMsg);
+      setTimeout(() => setError(''), 5000);
     }
   };
 
@@ -98,13 +167,44 @@ const Events = () => {
 
   const handleEdit = (event) => {
     setSelectedEvent(event);
+    
+    // Extrair data e hora do formato ISO para o formato de input
+    let dateValue = '';
+    let timeValue = '';
+    
+    if (event.event_date) {
+      try {
+        // Se já temos a data formatada, usar direto
+        if (event.date) {
+          dateValue = event.date;
+        } else {
+          // Converter a data do formato ISO
+          const date = new Date(event.event_date);
+          dateValue = date.toISOString().split('T')[0];
+        }
+        
+        // Se já temos a hora formatada, usar direto
+        if (event.time) {
+          timeValue = event.time;
+        } else if (event.event_date.includes('T')) {
+          // Extrair a hora do formato ISO
+          timeValue = event.event_date.split('T')[1].slice(0,5);
+        }
+      } catch (e) {
+        console.error('Erro ao converter data:', e);
+        dateValue = event.date || '';
+        timeValue = event.time || '';
+      }
+    }
+    
     setFormData({
-      titulo: event.titulo || '',
-      descricao: event.descricao || '',
-      data: event.data || '',
-      hora: event.hora || '',
+      title: event.title || '',
+      description: event.description || '',
+      date: dateValue,
+      time: timeValue,
       local: event.local || ''
     });
+    
     setShowForm(true);
     setSuccess('');
     setError('');
@@ -113,10 +213,10 @@ const Events = () => {
   const resetForm = () => {
     setSelectedEvent(null);
     setFormData({
-      titulo: '',
-      descricao: '',
-      data: '',
-      hora: '',
+      title: '',
+      description: '',
+      date: '',
+      time: '',
       local: ''
     });
     setShowForm(false);
@@ -147,93 +247,86 @@ const Events = () => {
           </button>
         </div>
         
-        {error && <div className="error">{error}</div>}
-        {success && <div className="success">{success}</div>}
+        {error && <div className="alert alert-danger">{error}</div>}
+        {success && <div className="alert alert-success">{success}</div>}
         
         {showForm && (
           <div className="form-container">
             <div className="form">
               <h2>{selectedEvent ? 'Editar Evento' : 'Novo Evento'}</h2>
               <form onSubmit={handleSubmit}>
-                <div>
-                  <label htmlFor="titulo">Título</label>
+                <div className="mb-3">
+                  <label htmlFor="title" className="form-label">Título</label>
                   <input
                     type="text"
-                    id="titulo"
-                    name="titulo"
-                    value={formData.titulo}
+                    id="title"
+                    name="title"
+                    value={formData.title}
                     onChange={handleChange}
-                    className="input-field"
+                    className="form-control"
                     required
                   />
                 </div>
                 
-                <div>
-                  <label htmlFor="descricao">Descrição</label>
+                <div className="mb-3">
+                  <label htmlFor="description" className="form-label">Descrição</label>
                   <textarea
-                    id="descricao"
-                    name="descricao"
-                    value={formData.descricao}
+                    id="description"
+                    name="description"
+                    value={formData.description}
                     onChange={handleChange}
-                    className="input-field"
+                    className="form-control"
                     rows="4"
                     required
                   />
                 </div>
                 
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <div style={{ flex: 1 }}>
-                    <label htmlFor="data">Data</label>
+                <div className="row mb-3">
+                  <div className="col-md-6">
+                    <label htmlFor="date" className="form-label">Data</label>
                     <input
                       type="date"
-                      id="data"
-                      name="data"
-                      value={formData.data}
+                      id="date"
+                      name="date"
+                      value={formData.date}
                       onChange={handleChange}
-                      className="input-field"
+                      className="form-control"
                       required
                     />
                   </div>
                   
-                  <div style={{ flex: 1 }}>
-                    <label htmlFor="hora">Hora</label>
+                  <div className="col-md-6">
+                    <label htmlFor="time" className="form-label">Hora</label>
                     <input
                       type="time"
-                      id="hora"
-                      name="hora"
-                      value={formData.hora}
+                      id="time"
+                      name="time"
+                      value={formData.time}
                       onChange={handleChange}
-                      className="input-field"
+                      className="form-control"
                       required
                     />
                   </div>
                 </div>
                 
-                <div>
-                  <label htmlFor="local">Local</label>
+                <div className="mb-3">
+                  <label htmlFor="local" className="form-label">Local</label>
                   <input
                     type="text"
                     id="local"
                     name="local"
                     value={formData.local}
                     onChange={handleChange}
-                    className="input-field"
+                    className="form-control"
                     required
                   />
                 </div>
                 
-                <div className="actions">
-                  <button 
-                    type="submit" 
-                    className="btn btn-primary"
-                  >
-                    Salvar
+                <div className="d-grid gap-2">
+                  <button type="submit" className="btn btn-primary">
+                    {selectedEvent ? 'Salvar Alterações' : 'Criar Evento'}
                   </button>
-                  <button 
-                    type="button" 
-                    className="btn btn-secondary"
-                    onClick={resetForm}
-                  >
+                  <button type="button" className="btn btn-secondary" onClick={resetForm}>
                     Cancelar
                   </button>
                 </div>
@@ -243,51 +336,55 @@ const Events = () => {
         )}
         
         {events.length > 0 ? (
-          <div className="events-list">
+          <div className="row row-cols-1 row-cols-md-2 g-4">
             {events.map(event => (
-              <div key={event.id} className="event-card">
-                <div className="event-date">{event.data} às {event.hora}</div>
-                <h3>{event.titulo}</h3>
-                <p>{event.descricao}</p>
-                <div className="event-location">Local: {event.local}</div>
-                
-                <div className="event-footer">
-                  <button 
-                    className="btn btn-secondary"
-                    onClick={() => handleEdit(event)}
-                    style={{ marginRight: '10px' }}
-                  >
-                    Editar
-                  </button>
-                  <button 
-                    className="btn"
-                    onClick={() => handleDelete(event.id)}
-                    style={{ backgroundColor: 'var(--danger-color)', color: 'white' }}
-                  >
-                    Excluir
-                  </button>
+              <div key={event.id} className="col">
+                <div className="card h-100">
+                  <div className="card-body">
+                    <div className="text-muted small mb-2">
+                      {event.date} às {event.time || '00:00'}
+                    </div>
+                    <h3 className="card-title">{event.title}</h3>
+                    <p className="card-text">{event.description}</p>
+                    <div className="text-muted mb-3">
+                      <i className="bi bi-geo-alt"></i> {event.local}
+                    </div>
+                    <div className="d-flex gap-2">
+                      <button 
+                        className="btn btn-outline-primary"
+                        onClick={() => handleEdit(event)}
+                      >
+                        <i className="bi bi-pencil"></i> Editar
+                      </button>
+                      <button 
+                        className="btn btn-outline-danger"
+                        onClick={() => handleDelete(event.id)}
+                      >
+                        <i className="bi bi-trash"></i> Excluir
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div style={{ textAlign: 'center', padding: '30px 0' }}>
-            <p>Não há eventos cadastrados.</p>
+          <div className="text-center py-5">
+            <p className="lead">Não há eventos cadastrados.</p>
             {!showForm && (
               <button 
                 className="btn btn-primary"
                 onClick={() => setShowForm(true)}
-                style={{ marginTop: '10px' }}
               >
-                Cadastrar Primeiro Evento
+                <i className="bi bi-plus-lg"></i> Cadastrar Primeiro Evento
               </button>
             )}
           </div>
         )}
         
-        <div style={{ marginTop: '20px' }}>
+        <div className="mt-4">
           <Link to="/dashboard" className="btn btn-secondary">
-            Voltar ao Dashboard
+            <i className="bi bi-arrow-left"></i> Voltar ao Dashboard
           </Link>
         </div>
       </div>

@@ -3,34 +3,21 @@ from .base_persistence import BasePersistence
 import logging
 from datetime import date, datetime
 from ..dao.event_dao import EventDAO
+from datetime import datetime, date, time
+import pytz
 
 logger = logging.getLogger('event_dao')
 
 class EventPersistence(BasePersistence, EventDAO):
     """DAO para manipulação da tabela de eventos"""
     
-    def create_event(self, title: str, description: str, link: str = "", event_date: date = None) -> int:
-        """
-        Cria um novo evento
-        
-        Args:
-            title: Título do evento
-            description: Descrição do evento
-            link: Link relacionado ao evento (opcional)
-            event_date: Data do evento
-            
-        Returns:
-            ID do evento criado
-        """
-        if event_date is None:
-            event_date = datetime.now().date()
-            
+    def create_event(self, title: str, description: str, local: str, event_date: datetime) -> int:
         query = """
-        INSERT INTO event (title, description, link, event_date)
+        INSERT INTO event (title, description, local, event_date)
         VALUES (%s, %s, %s, %s)
         RETURNING id
         """
-        return self._execute_insert_returning_id(query, (title, description, link, event_date))
+        return self._execute_insert_returning_id(query, (title, description, local, event_date))
     
     def get_event_by_id(self, event_id: int) -> Optional[Dict[str, Any]]:
         """
@@ -112,7 +99,7 @@ class EventPersistence(BasePersistence, EventDAO):
         return self._execute_query(query)
     
     def update_event(self, event_id: int, title: str = None, description: str = None, 
-                    link: str = None, event_date: date = None) -> bool:
+                 link: str = None, event_date = None) -> bool:
         """
         Atualiza os dados de um evento
         
@@ -120,32 +107,81 @@ class EventPersistence(BasePersistence, EventDAO):
             event_id: ID do evento
             title: Novo título (opcional)
             description: Nova descrição (opcional)
-            link: Novo link (opcional)
+            link: Novo link (opcional) - Este parâmetro será ignorado se não for usado
             event_date: Nova data (opcional)
             
         Returns:
             True se atualizado com sucesso, False caso contrário
         """
+        
+        # Verificar se o evento existe antes de atualizar
         current_event = self.get_event_by_id(event_id)
         if not current_event:
             return False
 
+        # Usar os valores atuais se os novos não forem fornecidos
         updated_title = title if title is not None else current_event['title']
         updated_description = description if description is not None else current_event['description']
-        updated_link = link if link is not None else current_event['link']
-        updated_date = event_date if event_date is not None else current_event['event_date']
         
+        # Tratamento flexível para o campo event_date
+        updated_date = current_event['event_date']
+        
+        if event_date is not None:
+            try:
+                # Se for apenas um date sem timezone
+                if isinstance(event_date, date) and not isinstance(event_date, datetime):
+                    # Combinar a data com a hora atual (ou meia-noite) e adicionar timezone
+                    current_time = time(0, 0, 0)  # meia-noite
+                    updated_date = datetime.combine(event_date, current_time)
+                    updated_date = pytz.timezone('America/Sao_Paulo').localize(updated_date)
+                
+                # Se for uma string, converter para datetime com timezone
+                elif isinstance(event_date, str):
+                    # Verificar se é um formato ISO com T ou apenas data
+                    if 'T' in event_date:
+                        # Formato completo ISO
+                        try:
+                            # Tentar converter diretamente com timezone
+                            updated_date = datetime.fromisoformat(event_date.replace('Z', '+00:00'))
+                        except ValueError:
+                            # Se falhar, extrair apenas a data e usar meia-noite como hora
+                            date_part = event_date.split('T')[0]
+                            date_obj = datetime.strptime(date_part, "%Y-%m-%d").date()
+                            updated_date = datetime.combine(date_obj, time(0, 0, 0))
+                            updated_date = pytz.timezone('America/Sao_Paulo').localize(updated_date)
+                    else:
+                        # Apenas data YYYY-MM-DD
+                        date_obj = datetime.strptime(event_date, "%Y-%m-%d").date()
+                        updated_date = datetime.combine(date_obj, time(0, 0, 0))
+                        updated_date = pytz.timezone('America/Sao_Paulo').localize(updated_date)
+                
+                # Se já for um datetime, garantir que tenha timezone
+                elif isinstance(event_date, datetime):
+                    if event_date.tzinfo is None:
+                        updated_date = pytz.timezone('America/Sao_Paulo').localize(event_date)
+                    else:
+                        updated_date = event_date
+            except Exception as e:
+                # Registrar o erro, mas manter a data atual em caso de problema
+                print(f"Erro ao processar data: {e}")
+                pass  # Manter a data existente
+        
+        # MODIFICADO: Remover a referência à chave 'link' do SQL de update
         query = """
         UPDATE event 
-        SET title = %s, description = %s, link = %s, event_date = %s
+        SET title = %s, description = %s, event_date = %s
         WHERE id = %s
         """
         
-        rows_affected = self._execute_update(query, (
-            updated_title, updated_description, updated_link, updated_date, event_id
-        ))
-        
-        return rows_affected > 0
+        try:
+            # MODIFICADO: Remover o parâmetro 'link' da query
+            rows_affected = self._execute_update(query, (
+                updated_title, updated_description, updated_date, event_id
+            ))
+            return rows_affected > 0
+        except Exception as e:
+            print(f"Erro ao executar atualização: {e}")
+            return False
     
     def delete_event(self, event_id: int) -> bool:
         """
