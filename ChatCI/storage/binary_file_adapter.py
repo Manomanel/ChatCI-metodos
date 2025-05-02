@@ -1,4 +1,4 @@
-from file_storage import FileStorage
+from storage.file_storage import FileStorage
 from database.persistence.binary_file_persistence import BinaryFilePersistence
 
 class BinaryFileAdapter(FileStorage):
@@ -10,7 +10,7 @@ class BinaryFileAdapter(FileStorage):
         # Instancia a própria persistência internamente
         self._binary_file_dao = BinaryFilePersistence()
 
-    def salva_arquivo_adaptado(self, file_name: str, data: bytes) -> int:
+    def saveFile(self, file_name: str, data: bytes) -> int:
         """
         Adapta e salva um arquivo genérico como arquivo binário.
 
@@ -23,7 +23,7 @@ class BinaryFileAdapter(FileStorage):
         """
         return self._binary_file_dao.save_file(file_name, data)
 
-    def recupera_arquivo_adaptado(self, file_id: int) -> dict | None:
+    def getFile(self, file_id: int) -> dict | None:
         """
         Recupera e adapta um arquivo binário para formato genérico.
 

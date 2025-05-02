@@ -1,6 +1,6 @@
 from typing import Optional
-from dao.binary_file_dao import BinaryFileDAO
-from base_persistence import BasePersistence
+from database.dao.binary_file_dao import BinaryFileDAO
+from database.persistence.base_persistence import BasePersistence
 import logging
 
 logger = logging.getLogger('binary_file_persistence')

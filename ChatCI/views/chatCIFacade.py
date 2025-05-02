@@ -4,7 +4,8 @@ from controllers.user_validators import IValidator, NameValidator, UsernameRegis
 from controllers.login_exception import LoginException
 from entities.user import User
 from database.factory.user_dao_factory import UserDAOFactory
-from storage.binary_file_adapter import BinaryFileAdapter, ArquivoBinario
+from storage.binary_file_adapter import BinaryFileAdapter
+from entities.arquivo_binario import ArquivoBinario
 
 class ChatCIFacade:
     def __init__(self):
@@ -95,10 +96,10 @@ class ChatCIFacade:
         Salva um arquivo no sistema utilizando a persistência de arquivos binários.
         """
         arquivo = ArquivoBinario(file_data, file_name)
-        return self.file_adapter.salva_arquivo_adaptado(arquivo)
+        return self.file_adapter.getFile(arquivo)
 
     def busca_arquivo(self, file_id: int) -> ArquivoBinario:
         """
         Recupera um arquivo binário do sistema.
         """
-        return self.file_adapter.salva_arquivo_adaptado(file_id)
+        return self.file_adapter.saveFile(file_id)
