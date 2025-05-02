@@ -26,11 +26,24 @@ class ChatCIFacade:
         session.clear()
     
     #cadastro
-    def cadastrar_usuario(self, user):
+    def cadastrar_usuario(self, nome: str, first_name: str, last_name: str, email: str, tipo: str, senha: str, is_superuser: bool):  # Adicionei o último parâmetro
         """
-        Registra um novo usuário.
+        Registra um novo usuário. 
         Retorna o user_id em caso de sucesso, ou None em caso de erro.
         """
+        # 2. Corrigir a criação do User incluindo is_superuser
+        user = User(
+            userid=None,
+            username=nome,
+            email=email,
+            password=senha,
+            first_name=first_name,
+            last_name=last_name,
+            tipo=tipo,
+            email_verified=False,
+            is_superuser=is_superuser  # Novo parâmetro adicionado
+        )
+        
         validator = UserRegistrationValidator([
             NameValidator(),
             UsernameRegistrationValidator(),
@@ -39,6 +52,7 @@ class ChatCIFacade:
             UsernameDBValidator(self.user_persistence),
             EmailDBValidator(self.user_persistence)
         ])
+        
         try:
             validator.validate(user)
         except LoginException as e:

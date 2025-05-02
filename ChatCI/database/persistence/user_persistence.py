@@ -36,9 +36,9 @@ class UserPersistence(BasePersistence, UserDAO):
     
     # Adicionar atributos na criação de usuários
     def create_user(self, username: str, email: str, password: str, first_name: str, 
-                last_name: str, student: bool = True, professor: bool = False, 
-                email_verified: bool = False, is_staff: bool = False, 
-                is_superuser: bool = False) -> int:
+            last_name: str, student: bool, professor: bool, 
+            email_verified: bool = False, is_staff: bool = False, 
+            is_superuser: bool = False) -> int:
         # Verifica se o usuário ou email já existem
         if self.get_user_by_username(username):
             raise ValueError(f"Usuário com username '{username}' já existe")
@@ -53,8 +53,7 @@ class UserPersistence(BasePersistence, UserDAO):
         if not email_verified:
             verification_token = secrets.token_urlsafe(32)
             token_expires = datetime.now() + timedelta(days=1)
-        
-        # Hash da senha
+
         salt = secrets.token_hex(8)
         hashed_password = hashlib.pbkdf2_hmac(
             'sha256', 
@@ -66,14 +65,14 @@ class UserPersistence(BasePersistence, UserDAO):
         django_password = f"pbkdf2_sha256$150000${salt}${hashed_password}"
         
         query = """
-        INSERT INTO users (
-            username, email, password, first_name, last_name, 
-            student, professor, email_verified, is_staff, is_superuser,
-            verification_token, token_expires
-        ) VALUES (
-            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
-        ) RETURNING id
-        """
+            INSERT INTO users (
+                username, email, password, first_name, last_name, 
+                student, professor, email_verified, is_staff, is_superuser,
+                verification_token, token_expires
+            ) VALUES (
+                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+            ) RETURNING id
+            """
         
         params = (
             username, email, django_password, first_name, last_name,

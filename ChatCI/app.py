@@ -433,15 +433,13 @@ def cadastro():
         senha = data.get("senha")
         tipo = data.get("tipo")
         
-        # Define tipo_mapeado para o cadastro do usuário
         tipo_mapeado = {
             "aluno": "Estudante",
             "professor": "Professor",
             "admin": "Professor",
             "superuser": "Professor"
         }.get(tipo, "Estudante")
-        
-        # Define o valor de is_superuser baseado no tipo
+
         is_superuser = tipo in ["admin", "superuser"]
 
         if not all([nome, email, senha, tipo, first_name, last_name]):
@@ -451,7 +449,15 @@ def cadastro():
             }), 400
 
         # Chama o método existente, mas passa informações adicionais
-        user_id, erro = facade.cadastrar_usuario(nome, first_name, last_name, email, tipo_mapeado, senha, is_superuser)
+        user_id, erro = facade.cadastrar_usuario(
+                nome, 
+                first_name, 
+                last_name, 
+                email, 
+                tipo_mapeado, 
+                senha, 
+                is_superuser 
+            )
         
         if erro:
             return jsonify({
