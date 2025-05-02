@@ -4,13 +4,16 @@ import { useAuth } from '../contexts/AuthContext';
 import logo from '../Assets/chatci-logo.png';
 
 const Header = () => {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, isAdmin, isProfessor } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
     navigate('/login');
   };
+
+  // Debug para verificar as permissões
+  console.log('Header - Permissões:', { currentUser, isAdmin, isProfessor });
 
   return (
     <header className="main-header">
@@ -28,15 +31,26 @@ const Header = () => {
               <ul>
                 <li><Link to="/dashboard">Dashboard</Link></li>
                 <li><Link to="/events">Eventos</Link></li>
-                <li><Link to="/professor/turmas">Turmas</Link></li>
-                <li><Link to="/admin">Painel Admin</Link></li>
-                <li><Link to="/admin/usuarios">Usuários</Link></li>
+                
+                {/* Turmas é acessível para todos */}
+                <li><Link to="/turmas">Turmas</Link></li>
+                
+                {/* Removido o menu "Gerenciar Turmas" */}
+                
+                {/* Links de admin - usando diretamente isAdmin da useAuth */}
+                {isAdmin && (
+                  <>
+                    <li><Link to="/admin">Painel Admin</Link></li>
+                    <li><Link to="/admin/usuarios">Usuários</Link></li>
+                  </>
+                )}
+                
                 <li><Link to="/profile">Perfil</Link></li>
               </ul>
             </nav>
             <div className="header-user">
               <Link to="/profile" className="user-profile">
-                {currentUser.nome || currentUser.username}
+                {currentUser.nome || currentUser.username || currentUser.email}
               </Link>
               <button onClick={handleLogout} className="btn-logout">
                 Sair

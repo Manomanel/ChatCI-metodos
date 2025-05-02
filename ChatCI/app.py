@@ -844,6 +844,73 @@ def enviar_mensagem(grupo_id):
             "success": False,
             "error": "Erro interno do servidor"
         }), 500
+        
+@app.route("/api/usuarios/grupos", methods=["GET"])
+def get_user_groups():
+    """
+    Get groups that the current user is a member of
+    ---
+    tags:
+      - Groups
+    responses:
+      200:
+        description: User groups retrieved successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            groups:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+      401:
+        description: Not authorized
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      500:
+        description: Server error
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
+    if 'user_id' not in session:
+        return jsonify({"success": False, "error": "Não autorizado"}), 401
+    
+    try:
+        user_id = session.get('user_id')
+
+        groups = group_manager.get_user_groups(user_id)
+        
+        return jsonify({
+            "success": True,
+            "groups": groups
+        })
+    except Exception as e:
+        logger.error(f"Erro ao buscar grupos do usuário: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
 
 @app.route("/api/grupos/<int:grupo_id>/mensagens", methods=["GET"])
 def get_mensagens(grupo_id):

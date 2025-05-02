@@ -2,18 +2,18 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-const ProfessorRoute = ({ children }) => {
-  const { isAuthenticated, isProfessor, isAdmin, loading } = useAuth();
+const AdminRoute = ({ children }) => {
+  const { isAuthenticated, isAdmin, loading } = useAuth();
   
   // Log para debug
-  console.log('ProfessorRoute - Verificando permissões:', { isAuthenticated, isProfessor, isAdmin });
+  console.log('AdminRoute - Verificando permissões:', { isAuthenticated, isAdmin });
 
   if (loading) {
     return <div className="loading-indicator">Carregando...</div>;
   }
 
-  // Permite acesso para professores e admins
-  return isAuthenticated && (isProfessor || isAdmin) ? children : <Navigate to="/dashboard" />;
+  // Permite acesso apenas para administradores
+  return isAuthenticated && isAdmin ? children : <Navigate to="/dashboard" />;
 };
 
-export default ProfessorRoute;
+export default AdminRoute;

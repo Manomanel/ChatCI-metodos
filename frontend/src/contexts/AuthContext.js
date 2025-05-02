@@ -92,7 +92,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Determinar permissões com base nas flags enviadas pelo backend
-  const isAdmin = currentUser?.is_professor || currentUser?.is_superuser;
+  // CORREÇÃO: is_admin deve ser true para acesso ao painel admin
+  const isAdmin = currentUser?.is_admin || currentUser?.is_superuser;
   const isProfessor = currentUser?.is_professor;
   
   console.log('Status de permissões:', {

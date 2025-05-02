@@ -35,10 +35,10 @@ const AdminPanel = () => {
       <div className="container">
         <h1>Painel Administrativo</h1>
         
-        {error && <div className="error">{error}</div>}
-        {success && <div className="success">{success}</div>}
+        {error && <div className="alert alert-danger">{error}</div>}
+        {success && <div className="alert alert-success">{success}</div>}
         
-        <div className="admin-card">
+        <div className="admin-card card mb-4 p-4">
           <h2>Integração SACI</h2>
           <p>Execute a integração para sincronizar grupos com o SACI.</p>
           <button 
@@ -50,20 +50,20 @@ const AdminPanel = () => {
           </button>
           
           {integrationResult && (
-            <div className="integration-result">
+            <div className="integration-result mt-4">
               <h3>Resultado da Integração:</h3>
-              <ul>
-                <li>Turmas encontradas: {integrationResult.turmas_found}</li>
-                <li>Grupos criados: {integrationResult.groups_created}</li>
-                <li>Grupos existentes: {integrationResult.groups_existing}</li>
+              <ul className="list-group">
+                <li className="list-group-item">Turmas encontradas: {integrationResult.turmas_found}</li>
+                <li className="list-group-item">Grupos criados: {integrationResult.groups_created}</li>
+                <li className="list-group-item">Grupos existentes: {integrationResult.groups_existing}</li>
               </ul>
               
-              {integrationResult.errors.length > 0 && (
+              {integrationResult.errors && integrationResult.errors.length > 0 && (
                 <>
-                  <h4>Erros:</h4>
-                  <ul className="error-list">
+                  <h4 className="mt-3">Erros:</h4>
+                  <ul className="list-group error-list">
                     {integrationResult.errors.map((error, index) => (
-                      <li key={index}>{error}</li>
+                      <li className="list-group-item list-group-item-danger" key={index}>{error}</li>
                     ))}
                   </ul>
                 </>

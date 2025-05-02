@@ -42,15 +42,15 @@ const AdminUsuarios = () => {
       <div className="container">
         <h1>Gerenciar Usuários</h1>
         
-        {error && <div className="error">{error}</div>}
+        {error && <div className="alert alert-danger">{error}</div>}
         
-        <div className="page-actions">
+        <div className="page-actions mb-4">
           <Link to="/register" className="btn btn-primary">Adicionar Usuário</Link>
         </div>
         
         {usuarios && usuarios.length > 0 ? (
           <div className="table-responsive">
-            <table className="usuarios-table">
+            <table className="table table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -69,9 +69,9 @@ const AdminUsuarios = () => {
                     <td>{usuario.email}</td>
                     <td>{usuario.tipo}</td>
                     <td>{usuario.is_admin ? 'Sim' : 'Não'}</td>
-                    <td className="actions">
-                      <button className="btn-action edit">Editar</button>
-                      <button className="btn-action delete">Excluir</button>
+                    <td>
+                      <button className="btn btn-sm btn-outline-primary me-2">Editar</button>
+                      <button className="btn btn-sm btn-outline-danger">Excluir</button>
                     </td>
                   </tr>
                 ))}
@@ -79,12 +79,14 @@ const AdminUsuarios = () => {
             </table>
           </div>
         ) : (
-          <div className="empty-state">
-            <p>Nenhum usuário encontrado.</p>
+          <div className="alert alert-info">
+            <p className="mb-0">Nenhum usuário encontrado.</p>
           </div>
         )}
         
-        <Link to="/admin" className="btn btn-secondary mt-20">Voltar ao Painel Admin</Link>
+        <div className="mt-4">
+          <Link to="/admin" className="btn btn-secondary">Voltar ao Painel Admin</Link>
+        </div>
       </div>
     </div>
   );
