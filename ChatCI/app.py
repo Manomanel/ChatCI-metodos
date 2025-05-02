@@ -547,6 +547,85 @@ def perfil():
             "error": "Erro interno do servidor"
         }), 500
 
+@app.route("/api/perfil", methods=["PUT"])
+@login_required
+def atualizar_perfil():
+    """
+    Update user profile
+    ---
+    tags:
+      - Profile
+    security:
+      - bearerAuth: []
+      - sessionAuth: []
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            bio:
+              type: string
+              description: User biography
+    responses:
+      200:
+        description: Profile updated successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            profile:
+              type: object
+              properties:
+                nome:
+                  type: string
+                email:
+                  type: string
+                bio:
+                  type: string
+                profile_picture:
+                  type: string
+    """
+    try:
+        user_id = session.get('user_id')
+        data = request.json
+        
+        if not data:
+            return jsonify({
+                "success": False,
+                "error": "Dados inválidos"
+            }), 400
+        
+        bio = data.get('bio', '')
+
+        profile = facade.buscar_perfil(user_id)
+        
+        if not profile:
+            user_manager.profile_dao.create(user_id, bio=bio, profile_picture=None)
+        else:
+            profile_picture = profile.get('profile_picture')
+            user_manager.profile_dao.update(user_id, bio=bio, profile_picture=profile_picture)
+
+        updated_profile = user_manager.profile_dao.get_by_user_id(user_id)
+        
+        return jsonify({
+            "success": True,
+            "profile": {
+                "nome": session.get('nome'),
+                "email": session.get('email'),
+                "bio": updated_profile.get('bio', ''),
+                "profile_picture": updated_profile.get('profile_picture')
+            }
+        })
+    except Exception as e:
+        logger.error(f"Erro ao atualizar perfil: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor"
+        }), 500
+
 @app.route("/api/grupos", methods=["GET"])
 def grupos():
     """
