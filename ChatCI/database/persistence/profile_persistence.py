@@ -74,3 +74,41 @@ class ProfilePersistence(BasePersistence, ProfileDAO):
         
         rows_affected = self._execute_update(query, tuple(params))
         return rows_affected > 0
+    
+
+    #CLASSE ORIGINADORA DO MEMENTO, O MEMENTO É A TABELA PROFILE HISTORY DA DB
+    def save_memento(self, user_id: int) -> bool:
+        #Salva o perfil atual como um memento no banco de dados
+        profile = self.get_by_user_id(user_id)
+        if not profile:
+            return False
+        
+        query = """
+        INSERT INTO profile_history (user_id, bio, profile_picture)
+        VALUES (%s, %s, %s)
+        """
+
+        self._execute_insert_returning_id(query, (
+            profile['user_id'],
+            profile.get('bio'),
+            profile.get('profile_picture')
+        ))
+
+    def restore_last_memento(self, user_id: int) -> bool:
+        query = """
+        SELECT bio, profile_picture
+        FROM profile_history
+        WHERE user_id = %s
+        ORDER BY saved_at DESC
+        LIMIT 1
+        """
+        resultados = self._execute_query(query, (user_id,))
+        if not resultados:
+            return False
+        
+        ultimo_estado = resultados[0]
+        return self.update(
+            user_id,
+            bio = ultimo_estado.get("bio"),
+            profile_picture = ultimo_estado.get("profile_picture")
+        )
