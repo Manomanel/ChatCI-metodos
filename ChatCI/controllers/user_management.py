@@ -5,7 +5,9 @@ from controllers.user_validators import IValidator, NameValidator, UsernameRegis
 from controllers.login_exception import  LoginException
 import logging
 import hashlib
-from business.login_report_generator import LoginReportGenerator
+from business.login_txt_report_generator import LoginTxtReportGenerator
+from business.login_html_report_generator import LoginHtmlReportGenerator
+
 
 logger = logging.getLogger('gerenciador_usuarios')
 
@@ -24,9 +26,11 @@ class UserManagement:
             usuario = validator.validate(email_ou_username, senha)
             logger.info(f'Login bem sucedido para o usuário {email_ou_username}')
             # → Gera o relatório de login:
-            generator = LoginReportGenerator()
-            generator.generateReport(usuario)
-            return usuario
+            txt_gen = LoginTxtReportGenerator()
+            txt_gen.generateReport(usuario)
+
+            html_gen = LoginHtmlReportGenerator()
+            html_gen.generateReport(usuario)
             return usuario
         except LoginException as e:
             logger.error(f'Erro de login ou senha: {e}')
